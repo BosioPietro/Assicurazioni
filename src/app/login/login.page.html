@@ -1,0 +1,17 @@
+<ion-content [fullscreen]="true">
+  <main>
+    <form (ngSubmit)="Login()">
+      <div class="form-item">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required [(ngModel)]="username">
+      </div>
+      <div class="form-item">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required [(ngModel)]="password">
+      </div>
+      <div class="form-item">
+        <button type="submit">Login</button>
+      </div>
+    </form>
+  </main>
+</ion-content>
