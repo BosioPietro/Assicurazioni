@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import Metodi from './metodi.model';
 import { firstValueFrom } from 'rxjs';
+import environment from '../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class GestoreServerService {
   constructor(private http: HttpClient) { }
 
   public InviaRichiesta(method: Metodi, url: string, parameters: any = {}) {
-    url = `http://localhost:3000${url}`;
+    url = `http://localhost:${environment["SERVER_PORT"]}${url}`;
     switch (method) {
       case Metodi.GET: 
       return firstValueFrom(this.http.get(url, {params: parameters}));
