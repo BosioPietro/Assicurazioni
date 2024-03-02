@@ -59,138 +59,23 @@ app.use("/", _cors(corsOptions));
 
 // ROUTE FINALI
 
-// app.get("/api/collections", async (req : Request, res : Response) => {
-//     const collezioni : object = await driver.Collezioni();
-//     if("errore" in collezioni)
-//     {
-//         res.status(500).send(collezioni["errore"]);
-//     }
-//     else res.json(collezioni);
-// })
+app.post("/api/registrazione", async (req : Request, res : Response) => {
+    const { username, email, password } = req["body"];
 
-// app.get("/api/:collezione", async (req : Request, res : Response) => {
-//     const { collezione } = req["params"];
-//     const filtri = JSON.parse(req["query"]["filtri"] as string || "{}");
+    if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+    const data = await driver.PrendiUno({ username })
 
-//     console.log(req["query"]["filtri"])
+    if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
+    if(data) return res.status(400).send("Username già esistente")
 
-//     await driver.SettaCollezione(collezione)
-//     const dati = await driver.PrendiMolti(filtri);
-    
-//     if("errore" in dati)
-//     {
-//         res.status(500).send(dati["errore"]);
-//     }
-//     else res.status(200).json(dati);
-// });
+    res.send({ "ok" : "Registrazione effettuata" })
 
-// app.get("/api/:collezione/:id", async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione, id } = req["params"];
-
-//     await driver.SettaCollezione(collezione);
-//     const oggetto = await driver.CercaID(id)
-
-//     if("errore" in oggetto)
-//     {
-//         res.status(500).send(oggetto["errore"]);
-//     }
-//     else res.send(oggetto)
-// });
-
-// app.post("/api/:collezione/", async (req : Request, res : Response, next : NextFunction) => {
-//     const record = req["body"];
-//     const { collezione } = req["params"];
-
-//     await driver.SettaCollezione(collezione);
-//     const data = await driver.Inserisci(record);
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Aggiunto"})
-// });
-
-// app.delete("/api/:collezione/:id", async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione, id } = req["params"];
-
-//     await driver.SettaCollezione(collezione);
-//     const data = await driver.EliminaUno({"_id" : driver.ID(id)})
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Eliminato"})
-// });
-
-// app.delete("/api/:collezione/", async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione } = req["params"];
-//     const filters = req["body"];
-
-//     await driver.SettaCollezione(collezione);
-//     const data = await driver.Elimina(filters)
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Eliminato"})
-// });
-
-
-// app.patch("/api/:collezione/:id", async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione, id } = req["params"];
-//     const record = req["body"];
-    
-//     delete(record["_id"])
-
-//     await driver.SettaCollezione(collezione);
-//     const data = await driver.UpdateUno(
-//         {"_id" : driver.ID(id)},
-//         {"$set" : record}
-//     )
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Aggiornato"})
-// });
-
-// app.patch("/api/:collezione", async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione } = req["params"];
-//     const { filters, action } = req["body"];
-
-//     await driver.SettaCollezione(collezione);
-//     const data = await driver.UpdateUno(filters, action)
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Aggiornato"})
-// });
-
-// app.put("/api/:collezione/:id",  async (req : Request, res : Response, next : NextFunction) => {
-//     const { collezione, id } = req["params"];
-//     const record = req["body"];
-//     await driver.SettaCollezione(collezione);
-
-//     const data = await driver.SostituisciUno({"_id" : driver.ID(id)}, record);
-
-//     if("errore" in data)
-//     {
-//         res.status(500).send(data["errore"]);
-//     }
-//     else res.send({"ok" : "Record Aggiornato"})
-// });
-
+})
 
 app.post("/api/login", async (req : Request, res : Response) => {
     const { username, password } = req["body"];
 
-    await driver.SettaCollezione("utenti");
+    if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
     const data = await driver.PrendiUno({ username, password})
 
     if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])

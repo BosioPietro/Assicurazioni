@@ -1,29 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import Metodi from './metodi.model';
-import { firstValueFrom } from 'rxjs';
+import axios, { AxiosRequestConfig } from 'axios';
 import environment from '../environment';
+import { Metodi } from '../utils/TipiSpeciali';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GestoreServerService {
 
-  constructor(private http: HttpClient) { }
-
-  public InviaRichiesta(method: Metodi, url: string, parameters: any = {}) {
-    url = `http://localhost:${environment["SERVER_PORT"]}${url}`;
-    switch (method) {
-      case Metodi.GET: 
-      return firstValueFrom(this.http.get(url, {params: parameters}));
-      case Metodi.POST:
-      return firstValueFrom(this.http.post(url, parameters));
-      case Metodi.PUT:
-      return firstValueFrom(this.http.put(url, parameters));
-      case Metodi.PATCH:
-      return firstValueFrom(this.http.patch(url, parameters));
-      case Metodi.DELETE:
-      return firstValueFrom(this.http.delete(url, {params: parameters}));
+async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
+    const config : AxiosRequestConfig = {
+      "baseURL": `http://localhost:${environment["SERVER_PORT"]}/`,
+      "url":  url, 
+      "method": method.toString(),
+      "headers": {
+        "Accept": "application/json",
+      },
+      "timeout": 15000,
+      "responseType": "json",
     }
+    
+    if(parameters instanceof FormData){
+      config.headers!["Content-Type"] = 'multipart/form-data;' 
+      config["data"] = parameters
+    }	
+    else if(method === Metodi.GET){
+        config.headers!["Content-Type"] = 'application/x-www-form-urlencoded;charset=utf-8' 
+        config["params"] = parameters   
+    }
+    else{
+      config.headers!["Content-Type"] = 'application/json; charset=utf-8' 
+      config["data"] = parameters    
+    }	
+    return axios(config);          
   }
 }

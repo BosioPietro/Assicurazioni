@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import RegexInput from 'src/app/utils/RegexInput';
 import { Nullabile } from 'src/app/utils/TipiSpeciali';
 import { RegistrazioneService } from '../registrazione.service';
+import { AxiosError } from 'axios';
 
 @Component({
   selector: 'app-registrazione',
@@ -21,20 +22,20 @@ export class RegistrazionePage implements OnInit{
   private router : Router = new Router();
 
   public form = new FormGroup({
-    username: new FormControl('', [
+    username: new FormControl('admin', [
       Validators.minLength(3),
       Validators.pattern(RegexInput["username"]),
       Validators.required
     ]),
-    email: new FormControl('', [
+    email: new FormControl('s@gmail.com', [
       Validators.pattern(RegexInput["email"]),
       Validators.required
     ]),
-    password: new FormControl('', [
+    password: new FormControl('Passw0rd!', [
       Validators.required,
       Validators.pattern(RegexInput["password"]),
     ]),
-    confermaPassword: new FormControl('', [
+    confermaPassword: new FormControl('Passw0rd!', [
       Validators.required,
     ])
   });
@@ -53,17 +54,18 @@ export class RegistrazionePage implements OnInit{
   }
 
   async Registrazione(){
-    try
-    {
-      const data = await this.registrazioneService.Registrazione(
-        this.controlli["username"].value!,
-        this.controlli["email"].value!,
-        this.controlli["email"].value!
-      )
+    const req = await this.registrazioneService.Registrazione(
+      this.controlli["username"].value!,
+      this.controlli["email"].value!,
+      this.controlli["email"].value!
+    )
+
+    if(req instanceof AxiosError){
+      console.log(req)
+      alert(`Errore: ${req.response!["data"]} (${req.response!.status})`);
+      return;
     }
-    catch(err)
-    {
-      console.log(err);
-    }
+
+    this.router.navigate(["/home"]);
   }
 }

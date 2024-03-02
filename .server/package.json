@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bosio/mongodriver": "^1.2.7",
+    "@bosio/mongodriver": "^1.2.8",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dot": "^1.1.3",

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GestoreServerService } from '../server/gestore-server.service';
-import Metodi from '../server/metodi.model';
+import { Metodi } from '../utils/TipiSpeciali';
 
 @Injectable({
   providedIn: 'root'
