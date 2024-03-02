@@ -1,0 +1,100 @@
+<ion-content [fullscreen]="true">
+  <!-- SIGN UP FORM -->
+  <div class="ion-padding">
+    <div class="ion-text-center">
+      <h1>Registrati</h1>
+    </div>
+  </div>
+  <form [formGroup]="form" (submit)="Registrazione()">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Nome</ion-label>
+            <ion-input formControlName="nome" type="text" aria-label="Nome"></ion-input>
+          </ion-item>
+          @if(controlli["nome"].hasError('required') && controlli["nome"].touched)
+          {
+            <ion-text color="danger">
+              Il nome è obbligatorio
+            </ion-text>
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Cognome</ion-label>
+            <ion-input formControlName="cognome" type="text" aria-label="Cognome"></ion-input>
+          </ion-item>
+          @if(controlli["cognome"].hasError('required') && controlli["cognome"].touched)
+          {
+            <ion-text color="danger">
+              Il cognome è obbligatorio
+            </ion-text>
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input formControlName="email" type="email" aria-label="Email"></ion-input>
+          </ion-item>
+          @if(controlli["email"].hasError('required') && controlli["email"].touched)
+          {
+            <ion-text color="danger">
+              L'email è obbligatoria
+            </ion-text>
+          }
+          @if(controlli["email"].hasError('email') && controlli["email"].touched)
+           {
+             <ion-text color="danger">
+               L'email non è valida
+              </ion-text>
+           }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input formControlName="password" type="password" aria-label="Password"></ion-input>
+          </ion-item>
+          @if(controlli["password"].hasError('required') && controlli["password"].touched)
+          {
+            <ion-text color="danger">
+              La password è obbligatoria
+            </ion-text>
+
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item>
+            <ion-label position="floating">Conferma Password</ion-label>
+            <ion-input formControlName="confermaPassword" type="password" aria-label="Conferma"></ion-input>
+          </ion-item>
+          @if(controlli["confermaPassword"].hasError('required') && controlli["confermaPassword"].touched)
+          {
+            <ion-text color="danger">
+              La conferma password è obbligatoria
+            </ion-text>
+          }
+          @if(controlli["confermaPassword"].hasError('confermaPassword') && controlli["confermaPassword"].touched)
+          {
+            <ion-text color="danger">
+              Le password non corrispondono
+            </ion-text>
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-button type="submit" expand="block" [disabled]="!form.valid">Registrati</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
