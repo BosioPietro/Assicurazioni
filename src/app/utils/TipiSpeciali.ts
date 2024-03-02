@@ -1,0 +1,1 @@
+export type Nullabile<T> = T | null;
