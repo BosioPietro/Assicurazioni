@@ -11,7 +11,7 @@ import { AxiosError } from 'axios';
 
 @Component({
   selector: 'app-registrazione',
-  templateUrl: './registrazione.page.html',
+  templateUrl: "./registrazione.page.html",
   styleUrls: ['./registrazione.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]

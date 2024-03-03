@@ -4,7 +4,9 @@ import { MongoDriver } from "@bosio/mongodriver";
 import _express, {Express, Request, Response, NextFunction} from "express";
 import { TipoServer, CorsAperto } from "./strumenti.js";
 import env from "./ambiente.js";
-
+import {CifraPwd, ConfrontaPwd, CreaToken, ControllaToken} from "./encrypt.js";
+import { VerifyErrors, verify }  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const app : Express = _express();
 
@@ -57,8 +59,8 @@ const corsOptions = {
 };
 app.use("/", _cors(corsOptions));
 
-// ROUTE FINALI
 
+// ROUTE FINALI
 app.post("/api/registrazione", async (req : Request, res : Response) => {
     const { username, email, password } = req["body"];
 
@@ -68,20 +70,41 @@ app.post("/api/registrazione", async (req : Request, res : Response) => {
     if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
     if(data) return res.status(400).send("Username già esistente")
 
-    res.send({ "ok" : "Registrazione effettuata" })
+    const pwdCifrata = CifraPwd(password);
+    const inserimento = await driver.Inserisci({ username, email, password : pwdCifrata })
+    if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
 
+    const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
+    
+    res.setHeader("authorization", token)
+    res.setHeader("access-control-expose-headers", "authorization")
+    res.send({ "ok" : "Registrazione effettuata"})
 })
 
 app.post("/api/login", async (req : Request, res : Response) => {
     const { username, password } = req["body"];
 
     if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
-    const data = await driver.PrendiUno({ username, password})
+    const data = await driver.PrendiUno({ username }, { "password" : 1 })
 
     if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
+    if(!data) return res.status(400).send("Username non esistente")
 
-    res.send({ "ok" : "Login effettuato"})
+    console.log(data["password"], password, ConfrontaPwd(password, data["password"]))
+
+    if(ConfrontaPwd(password, data["password"]))
+    {
+        const token = CreaToken({username, _id : data["_id"].toString()})
+        res.setHeader("authorization", token)
+        res.setHeader("access-control-expose-headers", "authorization")
+        res.send({ "ok" : "Login effettuato" })
+    }
+    else return res.status(400).send("Password errata");
 });
+
+app.get("/api/controllo-token", (req : Request, res : Response) => ControllaToken(req, res));
+
+app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(req, res, next));
 
 /*  GESTIONE ERRORI  */
 app.use("/", (req : Request, res : Response, next : NextFunction) => res.status(404).send("Api non trovata"));

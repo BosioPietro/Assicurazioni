@@ -6,7 +6,7 @@ import { Metodi } from '../utils/TipiSpeciali';
 @Injectable({
   providedIn: 'root'
 })
-export class GestoreServerService {
+export class GestoreServerService{
 
 async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
     const config : AxiosRequestConfig = {
@@ -35,3 +35,17 @@ async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
     return axios(config);          
   }
 }
+
+
+axios.interceptors["request"].use((config) => {
+  if("token" in localStorage){
+    config.headers["authorization"] = localStorage["token"];
+  }
+  return config;
+});
+
+axios.interceptors["response"].use((response) => {
+  const token = response.headers["authorization"];
+  if(token) localStorage["token"] = token;
+  return response;
+});

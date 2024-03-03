@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { ControllaToken } from '../utils/funzioni';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +10,16 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/stan
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent],
 })
-export class HomePage {
-  constructor() {}
+export class HomePage implements OnInit{
+  
+  router : Router = new Router();
+
+  async ngOnInit(): Promise<void> {
+    try
+    {
+      await ControllaToken();
+      console.log("Token valido");
+    }
+    catch(e) { this.router.navigate(["/login"]) }
+  }
 }

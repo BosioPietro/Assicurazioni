@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class LoginPage implements OnInit {
 
@@ -18,19 +18,23 @@ export class LoginPage implements OnInit {
 
   private router : Router = new Router();
 
-  public isValid = false;
-  public username = "";
-  public password = "";
+  form : FormGroup = new FormGroup({
+    username : new FormControl("", [Validators.required]),
+    password : new FormControl("", [Validators.required])
+  });
 
   ngOnInit() {
   }
 
   async Login(){
-    const data = await this.servizio.Login(this.username, this.password).catch(this.GestisciErrore);
-    console.log(data)
-    if(data && "ok" in data)
+    try
     {
+      await this.servizio.Login(this.form.value["username"], this.form.value["password"]);
       this.router.navigate(["/home"]);
+    }
+    catch(e)
+    {
+      this.GestisciErrore(e);
     }
   }
 
