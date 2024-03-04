@@ -1,85 +1,30 @@
 <ion-content [fullscreen]="true">
-  <div class="ion-padding">
-    <div class="ion-text-center">
-      <h1>Registrati</h1>
-    </div>
-  </div>
-  <form [formGroup]="form" (submit)="Registrazione()">
-    <ion-grid>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item>
-            <ion-label position="floating">Username</ion-label>
-            <ion-input formControlName="username" type="text" aria-label="Username"></ion-input>
-          </ion-item>
-          @if(controlli["username"].hasError('required') && controlli["username"].touched)
-          {
-            <ion-text color="danger">
-             L'username è obbligatorio
-            </ion-text>
-          }
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input formControlName="email" type="email" aria-label="Email"></ion-input>
-          </ion-item>
-          @if(controlli["email"].hasError('required') && controlli["email"].touched)
-          {
-            <ion-text color="danger">
-              L'email è obbligatoria
-            </ion-text>
-          }
-          @if(controlli["email"].hasError('email') && controlli["email"].touched)
-           {
-             <ion-text color="danger">
-               L'email non è valida
-              </ion-text>
-           }
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item>
-            <ion-label position="floating">Password</ion-label>
-            <ion-input formControlName="password" type="password" aria-label="Password"></ion-input>
-          </ion-item>
-          @if(controlli["password"].hasError('required') && controlli["password"].touched)
-          {
-            <ion-text color="danger">
-              La password è obbligatoria
-            </ion-text>
-
-          }
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12">
-          <ion-item>
-            <ion-label position="floating">Conferma Password</ion-label>
-            <ion-input formControlName="confermaPassword" type="password" aria-label="Conferma"></ion-input>
-          </ion-item>
-          @if(controlli["confermaPassword"].hasError('required') && controlli["confermaPassword"].touched)
-          {
-            <ion-text color="danger">
-              La conferma password è obbligatoria
-            </ion-text>
-          }
-          @if(controlli["confermaPassword"].hasError('confermaPassword') && controlli["confermaPassword"].touched)
-          {
-            <ion-text color="danger">
-              Le password non corrispondono
-            </ion-text>
-          }
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col size="12">
-          <ion-button type="submit" expand="block" [disabled]="!form.valid">Registrati</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </form>
+  <main>
+    <form [formGroup]="form" (submit)="Registrazione()">
+      <div class="form-item">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required formControlName="username">
+      </div>
+      <div class="form-item">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required formControlName="email">
+      </div>
+      <div class="form-item">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required formControlName="password">
+      </div>
+      <div class="form-item">
+        <label for="confermaPassword">Conferma password</label>
+        <input type="password" id="confermaPassword" name="confermaPassword" required formControlName="confermaPassword">
+      </div>
+      <div>
+        <span>Hai già un account?&nbsp;</span>
+        <a href="/login">Accedi</a>
+      </div>
+      <br>
+      <div class="form-item">
+        <button type="submit">Registrati</button>
+      </div>
+    </form>
+  </main>
 </ion-content>

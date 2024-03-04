@@ -23,7 +23,6 @@ const ReadFileAsync = (path : string) => {
 const OggettoVuoto = (o : object) : boolean => !Object.keys(o).length;
 
 
-const CorsAperto = (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => callback(null, true);
 type TipoServer  = _http.Server<typeof _http.IncomingMessage, typeof _http.ServerResponse> 
 
-export { paginaErrore, TipoServer, ReadFileAsync, OggettoVuoto, CorsAperto };
+export { paginaErrore, TipoServer, ReadFileAsync, OggettoVuoto };

@@ -2,13 +2,18 @@
   <main>
     <form (ngSubmit)="Login()" [formGroup]="form">
       <div class="form-item">
-        <label for="email">Email</label>
+        <label for="username">Username</label>
         <input type="text" id="username" name="username" required formControlName="username">
       </div>
       <div class="form-item">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required formControlName="password">
       </div>
+      <div>
+        <span>Non hai ancora un account?&nbsp;</span>
+        <a href="/registrazione">Registrati</a>
+      </div>
+      <br>
       <div class="form-item">
         <button type="submit">Login</button>
       </div>
