@@ -16,7 +16,7 @@ import { AxiosError } from 'axios';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class RegistrazionePage implements OnInit{
+export class RegistrazionePage{
 
   constructor(private registrazioneService : RegistrazioneService){}
   private router : Router = new Router();
@@ -30,33 +30,25 @@ export class RegistrazionePage implements OnInit{
     email: new FormControl('s@gmail.com', [
       Validators.pattern(RegexInput["email"]),
       Validators.required
-    ]),
-    password: new FormControl('Passw0rd!', [
-      Validators.required,
-      Validators.pattern(RegexInput["password"]),
-    ]),
-    confermaPassword: new FormControl('Passw0rd!', [
-      Validators.required,
     ])
   });
   public controlli = this.form.controls;
 
-  ngOnInit(): void {
-    this.form.addValidators(this.ConfermaPassword);
-    this.form.updateValueAndValidity();
-  }
+  // ngOnInit(): void {
+  //   this.form.addValidators(this.ConfermaPassword);
+  //   this.form.updateValueAndValidity();
+  // }
 
-  ConfermaPassword(c: AbstractControl): Nullabile<ValidationErrors>{
-    if(c.value["password"] !== c.value["confermaPassword"]){
-      return { PasswordNoMatch: true };
-    }
-    else return null;
-  }
+  // ConfermaPassword(c: AbstractControl): Nullabile<ValidationErrors>{
+  //   if(c.value["password"] !== c.value["confermaPassword"]){
+  //     return { PasswordNoMatch: true };
+  //   }
+  //   else return null;
+  // }
 
   async Registrazione(){
     const req = await this.registrazioneService.Registrazione(
-      this.controlli["username"].value!,
-      this.controlli["email"].value!,
+      this.controlli["username"].value!, 
       this.controlli["email"].value!
     )
 
@@ -66,6 +58,7 @@ export class RegistrazionePage implements OnInit{
       return;
     }
 
-    this.router.navigate(["/home"]);
+    alert("Utente creato con successo, Ora puoi effettuare il login");
+    this.router.navigate(["/login"], { queryParams : { username : this.controlli["username"].value } });
   }
 }

@@ -46,4 +46,21 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
     })
 }
 
-export { CifraPwd, ConfrontaPwd, CreaToken, ControllaToken }
+const GeneraPwd = () : string => {
+    const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numeri = "0123456789";
+    const speciali = "!@#$%^&*()_+";
+
+    const caratteri = alfabeto + alfabeto.toLowerCase() + numeri + speciali;
+    let pwd = "";
+    for(let i = 0; i < 14; i++)
+    {
+        pwd += caratteri.charAt(Math.floor(Math.random() * caratteri.length));
+    }
+    
+    console.log(pwd)
+
+    return CifraPwd(pwd);
+}
+
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd }

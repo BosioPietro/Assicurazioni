@@ -10,7 +10,7 @@ export class RegistrazioneService {
 
   constructor(private server : GestoreServerService) { }
 
-  public async Registrazione(username : string, email : string, password : string) : Promise<AxiosResponse | AxiosError>{
-    return this.server.InviaRichiesta(Metodi.POST, "/api/registrazione", {username, email, password}).catch(err => err);
+  public async Registrazione(username : string, email : string) : Promise<AxiosResponse | AxiosError>{
+    return this.server.InviaRichiesta(Metodi.POST, "/api/registrazione", { username, email }).catch(err => err);
   }
 }

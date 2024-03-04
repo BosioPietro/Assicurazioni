@@ -1,7 +1,6 @@
-import _http from "http";
+import http from "http";
 import { MongoDriver } from "@bosio/mongodriver";
 import express, { Express } from "express";
-import { TipoServer } from "./strumenti.js";
 import env from "./ambiente.js";
 
 import * as Richieste from "./middleware/base.js";
@@ -9,14 +8,13 @@ import * as Cors from "./middleware/cors.js";
 import * as Errori from "./middleware/errori.js";
 import * as Autenticazione from "./middleware/autenticazione.js";
 
-
-const app : Express = express();
-
 // APERTURA SERVER
+const app : Express = express();
 const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DBNAME"]);
-const server : TipoServer = _http.createServer(app);
+const server = http.createServer(app);
 
 server.listen(env["PORTA"], () => console.log("Server Avviato"));
+
 
 /* MIDDLEWARE */
 

@@ -17,5 +17,9 @@ export const routes: Routes = [
   {
     path: 'registrazione',
     loadComponent: () => import('./registrazione/registrazione/registrazione.page').then( m => m.RegistrazionePage)
+  },  {
+    path: 'imposta-password',
+    loadComponent: () => import('./imposta-password/imposta-password.page').then( m => m.ImpostaPasswordPage)
   }
+
 ];

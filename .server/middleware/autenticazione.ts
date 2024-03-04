@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { CifraPwd, ConfrontaPwd, CreaToken, ControllaToken } from "../encrypt.js";
+import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd } from "../encrypt.js";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
-        const { username, email, password } = req["body"];
+        const { username, email } = req["body"];
     
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
         const data = await driver.PrendiUno({ username })
@@ -13,8 +13,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
         if(data) return res.status(400).send("Username già esistente")
     
-        const pwdCifrata =  CifraPwd(password);
-        const inserimento = await driver.Inserisci({ username, email, password : pwdCifrata })
+        const inserimento = await driver.Inserisci({ username, email, password : GeneraPwd() })
         if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
@@ -33,9 +32,7 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         const data = await driver.PrendiUno({ username }, { "password" : 1 })
     
         if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
-        if(!data) return res.status(400).send("Username non esistente")
-    
-        console.log(data["password"], password, ConfrontaPwd(password, data["password"]))
+        if(!data) return res.status(400).send("Username non esistente") 
     
         if(ConfrontaPwd(password, data["password"]))
         {
@@ -44,7 +41,7 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
             res.setHeader("access-control-expose-headers", "authorization")
             res.send({ "ok" : "Login effettuato" })
         }
-        else return res.status(400).send("Password errata");
+        else return res.status(401).send("Password errata");
     });
     
 }
