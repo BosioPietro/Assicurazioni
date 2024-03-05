@@ -1,7 +1,8 @@
-import http from "http";
+import https from "https";
 import { MongoDriver } from "@bosio/mongodriver";
 import express, { Express } from "express";
 import env from "./ambiente.js";
+import fs from "fs";
 
 import * as Richieste from "./middleware/base.js";
 import * as Cors from "./middleware/cors.js";
@@ -10,8 +11,14 @@ import * as Autenticazione from "./middleware/autenticazione.js";
 
 // APERTURA SERVER
 const app : Express = express();
+
+const [cert, key] = [
+    fs.readFileSync("./keys/certificate.crt"),
+    fs.readFileSync("./keys/private_key.pem")
+];
+
 const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DBNAME"]);
-const server = http.createServer(app);
+const server = https.createServer({key, cert}, app);
 
 server.listen(env["PORTA"], () => console.log("Server Avviato"));
 

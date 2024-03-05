@@ -10,7 +10,7 @@ export class GestoreServerService{
 
 async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
     const config : AxiosRequestConfig = {
-      "baseURL": `http://localhost:${environment["SERVER_PORT"]}/`,
+      "baseURL": `https://localhost:${environment["SERVER_PORT"]}/`,
       "url":  url, 
       "method": method.toString(),
       "headers": {
