@@ -1,6 +1,7 @@
-import nodemailer, { SentMessageInfo } from 'nodemailer';
+import nodemailer from 'nodemailer';
 import env from '../ambiente.js';
-import { Express, Request, Response } from 'express';
+import { Response } from 'express';
+import fs from 'fs';
 
 const auth = {
     user: env["MAILUSER"],
@@ -21,18 +22,27 @@ type MailOptions = {
 
 }
 
-const InviaMail = (app : Express, opzioni : MailOptions) => {
-    app.post('/api/newMail', (req : Request, res : Response) => {
-        transporter.sendMail(opzioni, (err : Error | null) => {
-            if (err) {
-                res.status(500).send("Errore invio mail\n" + err.message);
-            }
-            else {
-                console.log("Email inviata correttamente");
-                res.send({ "ris": "OK" });
-            }
-        })
-    });
+
+const body : string = fs.readFileSync("./middleware/mail.html").toString();
+
+const InviaMail = (opzioni : MailOptions) => new Promise((resolve, reject) => {
+    transporter.sendMail(opzioni, (err : Error | null) => {
+        if (err)
+        {
+            reject(err);
+        }
+        else resolve("Mail inviata");
+    })
+});
+
+const InviaMailPassword = async (username : string, password : string, email : string) => {
+    const opzioni : MailOptions = {
+        from: env["MAILUSER"],
+        to: email,
+        subject: "Registrazione effettuata",
+        html: body.replace("${username}", username).replace("${password}", password)
+    }
+    return InviaMail(opzioni);
 }
 
-export { InviaMail, MailOptions }
+export { InviaMailPassword }

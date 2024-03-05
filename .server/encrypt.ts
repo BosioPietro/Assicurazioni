@@ -60,7 +60,7 @@ const GeneraPwd = () : string => {
     
     console.log(pwd)
 
-    return CifraPwd(pwd);
+    return pwd;
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd }
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd }

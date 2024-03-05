@@ -1,15 +1,6 @@
 import _fs from "fs";
 import _http from "http";
-
-const paginaErrore = new Promise<string>((resolve) => {
-    _fs.readFile("./static/error.html", (err : NodeJS.ErrnoException | null, data : Buffer) => {
-        if (err) 
-        {
-            resolve(`<h1>Risorsa non trovata</h1>`);
-        }
-        else resolve(data.toString());
-    });
-});
+import { Response } from "express";
 
 const ReadFileAsync = (path : string) => {
     return new Promise<string>((resolve, reject) => {
@@ -22,7 +13,12 @@ const ReadFileAsync = (path : string) => {
 
 const OggettoVuoto = (o : object) : boolean => !Object.keys(o).length;
 
-
 type TipoServer  = _http.Server<typeof _http.IncomingMessage, typeof _http.ServerResponse> 
 
-export { paginaErrore, TipoServer, ReadFileAsync, OggettoVuoto };
+const RispondiToken = (res : Response, token : string, messaggio : object) => {
+    res.setHeader("authorization", token);
+    res.setHeader("access-control-expose-headers", "authorization");
+    res.send(messaggio);
+}
+
+export { TipoServer, ReadFileAsync, OggettoVuoto, RispondiToken };

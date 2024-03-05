@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd } from "../encrypt.js";
+import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd } from "../encrypt.js";
+import { InviaMailPassword } from "./mail.js";
+import { RispondiToken } from "../strumenti.js";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -13,14 +15,15 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
         if(data) return res.status(400).send("Username già esistente")
     
-        const inserimento = await driver.Inserisci({ username, email, password : GeneraPwd() })
+        const password = GeneraPwd()
+        const inserimento = await driver.Inserisci({ username, email, password : CifraPwd(password) })
         if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
         
-        res.setHeader("authorization", token)
-        res.setHeader("access-control-expose-headers", "authorization")
-        res.send({ "ok" : "Registrazione effettuata"})
+        InviaMailPassword(username, password, email)
+        .then(() => RispondiToken(res, token, { "ok" : "Registrazione effettuata" }))
+        .catch(() => res.status(500).send("Errore nell'invio della mail"))
     })
 }
 
@@ -37,9 +40,7 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(ConfrontaPwd(password, data["password"]))
         {
             const token = CreaToken({username, _id : data["_id"].toString()})
-            res.setHeader("authorization", token)
-            res.setHeader("access-control-expose-headers", "authorization")
-            res.send({ "ok" : "Login effettuato" })
+            RispondiToken(res, token, { "ok" : "Login Effettuato" })
         }
         else return res.status(401).send("Password errata");
     });
@@ -48,8 +49,6 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
 
 const LogoutUtente = (app : Express) => {
     app.get("/api/logout", (req : Request, res : Response) => {
-        res.setHeader("authorization", "")
-        res.setHeader("access-control-expose-headers", "authorization")
         res.send({ "ok" : "Logout effettuato" })
     });
 }
