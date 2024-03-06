@@ -9,7 +9,7 @@ const CifraPwd = (password: string): string => bcrypt.hashSync(password, 10);
 
 const ConfrontaPwd = (password: string, hash: string) : boolean => bcrypt.compareSync(password, hash);
 
-const CreaToken = (utente : {username : string, _id : string, iat? : number}) : string => {
+const CreaToken = (utente : {username : string, _id? : string, iat? : number}) : string => {
     const secondi = Math.floor(new Date().getTime() / 1000);
     const durata = env["DURATA_TOKEN"];
     
@@ -46,6 +46,8 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
     })
 }
 
+const DecifraToken = (token : string) : any => jwt.decode(token);
+
 const GeneraPwd = () : string => {
     const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numeri = "0123456789";
@@ -63,4 +65,4 @@ const GeneraPwd = () : string => {
     return pwd;
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd }
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken }

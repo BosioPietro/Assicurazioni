@@ -6,7 +6,7 @@ import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './login-google/login-google.component';
-import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -36,8 +36,11 @@ export class LoginPage  implements OnInit, OnDestroy  {
   }
 
   ngOnInit() {
-    this.authSubscription = this.authService.authState.subscribe((user) => {
-      console.log('user', user);
+    this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
+      localStorage.setItem("user", user["idToken"]);
+      this.servizio.LoginGoogle(user)
+      .then(() => this.router.navigate(["/home"]))
+      .catch(e => this.GestisciErrore(e as AxiosError))
     });
   }
 

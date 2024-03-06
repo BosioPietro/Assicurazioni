@@ -17,7 +17,9 @@ const [cert, key] = [
     fs.readFileSync("./keys/private_key.pem")
 ];
 
-const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DBNAME"]);
+console.log(env["DB_NAME"])
+
+const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DB_NAME"], "utenti");
 const server = https.createServer({key, cert}, app);
 
 server.listen(env["PORTA"], () => console.log("Server Avviato"));
@@ -37,10 +39,10 @@ Cors.MiddlewareCors(app);
 // gestione autenticazione
 Autenticazione.RegistraUtente(app, driver);
 Autenticazione.LoginUtente(app, driver);
+Autenticazione.LoginGoogle(app, driver);
 Autenticazione.LogoutUtente(app);
 Autenticazione.ControlloToken(app);
 Autenticazione.ControlloTokenMiddleware(app);
-Autenticazione.LoginGoogle(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);
