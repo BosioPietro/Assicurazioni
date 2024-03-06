@@ -43,8 +43,25 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
             RispondiToken(res, token, { "ok" : "Login Effettuato" })
         }
         else return res.status(401).send("Password errata");
-    });
+    });   
+}
+
+const LoginGoogle = async (app : Express, driver : MongoDriver) => {
+    app.post("/api/login-google", async (req : Request, res : Response) => {
+        const { username, email } = req["body"];
+
+        console.log(req["body"])
     
+        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        const data = await driver.PrendiUno({ username })
+    
+        if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
+        if(!data) return res.status(400).send("Username non esistente")
+    
+        const token = CreaToken({username, _id : data["_id"].toString()})
+        RispondiToken(res, token, { "ok" : "Login Effettuato" })
+    });
+
 }
 
 const LogoutUtente = (app : Express) => {
@@ -61,4 +78,4 @@ const ControlloTokenMiddleware = (app : Express) => {
     app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(req, res, next));
 }
 
-export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware }
+export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle }

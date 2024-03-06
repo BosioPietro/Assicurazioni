@@ -1,14 +1,15 @@
 import dotenv from 'dotenv';
 
-dotenv.config({"path" : "../.environment/.env"})
-const VariabiliAmbiente = {
-    "DBNAME" : process.env.DBNAME!,
-    "PORTA" : +process.env.SERVER_PORT!,
-    "STR_CONN" : process.env.MONGO_STR_CONN!,
-    "DURATA_TOKEN" : +process.env.DURATA_TOKEN!,
-    "ENCRYPTION_KEY" : process.env.ENCRYPTION_KEY!,
-    "MAILUSER" : process.env.MAILUSER!,
-    "MAILPWD" : process.env.MAILPWD!,
+dotenv.config({path: '../.env'});
+
+const env = {
+    ENCRYPTION_KEY : process.env.ENCRYPTION_KEY!,
+    STR_CONN : process.env.MONGO_STR_CONN!,
+    DBNAME : process.env.DB_NAME!,
+    PORTA : process.env.PORTA_SERVER!,
+    DURATA_TOKEN : process.env.DURATA_TOKEN_SERVER!,
+    MAILUSER : process.env.MAIL_USER!,
+    MAILPWD : process.env.MAIL_PWD!,
 }
 
-export default VariabiliAmbiente;
+export default env;

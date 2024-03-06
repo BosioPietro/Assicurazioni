@@ -1,22 +1,25 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
+import { LoginGoogleComponent } from './login-google/login-google.component';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent],
 })
-export class LoginPage implements OnInit {
+export class LoginPage  implements OnInit, OnDestroy  {
 
-  constructor(private servizio : LoginService) { }
-    
+  constructor(private servizio : LoginService, private authService: SocialAuthService ) { }
+  
   private router : Router = new Router();
   private activatedRoute = inject(ActivatedRoute);
 
@@ -27,7 +30,19 @@ export class LoginPage implements OnInit {
     password : new FormControl("", [Validators.required])
   });
 
+  authSubscription!: Subscription;
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
+  }
+
   ngOnInit() {
+    this.authSubscription = this.authService.authState.subscribe((user) => {
+      console.log('user', user);
+    });
+  }
+
+  googleSignin(googleWrapper: any) {
+    googleWrapper.click();
   }
 
   async Login(){
