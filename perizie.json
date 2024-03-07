@@ -1,0 +1,90 @@
+[
+    {
+        "città":"Fossano",
+        "coords":{ "lat": 44.5523731929605, "lng": 7.721713232773531 },
+        "data":{
+            "giorno":"Lunedì",
+            "mese":"Giugno",
+            "anno":2020,
+            "date":"01/06/2020"
+        },
+        "ora":"10:30"
+    },
+    {
+        "città":"Fossano",
+        "coords":{"lat":44.55079932397518, "lng":7.72894500967683},
+        "data":{
+            "giorno":"Giovedì",
+            "mese":"Febbraio",
+            "anno":2022,
+            "date":"13/02/2022"
+        },
+        "ora":"14:15"
+    },
+    {
+        "città":"Scarnafigi",
+        "coords":{"lat":44.6817694598481, "lng":7.569922421409666},
+        "data":{
+            "giorno":"Mercoledì",
+            "mese":"Aprile",
+            "anno":2023,
+            "date":"21/05/2023"
+        },
+        "ora":"9:30"
+    },
+    {
+        "città":"Saluzzo",
+        "coords":{"lat":44.64707511066441, "lng":7.499720382876884},
+        "data":{
+            "giorno":"Domenica",
+            "mese":"Ottobre",
+            "anno":2024,
+            "date":"28/10/2024"
+        },
+        "ora":"8:15"
+    },
+    {
+        "città":"Saluzzo",
+        "coords":{"lat":44.64018257347816, "lng":7.498800278742563},
+        "data":{
+            "giorno":"Domenica",
+            "mese":"Dicembre",
+            "anno":2022,
+            "date":"22/09/2022"
+        },
+        "ora":"17:22"
+    },
+    {
+        "città":"Fossano",
+        "coords":{"lat":44.55010714003419, "lng":7.7225220816183},
+        "data":{
+            "giorno":"Lunedì",
+            "mese":"Novembre",
+            "anno":2023,
+            "date":"13/02/2022"
+        },
+        "ora":"9:45"
+    },
+    {
+        "città":"Savigliano",
+        "coords":{"lat":44.64881849585665, "lng":7.662144808499779},
+        "data":{
+            "giorno":"Venerdì",
+            "mese":"Agosto",
+            "anno":2023,
+            "date":"15/08/2023"
+        },
+        "ora":"10:20"
+    },
+    {
+        "città":"San Salvatore",
+        "coords":{"lat":44.6065723616791, "lng":7.607579661496507},
+        "data":{
+            "giorno":"Sabato",
+            "mese":"Venerdì",
+            "anno":2024,
+            "date":"11/02/2024"
+        },
+        "ora":"11:20"
+    }
+]
