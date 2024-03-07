@@ -10,9 +10,9 @@
 ## ADMIN
 Bosio
 Può creare gli utenti abilitati all’esecuzione delle perizie.
-✔ Creazione DB
-- La password iniziale per ogni nuovo utente sarà “password” per tutti gli utenti i quali dovranno obbligatoriamente modificarla in corrispondenza del primo accesso
-- In alternativa la password iniziale può essere generata casualmente dal server in fase di registrazione del nuovo utente e inviata all’utente tramite mail.
+-✔ Creazione DB
+-✔ La password iniziale per ogni nuovo utente sarà “password” per tutti gli utenti i quali dovranno obbligatoriamente modificarla in corrispondenza del primo accesso
+-✔ La password iniziale può essere generata casualmente dal server in fase di registrazione del nuovo utente e inviata all’utente tramite mail.
 - Mail per comunicazioni
 
 

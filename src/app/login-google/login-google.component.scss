@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Google Sans';
+    src: url('/assets/fonts/ProductSans-Medium.woff');
+}
+
+button{
+    --dim: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-block: calc(var(--dim) * .75);
+    gap: calc(var(--dim) / 2);
+    width: 100%;
+    border-radius: 100vh;
+    background-color: #F2F2F2;
+}
+
+.testo{
+    color: #1F1F1F;
+    font-family: 'Google Sans', sans-serif;
+    font-size: var(--dim);
+}
+
+.logo{
+    aspect-ratio: 1;
+    height: calc(var(--dim) * 1.5);
+}

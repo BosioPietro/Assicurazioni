@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
-import { LoginGoogleComponent } from './login-google/login-google.component';
+import { LoginGoogleComponent } from '../login-google/login-google.component';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 
@@ -38,6 +38,7 @@ export class LoginPage  implements OnInit, OnDestroy  {
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
       localStorage.setItem("user", user["idToken"]);
+      console.log(user);
       this.servizio.LoginGoogle(user)
       .then(() => this.router.navigate(["/home"]))
       .catch(e => this.GestisciErrore(e as AxiosError))

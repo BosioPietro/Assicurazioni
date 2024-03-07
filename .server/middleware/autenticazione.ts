@@ -30,7 +30,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
 
 const LoginUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/login", async (req : Request, res : Response) => {
-        const { username,   password } = req["body"];
+        const { username, password } = req["body"];
     
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
         const data = await driver.PrendiUno({ username }, { "password" : 1 })
@@ -54,10 +54,13 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
             res.status(403).send("Token non fornito");
             return;
         }
-
+        const { email } = req["body"];
         const token = req.headers["authorization"];
         const payload = DecifraToken(token);
-        const regex = new RegExp(`^${payload["username"]}$`, "i");
+        
+        const regex = new RegExp(`^${email}$`, "i");
+
+        console.log(payload);
 
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
