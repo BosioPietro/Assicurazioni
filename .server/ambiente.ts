@@ -10,6 +10,8 @@ const env = {
     DURATA_TOKEN : +process.env.DURATA_TOKEN_SERVER!,
     MAILUSER : process.env.MAIL_USER!,
     MAILPWD : process.env.MAIL_PWD!,
+    EMAIL : process.env.EMAIL!,
+    OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!
 }
 
 export default env;

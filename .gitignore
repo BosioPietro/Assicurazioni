@@ -70,3 +70,4 @@ testem.log
 .DS_Store
 Thumbs.db
 src/environments/environment.ts
+src/app/environment.ts
