@@ -11,9 +11,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/stan
 })
 export class HomePage {
   constructor() {
-    this.marker = new google.maps.marker.AdvancedMarkerElement({position: this.center, map: this.map})
   }
-  map: google.maps.Map;
   //map options
   center: google.maps.LatLngLiteral = { lat: 44.55577411467918, lng: 7.735974391878129 }
   zoom:number = 18
