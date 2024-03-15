@@ -1,25 +1,34 @@
 import { Component } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { DataStorageService } from '../shared/data-storage.service';
+import { InfoWindowComponent } from './info-window/info-window.component';
+import { MapService } from '../shared/map.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, InfoWindowComponent],
 })
 export class HomePage {
-  constructor() {
-  }
+  constructor(private dataStorage: DataStorageService, private mapService:MapService) {}
+  markerList:any[] = [];
   //map options
   center: google.maps.LatLngLiteral = { lat: 44.55577411467918, lng: 7.735974391878129 }
   zoom:number = 18
+  directionService?: google.maps.DirectionsService;
   //marker
-  marker:google.maps.marker.AdvancedMarkerElement;
-  path: google.maps.LatLngLiteral[] = [{lat: 44.55577411467918, lng: 7.735974391878129},{ lat:44.676290085000154, lng:7.56288085640056}]
   ngOnInit(){
-    // this.marker = new google.maps.marker.AdvancedMarkerElement({position: this.center, map: this.map})
+    this.dataStorage.inviaRichiesta("get", "/Perizie")?.subscribe((res)=>{
+      console.log(res);
+      this.markerList = res;
+    })
+  }
+  onMarkerClick(event: google.maps.MapMouseEvent, marker: any){
+    console.log(marker.coords)
+    this.mapService.markerCoords = JSON.stringify(marker.coords)
   }
 
 }
