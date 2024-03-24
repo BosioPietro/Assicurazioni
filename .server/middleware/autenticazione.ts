@@ -4,7 +4,6 @@ import { MongoDriver } from "@bosio/mongodriver";
 import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken } from "../encrypt.js";
 import { InviaMailPassword } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
-import env from "../ambiente.js";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -17,7 +16,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         if(data) return res.status(400).send("Username già esistente")
     
         const password = GeneraPwd()
-        const inserimento = await driver.Inserisci({ username, email, password : CifraPwd(password) })
+        const inserimento = await driver.Inserisci({ username, email, password : CifraPwd(password), cambioPwd : true })
         if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
@@ -30,18 +29,20 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
 
 const LoginUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/login", async (req : Request, res : Response) => {
-        const { username, password } = req["body"];
+        const { username: utente, password } = req["body"];
     
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
-        const data = await driver.PrendiUno({ username }, { "password" : 1 })
+
+        const tipo = utente.includes("@") ? "email" : "username";
+        const data = await driver.PrendiUno({ [tipo] : utente }, { "password" : 1, "cambioPwd" : 1 })
     
         if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
         if(!data) return res.status(400).send("Username non esistente") 
     
         if(ConfrontaPwd(password, data["password"]))
         {
-            const token = CreaToken({username, _id : data["_id"].toString()})
-            RispondiToken(res, token, { "ok" : "Login Effettuato" })
+            const token = CreaToken({username: utente, _id : data["_id"].toString()})
+            RispondiToken(res, token, { "ok" : "Login Effettuato", "deveCambiare" : data["cambioPwd"]})
         }
         else return res.status(401).send("Password errata");
     });   

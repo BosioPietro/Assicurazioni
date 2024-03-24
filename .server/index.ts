@@ -17,8 +17,6 @@ const [cert, key] = [
     fs.readFileSync("./keys/private_key.pem")
 ];
 
-console.log(env["DB_NAME"])
-
 const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DB_NAME"], "utenti");
 const server = https.createServer({key, cert}, app);
 
