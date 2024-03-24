@@ -52,8 +52,12 @@ export class LoginPage  implements OnInit, OnDestroy  {
   async Login(){
     try
     {
-      await this.servizio.Login(this.form.value["username"], this.form.value["password"]);
-      this.router.navigate(["/home"]);
+      const data = await this.servizio.Login(this.form.value["username"], this.form.value["password"]);
+      if("deveCambiare" in data)
+      {
+
+      }
+      else this.router.navigate(["/home"]);
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }
