@@ -3,7 +3,7 @@ import env from './ambiente.js';
 import jwt from 'jsonwebtoken';
 import { VerifyErrors } from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-
+import { MongoDriver } from '@bosio/mongodriver';
 
 const CifraPwd = (password: string): string => bcrypt.hashSync(password, 10);
 
@@ -28,9 +28,10 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
     if(!req.headers["authorization"]) return res.status(403).send("Token non fornito");
 
     const token = req.headers["authorization"];
+    console.log(token)
 
-    jwt.verify(token, env["ENCRYPTION_KEY"], (err : VerifyErrors | null, payload : any) => {
-        if(err) return res.status(500).send("Errore nella verifica del token");
+    jwt.verify(token, env["ENCRYPTION_KEY"], async (err : VerifyErrors | null, payload : any) => {
+        if(err) return res.status(500).send("Errore nella verifica del token" + err["message"]);
 
         const token = CreaToken(payload);
 
@@ -40,7 +41,18 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
         
         if(!next)
         {
-            res.send({ "ok" : "Token valido" })
+            const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], "assicurazioni", "utenti")
+            const tipo = payload["username"].includes("@") ? "email" : "username";
+            const utente = await driver.PrendiUno({ [tipo] : payload["username"] }, { cambioPwd : 1, dataCreazione : 1 })
+            if(!driver.ChkErrore(utente))
+            {
+                res.send({ 
+                    "ok" : "Token valido",
+                    "deveCambiare" : !!utente["cambioPwd"],
+                    "dataCreazione" : utente["dataCreazione"]
+                })
+            }
+            else res.status(500).send("Errore durante la convalida dell'utente")
         }
         else next();
     })

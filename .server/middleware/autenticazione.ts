@@ -4,6 +4,7 @@ import { MongoDriver } from "@bosio/mongodriver";
 import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken } from "../encrypt.js";
 import { InviaMailPassword } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
+import moment from "moment";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -16,7 +17,14 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         if(data) return res.status(400).send("Username già esistente")
     
         const password = GeneraPwd()
-        const inserimento = await driver.Inserisci({ username, email, password : CifraPwd(password), cambioPwd : true })
+        const d = new Date();
+        const inserimento = await driver.Inserisci({ 
+            username, 
+            email, 
+            password : CifraPwd(password), 
+            cambioPwd : true, 
+            dataCreazione: `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d.getFullYear()}`
+        })
         if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
