@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
 import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken } from "../encrypt.js";
-import { InviaMailPassword } from "./mail.js";
+import { InviaMailNuovaPassword, InviaMailPasswordCambiata } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
@@ -28,7 +28,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
         
-        InviaMailPassword(username, password, email)
+        InviaMailNuovaPassword(username, password, email)
         .then(() => RispondiToken(res, token, { "ok" : "Registrazione effettuata" }))
         .catch(() => res.status(500).send("Errore nell'invio della mail"))
     })
@@ -100,7 +100,9 @@ const CambiaPassword = async (app: Express, driver : MongoDriver) => {
         const data = await driver.Replace({ [tipo] : payload["username"] }, user)
         if(driver.ChkErrore(data)) return res.status(500).send("Errore update password")
 
-        RispondiToken(res, CreaToken(user), {"ok" : "Password Cambiata"})
+        InviaMailPasswordCambiata(user["username"], user["email"])
+        .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
+        .catch(() => res.status(500).send("Errore nell'invio della mail"))
     })
 }
 

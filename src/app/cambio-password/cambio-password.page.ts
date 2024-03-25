@@ -59,8 +59,13 @@ export class CambioPasswordPage implements OnInit{
   }
 
   async Cambia(){
-    if(this.form.valid){
-      console.log(await this.servizio.Cambia(this.form.controls["password"].value))
+    if(!this.form.valid) return;
+
+    try
+    {
+      await this.servizio.Cambia(this.form.controls["password"].value);
+      this.router.navigate(["/home"]);
     }
+    catch(e){ alert("errore") }
   }
 }

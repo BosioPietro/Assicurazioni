@@ -1,7 +1,7 @@
 import nodemailer, { TransportOptions } from 'nodemailer';
 import env from '../ambiente.js';
 import { google } from 'googleapis';  
-import fs from 'fs';
+import { ReadFileAsync } from '../strumenti.js';
 
 type MailOptions = {
     from: string,
@@ -41,7 +41,10 @@ const AccessToken = async () => {
 
 //#endregion
 
-const body : string = fs.readFileSync("./middleware/mail.html").toString();
+const [nuovaPassword, passwordCambiata] = await Promise.all([
+    ReadFileAsync("./mail/nuovaPassword.html"), 
+    ReadFileAsync("./mail/passwordCambiata.html")
+]);
 
 const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve, reject) => {
     const auth = await AccessToken();
@@ -60,15 +63,25 @@ const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve,
     })
 });
 
-const InviaMailPassword = async (username : string, password : string, email : string) => {
+const InviaMailNuovaPassword = async (username : string, password : string, email : string) => {
 
     const opzioni : MailOptions = {
         from: env["EMAIL"],
         to: email,
         subject: "Registrazione effettuata",
-        html: body.replace("${username}", username).replace("${password}", password)
+        html: nuovaPassword.replace("${username}", username).replace("${password}", password)
     }
     return InviaMail(opzioni);
 }
 
-export { InviaMailPassword }
+const InviaMailPasswordCambiata = async (username : string, email : string) => {
+    const opzioni : MailOptions = {
+        from: env["EMAIL"],
+        to: email,
+        subject: "Cambiamento Password",
+        html: passwordCambiata.replace("${username}", username)
+    }
+    return InviaMail(opzioni);
+}
+
+export { InviaMailNuovaPassword, InviaMailPasswordCambiata }
