@@ -26,7 +26,6 @@ export class CambioPasswordService {
   public stati : boolean[] = [];
 
   Controlla(s : string){
-    console.log(s)
     this.stati = this.parametri.map((p) => p.controllo(s))
   }
   
