@@ -63,13 +63,8 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
             return;
         }
         const { email } = req["body"];
-        const token = req.headers["authorization"];
-        const payload = DecifraToken(token);
         
         const regex = new RegExp(`^${email}$`, "i");
-
-        console.log(payload);
-
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ email : regex }) as any;
@@ -78,7 +73,6 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
 
         RispondiToken(res, CreaToken(user), { "ok" : "Login effettuato" });
     });
-
 }
 
 const CambiaPassword = async (app: Express, driver : MongoDriver) => {
@@ -94,8 +88,6 @@ const CambiaPassword = async (app: Express, driver : MongoDriver) => {
         delete user["cambioPwd"]
         delete user["_id"];
         user["password"] = CifraPwd(password);
-
-        console.log(user)
 
         const data = await driver.Replace({ [tipo] : payload["username"] }, user)
         if(driver.ChkErrore(data)) return res.status(500).send("Errore update password")
