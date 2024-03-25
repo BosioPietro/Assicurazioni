@@ -4,13 +4,17 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { IonicModule } from '@ionic/angular';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { CambioPasswordService } from './cambio-password.service';
+import { Router } from '@angular/router';
+import { ControllaToken } from '../utils/funzioni';
+import { InfoComponent } from '../comuni/info/info.component';
+import { ErroreComponent } from '../comuni/errore/errore.component';
 
 @Component({
   selector: 'app-cambio-password',
   templateUrl: './cambio-password.page.html',
   styleUrls: ['./cambio-password.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent]
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, InfoComponent, ErroreComponent]
 })
 export class CambioPasswordPage implements OnInit{
 
@@ -23,7 +27,13 @@ export class CambioPasswordPage implements OnInit{
 
   constructor(public servizio : CambioPasswordService){}
 
-  ngOnInit(): void {
+  router : Router = new Router();
+  giorniMancanti? : number;
+
+  async ngOnInit(){
+    const info : any = await ControllaToken(this.router);
+    this.giorniMancanti = info["giorniMancanti"]
+    console.log(this.giorniMancanti)
     this.form.addValidators(
       this.ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)
     )
@@ -48,7 +58,9 @@ export class CambioPasswordPage implements OnInit{
     this.servizio.Controlla(this.form.controls["password"].value)
   }
 
-  Cambia(){
-
+  async Cambia(){
+    if(this.form.valid){
+      console.log(await this.servizio.Cambia(this.form.controls["password"].value))
+    }
   }
 }

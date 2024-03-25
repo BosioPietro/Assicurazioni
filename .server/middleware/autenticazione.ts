@@ -4,7 +4,6 @@ import { MongoDriver } from "@bosio/mongodriver";
 import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken } from "../encrypt.js";
 import { InviaMailPassword } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
-import moment from "moment";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -82,18 +81,41 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
 
 }
 
+const CambiaPassword = async (app: Express, driver : MongoDriver) => {
+    app.post("/api/cambio-password", async (req : Request, res : Response) => {
+
+        const { password } = req["body"];
+        const payload = DecifraToken(req.headers["authorization"]!);
+        const tipo = payload["username"].includes("@") ? "email" : "username"
+
+        const user : any = await driver.PrendiUno({ [tipo] : payload["username"] })
+        if(driver.ChkErrore(user)) return res.status(500).send("Errore update password")
+
+        delete user["cambioPwd"]
+        delete user["_id"];
+        user["password"] = CifraPwd(password);
+
+        console.log(user)
+
+        const data = await driver.Replace({ [tipo] : payload["username"] }, user)
+        if(driver.ChkErrore(data)) return res.status(500).send("Errore update password")
+
+        RispondiToken(res, CreaToken(user), {"ok" : "Password Cambiata"})
+    })
+}
+
 const LogoutUtente = (app : Express) => {
     app.get("/api/logout", (req : Request, res : Response) => {
         res.send({ "ok" : "Logout effettuato" })
     });
 }
 
-const ControlloToken = (app : Express) => {
-    app.get("/api/controllo-token", (req : Request, res : Response) => ControllaToken(req, res));
+const ControlloToken = (app : Express, driver : MongoDriver) => {
+    app.get("/api/controllo-token", (req : Request, res : Response) => ControllaToken(driver, req, res));
 }
 
-const ControlloTokenMiddleware = (app : Express) => {
-    app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(req, res, next));
+const ControlloTokenMiddleware = (app : Express, driver : MongoDriver) => {
+    app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(driver, req, res, next));
 }
 
-export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle }
+export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle, CambiaPassword }

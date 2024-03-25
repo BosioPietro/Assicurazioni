@@ -24,11 +24,10 @@ const CreaToken = (utente : {username : string, _id? : string, iat? : number}) :
 }
 
 
-const ControllaToken = (req : Request, res : Response, next? : NextFunction) => {
+const ControllaToken = (driver : MongoDriver, req : Request, res : Response, next? : NextFunction) => {
     if(!req.headers["authorization"]) return res.status(403).send("Token non fornito");
 
     const token = req.headers["authorization"];
-    console.log(token)
 
     jwt.verify(token, env["ENCRYPTION_KEY"], async (err : VerifyErrors | null, payload : any) => {
         if(err) return res.status(500).send("Errore nella verifica del token" + err["message"]);
@@ -41,7 +40,7 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
         
         if(!next)
         {
-            const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], "assicurazioni", "utenti")
+            await driver.SettaCollezione("utenti")
             const tipo = payload["username"].includes("@") ? "email" : "username";
             const utente = await driver.PrendiUno({ [tipo] : payload["username"] }, { cambioPwd : 1, dataCreazione : 1 })
             if(!driver.ChkErrore(utente))
@@ -71,8 +70,6 @@ const GeneraPwd = () : string => {
     {
         pwd += caratteri.charAt(Math.floor(Math.random() * caratteri.length));
     }
-    
-    console.log(pwd)
 
     return pwd;
 }

@@ -17,7 +17,7 @@ export class HomePage implements OnInit{
   async ngOnInit(): Promise<void> {
     try
     {
-      await ControllaToken();
+      await ControllaToken(this.router);
       console.log("Token valido");
     }
     catch(e) { this.router.navigate(["/login"]) }

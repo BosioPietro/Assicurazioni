@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import chroma from 'chroma-js';
-
+import { ControllaToken } from '../utils/funzioni';
+import { Router } from '@angular/router';
+import { GestoreServerService } from '../server/gestore-server.service';
+import { Metodi } from '../utils/TipiSpeciali';
 
 type Parametro = {
   regola : string,
@@ -11,6 +14,8 @@ type Parametro = {
   providedIn: 'root'
 })
 export class CambioPasswordService {
+
+  constructor(private server : GestoreServerService){}
 
   parametri : Parametro[] = [
     { regola : "Lettere maiuscole e minuscole", controllo : this.MaiuscoleMinuscole},
@@ -27,6 +32,10 @@ export class CambioPasswordService {
 
   Controlla(s : string){
     this.stati = this.parametri.map((p) => p.controllo(s))
+  }
+
+  Cambia(password : string ){
+    return this.server.InviaRichiesta(Metodi.POST, "/api/cambio-password", { password })
   }
   
   MaiuscoleMinuscole(s : string){

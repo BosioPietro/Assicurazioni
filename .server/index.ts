@@ -39,8 +39,9 @@ Autenticazione.RegistraUtente(app, driver);
 Autenticazione.LoginUtente(app, driver);
 Autenticazione.LoginGoogle(app, driver);
 Autenticazione.LogoutUtente(app);
-Autenticazione.ControlloToken(app);
-Autenticazione.ControlloTokenMiddleware(app);
+Autenticazione.CambiaPassword(app, driver)
+Autenticazione.ControlloToken(app, driver);
+Autenticazione.ControlloTokenMiddleware(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);
