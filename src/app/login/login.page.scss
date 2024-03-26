@@ -25,6 +25,10 @@ main{
     display: flex;
 }
 
+.flex-row:has(Tooltip){
+    overflow: visible;
+}
+
 ion-router-outlet{
     position: relative;
     display: flex;

@@ -1,20 +1,25 @@
 .tooltip{
     --br: .5rem;
-    padding: 1rem;
-    background-color: rgb(88, 94, 99);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
     min-width: 20rem;
     border-radius: var(--br);
-    position: relative;
+    background-color: #FFF;
+    filter: drop-shadow(0 0 .5rem #0003);
+    gap: 1rem;
 }
 
 h4{
     margin: 0;
+    font-size: 1rem;
 }
 
 .barra-livello, .barra-livello-finta{
     width: calc(25% - .2rem / 4);
     height: 3px;
-    background-color: grey;
+    background-color: #0003;
     border-radius: 100vh;
     transition: color .5s ease-out;
 }

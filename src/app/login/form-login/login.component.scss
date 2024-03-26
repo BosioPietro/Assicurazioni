@@ -15,7 +15,7 @@ form{
     justify-content: center;
     align-items: center;
     gap: var(--gap);
-    transition: all var(--tempo-transizione) cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    transition: all var(--tempo-transizione) ease-in;
 }
 
 h1{
