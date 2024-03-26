@@ -1,0 +1,34 @@
+<form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formLogin>
+
+  <img class="logo" src="assets/google-logo.svg"/>
+  <span class="flex-col jc-c">
+    <h1>Bentornato!</h1>
+    <div class="registrati">
+      <span>Non hai ancora un account?&nbsp;</span>
+      <a href="/registrazione">Registrati</a>
+    </div>
+  </span>
+
+  <div class="flex-row" >
+    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+  </div>
+
+  <FintoHr testo="Oppure"/>
+
+  <div class="form-item">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required formControlName="username">
+  </div>
+  <div class="form-item">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required formControlName="password">
+  </div>
+  <div class="form-item">
+    <button type="submit" class="btn-accento">Login</button>
+    <a class="registrati" href="">Password dimenticata?</a>
+  </div>
+
+</form>
