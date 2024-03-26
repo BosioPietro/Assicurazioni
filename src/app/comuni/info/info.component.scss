@@ -1,11 +1,12 @@
 div{
     display: flex;
-    padding: 1rem;
-    background-color: #585858;
     border-radius: .5rem;
     align-items: center;
     gap: 1rem;
-    color: #fefbfe;
+    background-color: #000;
+    color: #FFF;
+    padding: .5rem;
+    font-size: .75rem;
 }
 
 ion-icon{

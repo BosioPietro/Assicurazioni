@@ -13,18 +13,19 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
+    children : [
+      {
+        path : "",
+        loadComponent: () => import("./login/form-login/login.component").then((m) => m.LoginComponent)
+      },
+      {
+        path : "cambio-password",
+        loadComponent: () => import("./login/form-cambio-password/cambio-password.component").then((m) => m.CambioPasswordComponent)
+      }
+    ]
   },
   {
     path: 'registrazione',
-    loadComponent: () => import('./registrazione/registrazione/registrazione.page').then( m => m.RegistrazionePage)
-  },
-  {
-    path: 'imposta-password',
-    loadComponent: () => import('./imposta-password/imposta-password.page').then( m => m.ImpostaPasswordPage)
-  },  {
-    path: 'cambio-password',
-    loadComponent: () => import('./cambio-password/cambio-password.page').then( m => m.CambioPasswordPage)
+    loadComponent: () => import('./registrazione/registrazione.page').then( m => m.RegistrazionePage)
   }
-
-
 ];

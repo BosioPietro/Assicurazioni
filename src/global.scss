@@ -24,3 +24,64 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+:root{
+    --sfondo: #e6e6e6;
+    --op1: color-mix(in hsl, #000 25%, transparent);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.flex-row, .flex-col{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.jc-c{
+    justify-content: center;
+}
+
+.al-c{
+    align-items: center;
+}
+
+input[type="text"],
+input[type="password"]{
+    padding: .5rem 1rem;
+    border: 0;
+    border-radius: 1rem;
+    background-color: #e6e6e6;
+    // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
+}
+
+button{
+    --dim: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-block: calc(var(--dim) * 0.75);
+    gap: calc(var(--dim) / 2);
+    width: 100%;
+    border-radius: 100vh;
+    background-color: #F2F2F2;
+    color: inherit;
+    font-size: var(--dim);
+    cursor: pointer;
+}
+
+button:disabled{
+    opacity: .5;
+}
+
+.btn-accento{
+    color: #F2F2F2;
+    background-color: #2b2b2b;
+}

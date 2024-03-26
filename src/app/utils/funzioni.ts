@@ -26,15 +26,15 @@ const ControllaToken = async (r : Router) : Promise<any> => {
     // token non presente
     if(!info) return r.navigate(["/login"])
     info = info["data"];
-
     // casi particolari
     switch(pagina)
     {
-        case "cambio-password":
+        case "login/cambio-password":
             if(!info["deveCambiare"])
             {
                 r.navigate(["/home"]);
             }
+            console.log(GiorniMancanti(info["dataCreazione"]))
             info["giorniMancanti"] = GiorniMancanti(info["dataCreazione"]);
         break;
         default:
@@ -44,7 +44,7 @@ const ControllaToken = async (r : Router) : Promise<any> => {
             const giorniRimanenti = GiorniMancanti(info["dataCreazione"]); 
             if(giorniRimanenti <= 0)
             {
-                r.navigate(["/cambio-password"])
+                r.navigate(["/login/cambio-password"])
             }
         break
     }

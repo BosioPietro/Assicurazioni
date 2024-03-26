@@ -1,21 +1,42 @@
-main{
+:host{
+    --altezza-form: 40rem;
+    --larghezza-pannello: 30rem;
+    --br: 1.5rem;
+}
+
+.backdrop{
     display: grid;
     place-items: center;
-    padding: 2rem;
     height: 100dvh;
+    width: 100dvw;
+    background-color: var(--sfondo);
 }
 
-form{
-    border-radius: 1rem;
+.flex-row{
+    background-color: #FFF;
+    border-radius: var(--br);
+    overflow: clip;
 }
 
-.form-item{
+main{
+    height: var(--altezza-form);
+    width: var(--larghezza-pannello);
+    position: relative;
     display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
 }
 
-button{
-    padding: 1rem 2rem;
-    border-radius: .5rem;
+ion-router-outlet{
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    contain: initial;
+}
+
+.img{
+    --offset-interno: .5rem;
+    background-image: url(https://images.unsplash.com/photo-1643228995868-bf698f67d053?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-size: cover;
+    width: var(--larghezza-pannello);
+    margin: var(--offset-interno);
+    border-radius: calc(var(--br) - var(--offset-interno));
 }
