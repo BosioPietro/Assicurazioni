@@ -1,7 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
 import chroma from 'chroma-js';
-import { ControllaToken } from 'src/app/utils/funzioni';
-import { Router } from '@angular/router';
 import { GestoreServerService } from 'src/app/server/gestore-server.service';
 import { Metodi } from 'src/app/utils/TipiSpeciali';
 
@@ -13,7 +11,7 @@ type Parametro = {
 @Injectable({
   providedIn: 'root'
 })
-export class CambioPasswordService {
+export class CambioPasswordService{
 
   constructor(private server : GestoreServerService){}
 
@@ -24,13 +22,30 @@ export class CambioPasswordService {
     { regola : "Contenere simboli ($#\\)", controllo : this.Simboli}
   ]
 
+  ultimoInput : string = ""
+
+  messaggi : string[] = [
+    "Password Debole",
+    "Password Semplice",
+    "Password Mediocre",
+    "Password Buona",
+    "Ottima Password!"
+  ]
+
   get percentuale(){
     return 100 / this.stati.length * this.stati.filter(s => s).length;
+  }
+
+  get messaggio(){
+    const n = this.stati.filter(s => s).length;
+
+    return this.ultimoInput ? this.messaggi[n] : "Inserire Password";
   }
 
   public stati : boolean[] = [];
 
   Controlla(s : string){
+    this.ultimoInput = s;
     this.stati = this.parametri.map((p) => p.controllo(s))
   }
 
@@ -55,10 +70,16 @@ export class CambioPasswordService {
   }
 
   Colore(){
-    return this.getGradientColors("#a83232", "#39bd57")[this.stati.filter(s => s).length - 1];
+    const n = this.stati.filter(s => s).length;
+
+    if(this.ultimoInput)
+    {
+      return this.getGradientColors("#a83232", "#39bd57")[n];
+    }
+    else return "#000"
   }
 
-  getGradientColors(colore1 : string, colore2 : string, steps : number = 4) {
+  getGradientColors(colore1 : string, colore2 : string, steps : number = 5) {
     const colorScale = chroma.scale([colore1, colore2]).mode('hsl');
     const c = colorScale.colors(steps);
     return [colore1, ...c.slice(1, -1), colore2]

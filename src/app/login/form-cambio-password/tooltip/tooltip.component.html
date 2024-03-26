@@ -1,5 +1,7 @@
 <div class="tooltip">
-  <h4>Livello Password</h4>
+  <h4 [style]="{ color : servizio.Colore() }">
+    {{ servizio.messaggio }}
+  </h4>
   <div class="wrapper-barre">
     <span class="cont-barre" [style]="{clipPath: 'polygon(' + servizio.percentuale + '% 0%, 0% 0%, 0% 100%, ' + servizio.percentuale + '% 100%)'}">
       @for (p of servizio.parametri; track $index) {
@@ -15,7 +17,6 @@
     </span>
   </div>
   <div class="regole">
-    <p>È meglio avere</p>
     @for (p of servizio.parametri; track $index) {
       <div class="voce-regola" [class.giusto]="servizio.stati[$index]">
           <ion-icon name="ellipse-outline"></ion-icon>

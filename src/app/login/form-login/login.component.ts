@@ -42,16 +42,15 @@ export class LoginComponent implements OnInit, OnDestroy  {
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
       localStorage.setItem("user", user["idToken"]);
-      console.log(user);
       this.servizio.LoginGoogle(user)
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
 
     this.router.events.forEach((event) => {
-      if(event instanceof NavigationEnd) {
-      }
-        this.formHtml.nativeElement.classList.remove("transizione-out")
+        if(event instanceof NavigationEnd) {
+          this.formHtml.nativeElement.classList.remove("transizione-out")
+        }
       }
     );
 

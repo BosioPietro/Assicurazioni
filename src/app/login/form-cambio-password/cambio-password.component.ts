@@ -4,7 +4,7 @@ import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModu
 import { IonicModule } from '@ionic/angular';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { CambioPasswordService } from './cambio-password.service';
-import { Router } from '@angular/router';
+import { NavigationStart, Router } from '@angular/router';
 import { ControllaToken } from 'src/app/utils/funzioni';
 import { InfoComponent } from 'src/app/comuni/info/info.component';
 import { ErroreComponent } from 'src/app/comuni/errore/errore.component';
@@ -38,9 +38,18 @@ export class CambioPasswordComponent implements OnInit, AfterViewInit{
   }
 
   async ngOnInit(){
+
+    this.router.events.forEach(async (event) => {
+        if(event instanceof NavigationStart) {
+          if(event.url === "/login/cambio-password")
+          await ControllaToken(this.router);
+        }
+      }
+    );
+
     const info : any = await ControllaToken(this.router);
     this.giorniMancanti = info["giorniMancanti"]
-    console.log(this.giorniMancanti)
+
     this.form.addValidators(
       this.ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)
     )

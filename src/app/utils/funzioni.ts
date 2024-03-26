@@ -34,7 +34,6 @@ const ControllaToken = async (r : Router) : Promise<any> => {
             {
                 r.navigate(["/home"]);
             }
-            console.log(GiorniMancanti(info["dataCreazione"]))
             info["giorniMancanti"] = GiorniMancanti(info["dataCreazione"]);
         break;
         default:
