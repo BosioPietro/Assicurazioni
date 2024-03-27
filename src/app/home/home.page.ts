@@ -14,6 +14,7 @@ import { MapService } from '../shared/map.service';
 })
 export class HomePage {
   constructor(private dataStorage: DataStorageService, private mapService:MapService) {}
+
   markerList:any[] = [];
   //map options
   center: google.maps.LatLngLiteral = { lat: 44.55577411467918, lng: 7.735974391878129 }
@@ -28,7 +29,8 @@ export class HomePage {
   }
   onMarkerClick(event: google.maps.MapMouseEvent, marker: any){
     console.log(marker.coords)
-    this.mapService.markerCoords = JSON.stringify(marker.coords)
+    // this.mapService.markerCoords = JSON.stringify(marker.coords)
+    this.mapService.markerCoordsObservable.next(marker);
   }
 
 }

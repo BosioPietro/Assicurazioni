@@ -1,3 +1,14 @@
-<p>
-  {{mapService.markerCoords}}
-</p>
+<div id="wrapper">
+  <span id="wrapperCoords">
+    <p>Latitude: <strong>{{this.lat}}</strong></p>
+    <p>Longitude: <strong>{{this.lng}}</strong></p>
+  </span>
+  <span id="wrapperLocation">
+    <p>Location: <strong>{{this.city}}</strong></p>
+  </span>
+  <span id="wrapperMap">
+    <google-map [center]="this.coords" [height]="300" [width]="480">
+      <map-marker [position]="this.coords"></map-marker>
+    </google-map>
+  </span>
+</div>

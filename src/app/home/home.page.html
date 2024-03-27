@@ -4,7 +4,7 @@
       @for(marker of markerList; track $index){
         <map-marker [position]="marker.coords" (mapClick)="onMarkerClick($event, marker)"></map-marker>
       }
+      <app-info-window></app-info-window>
     </google-map>
-    <app-info-window></app-info-window>
   </div>
 </ion-content>
