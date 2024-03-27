@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { TransizioneService } from './servizio-transizione.service';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +11,15 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements AfterViewInit {
 
-  constructor() { }
+  constructor(private transizione : TransizioneService) { }
 
-  ngOnInit() {
+  @ViewChild("main")
+  main! : ElementRef<HTMLElement>;
+
+  ngAfterViewInit() {
+    this.transizione.PrendiMain(this.main.nativeElement);
   }
 
 }

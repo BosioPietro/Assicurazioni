@@ -1,6 +1,6 @@
 <form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formLogin>
 
-  <img class="logo" src="assets/google-logo.svg"/>
+  <img class="logo" src="assets/google-logo.svg" #logo/>
   <span class="flex-col jc-c">
     <h1>Bentornato!</h1>
     <div class="registrati">
@@ -27,8 +27,8 @@
     <input type="password" id="password" name="password" required formControlName="password">
   </div>
   <div class="form-item">
-    <button type="submit" class="btn-accento">Login</button>
-    <a class="registrati" href="">Password dimenticata?</a>
+    <button type="submit" [disabled]="!form.valid" class="btn-accento">Login</button>
+    <a class="registrati" (click)="CredenzialiDimenticate()">Credenziali dimenticate?</a>
   </div>
 
 </form>

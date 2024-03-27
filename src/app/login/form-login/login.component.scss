@@ -15,7 +15,7 @@ form{
     justify-content: center;
     align-items: center;
     gap: var(--gap);
-    transition: all var(--tempo-transizione) ease-in;
+    transition: all var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 h1{
@@ -54,13 +54,10 @@ label{
 a{
     margin-inline: auto;
     color: #000;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .btn-accento, h1{
     margin-bottom: .5rem;
-}
-
-.transizione-out{
-    transform: translateX(-100%);
-    opacity: 0;
 }

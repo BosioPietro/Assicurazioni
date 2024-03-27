@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './bottone-login-google/login-google.component';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { Subscription, filter } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
+import { TransizioneService } from '../servizio-transizione.service';
+
 
 @Component({
   selector: 'form-login',
@@ -19,12 +21,17 @@ import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 })
 export class LoginComponent implements OnInit, OnDestroy  {
 
-  constructor(private servizio : LoginService, private authService: SocialAuthService ) { }
+  router = new Router();
+
+  constructor(private servizio : LoginService, private authService: SocialAuthService, private transizione : TransizioneService) {
+  }
   
   @ViewChild("formLogin")
   formHtml! : ElementRef<HTMLElement>;
 
-  private router : Router = new Router();
+  @ViewChild("logo")
+  logoHtml! : ElementRef<HTMLElement>;
+
   private activatedRoute = inject(ActivatedRoute);
 
   private username = this.activatedRoute.snapshot.queryParams["username"] || "";
@@ -46,15 +53,6 @@ export class LoginComponent implements OnInit, OnDestroy  {
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
-
-    this.router.events.forEach((event) => {
-        if(event instanceof NavigationEnd) {
-          this.formHtml.nativeElement.classList.remove("transizione-out")
-        }
-      }
-    );
-
-
   }
 
   googleSignin(googleWrapper: any) {
@@ -69,20 +67,13 @@ export class LoginComponent implements OnInit, OnDestroy  {
       
       if("deveCambiare" in info)
       {
-        this.Transizione();
+        this.router.navigate(["/login/cambio-password"])
       }
       else this.router.navigate(["/home"]);
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }
   
-  private Transizione(){
-    const TEMPO_MS = 500
-    this.formHtml.nativeElement.style.setProperty("--tempo-transizione", `${TEMPO_MS}ms`)
-    this.formHtml.nativeElement.classList.add("transizione-out")
-    setTimeout(() => this.router.navigate(["/login/cambio-password"]), TEMPO_MS);
-  }
-
   private GestisciErrore(err : AxiosError){
     switch(err.response?.status)
     {
@@ -95,6 +86,12 @@ export class LoginComponent implements OnInit, OnDestroy  {
       default:
         return alert(`Errore: ${err.response?.data} (${err.response?.status})`);
     }
+  }
+
+  CredenzialiDimenticate(){
+    this.transizione.CalcolaWidth(this.formHtml.nativeElement, this.router.url)
+    this.transizione.PosizioneLogo(this.logoHtml.nativeElement, this.router.url)
+    this.router.navigate(["/login/recupero-credenziali"])
   }
 
 }

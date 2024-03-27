@@ -78,10 +78,15 @@ button{
 }
 
 button:disabled{
-    opacity: .5;
+   opacity: .5;
 }
 
 .btn-accento{
     color: #F2F2F2;
     background-color: #2b2b2b;
+}
+
+.logo{
+    user-select: none;
+    caret-color: transparent;
 }

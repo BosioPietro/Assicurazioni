@@ -36,7 +36,6 @@ async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
   }
 }
 
-
 axios.interceptors["request"].use((config) => {
   if("token" in localStorage){
     config.headers["authorization"] = localStorage["token"];

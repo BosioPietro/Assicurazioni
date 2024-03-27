@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -16,7 +16,7 @@ import { ErroreComponent } from 'src/app/comuni/errore/errore.component';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, InfoComponent, ErroreComponent]
 })
-export class CambioPasswordComponent implements OnInit, AfterViewInit{
+export class CambioPasswordComponent implements OnInit{
 
   @ViewChild("formCambio")
   formHTML! : ElementRef<HTMLElement>
@@ -32,10 +32,6 @@ export class CambioPasswordComponent implements OnInit, AfterViewInit{
 
   router : Router = new Router();
   giorniMancanti? : number;
-
-  ngAfterViewInit(): void {
-    setTimeout(() => this.formHTML.nativeElement.classList.add("transizione-in"), 1)
-  }
 
   async ngOnInit(){
 

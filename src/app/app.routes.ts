@@ -21,6 +21,10 @@ export const routes: Routes = [
       {
         path : "cambio-password",
         loadComponent: () => import("./login/form-cambio-password/cambio-password.component").then((m) => m.CambioPasswordComponent)
+      },
+      {
+        path: "recupero-credenziali",
+        loadComponent: () => import("./login/form-recupero-credenziali/recupero-credenziali.component").then((m) => m.RecuperoCredenzialiComponent)
       }
     ]
   },
