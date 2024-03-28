@@ -1,9 +1,9 @@
-import { Component, OnInit, inject, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, ViewChild, ElementRef, AfterViewChecked, AfterContentInit, AfterViewInit, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './bottone-login-google/login-google.component';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
@@ -19,7 +19,7 @@ import { TransizioneService } from '../servizio-transizione.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent],
 })
-export class LoginComponent implements OnInit, OnDestroy  {
+export class LoginComponent implements OnInit, OnDestroy {
 
   router = new Router();
 
@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit, OnDestroy  {
 
   @ViewChild("logo")
   logoHtml! : ElementRef<HTMLElement>;
+
+  @ViewChild("wrapperInput")
+  wrapperInput! : ElementRef<HTMLElement>;
 
   private activatedRoute = inject(ActivatedRoute);
 
@@ -53,6 +56,30 @@ export class LoginComponent implements OnInit, OnDestroy  {
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
+
+    this.router.events.subscribe((e) => {
+      if(e instanceof NavigationEnd && this.router.url == "/login")
+      {
+        if(this.transizione.ultimaRoute)
+        {
+          this.wrapperInput.nativeElement.classList.add("nascosto")
+          this.wrapperInput.nativeElement.classList.add("transizione-x2")
+        }
+        
+        if(!this.logoHtml.nativeElement.getBoundingClientRect().left)
+        {
+          this.logoHtml.nativeElement.classList.add("nascosto")
+        }
+        setTimeout(() => {
+          
+          setTimeout(() => this.wrapperInput.nativeElement.classList.remove("nascosto"), 250)
+
+          this.logoHtml.nativeElement.classList.remove("nascosto")
+          this.transizione.AperturaForm(this.formHtml.nativeElement);
+          this.transizione.SpostamentoLogo(this.logoHtml.nativeElement);
+        }, 1)
+      }
+    })
   }
 
   googleSignin(googleWrapper: any) {
@@ -89,9 +116,12 @@ export class LoginComponent implements OnInit, OnDestroy  {
   }
 
   CredenzialiDimenticate(){
+    this.logoHtml.nativeElement.classList.remove("transizione-x2");
     this.transizione.CalcolaWidth(this.formHtml.nativeElement, this.router.url)
     this.transizione.PosizioneLogo(this.logoHtml.nativeElement, this.router.url)
-    this.router.navigate(["/login/recupero-credenziali"])
+    this.transizione.MostraProssimoWrapper("/login/recupero-credenziali")
+    this.transizione.NascondiWrapperTransizione(this.formHtml.nativeElement, this.router.url)
+    this.router.navigateByUrl("/login/recupero-credenziali")
   }
 
 }

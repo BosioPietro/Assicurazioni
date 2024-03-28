@@ -12,7 +12,7 @@
 
   <div class="form-item">
     <button type="submit" [disabled]="!form.valid" class="btn-accento">Invia</button>
-    <a href="/login" class="piccolo">Torna al login</a>
+    <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
   </div>
   
 </form>

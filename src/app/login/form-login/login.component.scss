@@ -4,9 +4,11 @@
     contain: initial !important;
     flex-grow: 1;
     --gap: 1.5rem;
+    --durata-transizione: .5s;
 }
 
 form{
+    --max-width: 100%;
     border-radius: 1rem;
     flex-grow: 1;
     color: #000;
@@ -16,6 +18,13 @@ form{
     align-items: center;
     gap: var(--gap);
     transition: all var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+    width: var(--max-width);
+}
+
+.wrapper-transizione {
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
 }
 
 h1{
@@ -54,10 +63,29 @@ label{
 a{
     margin-inline: auto;
     color: #000;
-    text-decoration: underline;
-    cursor: pointer;
 }
 
 .btn-accento, h1{
     margin-bottom: .5rem;
+}
+
+.transizione{
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.transizione-x2{
+    transition: all calc(var(--durata-transizione) / 1) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.logo{
+    --x:0;
+    --y:0;
+    transform: translate(var(--x), var(--y));
+    user-select: none;
+    caret-color: transparent;
+}
+
+.wrapper-input{
+    gap: var(--gap);
+    
 }

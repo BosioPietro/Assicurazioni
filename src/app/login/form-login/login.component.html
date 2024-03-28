@@ -1,34 +1,38 @@
 <form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formLogin>
 
-  <img class="logo" src="assets/google-logo.svg" #logo/>
-  <span class="flex-col jc-c">
-    <h1>Bentornato!</h1>
-    <div class="registrati">
-      <span>Non hai ancora un account?&nbsp;</span>
-      <a href="/registrazione">Registrati</a>
+  <img src="assets/google-logo.svg" class="logo" #logo/>
+  <span class="wrapper-transizione flex-col">
+    <div class="wrapper-input flex-col" #wrapperInput>
+      <span class="flex-col jc-c">
+        <h1>Bentornato!</h1>
+        <div class="registrati">
+          <span>Non hai ancora un account?&nbsp;</span>
+          <a href="/registrazione">Registrati</a>
+        </div>
+      </span>
+    
+      <div class="flex-row" >
+        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      </div>
+    </div>
+  
+    <FintoHr testo="Oppure"/>
+  
+    <div class="form-item">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required formControlName="username">
+    </div>
+    <div class="form-item">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required formControlName="password">
+    </div>
+    <div class="form-item">
+      <button type="submit" [disabled]="!form.valid" class="btn-accento">Login</button>
+      <a class="registrati" (click)="CredenzialiDimenticate()">Credenziali dimenticate?</a>
     </div>
   </span>
-
-  <div class="flex-row" >
-    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-    <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-  </div>
-
-  <FintoHr testo="Oppure"/>
-
-  <div class="form-item">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username" required formControlName="username">
-  </div>
-  <div class="form-item">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required formControlName="password">
-  </div>
-  <div class="form-item">
-    <button type="submit" [disabled]="!form.valid" class="btn-accento">Login</button>
-    <a class="registrati" (click)="CredenzialiDimenticate()">Credenziali dimenticate?</a>
-  </div>
 
 </form>
