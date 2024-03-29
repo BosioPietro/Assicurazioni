@@ -32,10 +32,6 @@ main{
     transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.transizione-x2{
-    transition: all calc(var(--durata-transizione) / 2) cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
 .flex-row:has(Tooltip){
     overflow: visible;
 }
@@ -56,4 +52,29 @@ ion-router-outlet{
     margin: var(--offset-interno);
     border-radius: calc(var(--br) - var(--offset-interno));
     z-index: 1;
+}
+
+.overlay{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    z-index: -1;
+    // filter: invert(1);
+    pointer-events: none;
+}
+
+.overlay > *{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.overlay.visibile{
+    z-index: 1;
+}
+
+.overlay > *:has(.mostra){
+    display: flex block;
+    visibility: visible;
 }

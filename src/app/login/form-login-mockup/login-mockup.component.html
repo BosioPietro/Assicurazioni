@@ -1,0 +1,36 @@
+<form class="flex-col finto" #form>
+  <img src="assets/google-logo.svg" class="logo"/>
+  <span class="wrapper-transizione flex-col">
+    <div class="wrapper-input flex-col">
+      <span class="flex-col jc-c">
+        <h1>Bentornato!</h1>
+        <div class="registrati">
+          <span>Non hai ancora un account?&nbsp;</span>
+          <a>Registrati</a>
+        </div>
+      </span>
+    
+      <div class="flex-row" >
+        <LoginGoogleFinto/>
+        <LoginGoogleFinto/>
+        <LoginGoogleFinto/>
+        <LoginGoogleFinto/>
+      </div>
+    </div>
+  
+    <FintoHr testo="Oppure"/>
+  
+    <div class="form-item">
+      <label>Username</label>
+      <input type="text" disabled>
+    </div>
+    <div class="form-item">
+      <label>Password</label>
+      <input type="password" disabled>
+    </div>
+    <div class="form-item">
+      <button type="button"class="btn-accento" disabled>Login</button>
+      <a class="registrati">Credenziali dimenticate?</a>
+    </div>
+  </span>
+</form>

@@ -1,7 +1,6 @@
 :host{
     display: flex;
     flex-direction: row !important;
-    position: relative !important;
     contain: initial !important;
     flex-grow: 1;
     --gap: 1.5rem;
@@ -18,6 +17,7 @@ form{
     justify-content: center;
     align-items: center;
     gap: var(--gap);
+    transition: all var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
     width: var(--max-width);
 }
 
@@ -73,10 +73,19 @@ a{
     transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+.transizione-x2{
+    transition: all calc(var(--durata-transizione) / 1) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 .logo{
     --x:0;
     --y:0;
     transform: translate(var(--x), var(--y));
     user-select: none;
     caret-color: transparent;
+}
+
+.wrapper-input{
+    gap: var(--gap);
+    
 }

@@ -1,22 +1,20 @@
-<form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formLogin>
+<form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formHtml>
 
-  <img src="assets/google-logo.svg" class="logo" #logo/>
+  <img src="assets/google-logo.svg" class="logo"/>
   <span class="wrapper-transizione flex-col">
-    <div class="wrapper-input flex-col" #wrapperInput>
-      <span class="flex-col jc-c">
-        <h1>Bentornato!</h1>
-        <div class="registrati">
-          <span>Non hai ancora un account?&nbsp;</span>
-          <a href="/registrazione">Registrati</a>
-        </div>
-      </span>
-    
-      <div class="flex-row" >
-        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
-        <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+    <span class="flex-col jc-c">
+      <h1>Bentornato!</h1>
+      <div class="registrati">
+        <span>Non hai ancora un account?&nbsp;</span>
+        <a href="/registrazione">Registrati</a>
       </div>
+    </span>
+  
+    <div class="flex-row" >
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
     </div>
   
     <FintoHr testo="Oppure"/>

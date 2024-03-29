@@ -4,37 +4,31 @@ import { TransizioneService } from '../servizio-transizione.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-recupero-credenziali',
+  selector: 'form-recupero-credenziali',
   templateUrl: './recupero-credenziali.component.html',
   standalone: true,
   styleUrls: ['./recupero-credenziali.component.scss'],
   imports: [ReactiveFormsModule]
 })
 export class RecuperoCredenzialiComponent implements AfterViewInit{
-  @ViewChild("formCambio")
-  formHtml! : ElementRef<HTMLElement>;
-
-  @ViewChild("logo")
-  logoHtml! : ElementRef<HTMLElement>;
   
-  router : Router = new Router();
-  
-  constructor(private transizione : TransizioneService){}
-
-  ngAfterViewInit(): void {
-    this.transizione.AperturaForm(this.formHtml.nativeElement);
-    this.transizione.SpostamentoLogo(this.logoHtml.nativeElement);
-  }
+  constructor(private transizione : TransizioneService, private router : Router){}
 
   form : FormGroup = new FormGroup({
     "mail-recupero" : new FormControl("", [Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)])
   })
 
+  @ViewChild("formHtml")
+  formHtml!: ElementRef<HTMLElement>
+
+  ngAfterViewInit(): void {
+    this.transizione.formVeri["/login/recupero-credenziali"] = this.formHtml.nativeElement;
+  }
+
   NavigaLogin(){
-    this.transizione.PosizioneLogo(this.logoHtml.nativeElement, this.router.url)
-    this.transizione.CalcolaWidth(this.formHtml.nativeElement, this.router.url)
-    this.transizione.MostraProssimoWrapper("/login");
-    this.transizione.NascondiWrapperTransizione(this.formHtml.nativeElement, this.router.url)
-    this.router.navigateByUrl("/login")
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login");
+      setTimeout(() => {
+        this.router.navigateByUrl("/login");
+      }, 500);
   }
 }

@@ -1,7 +1,6 @@
 :host{
     display: flex;
     flex-direction: row !important;
-    position: relative !important;
     contain: initial !important;
     flex-grow: 1;
     --gap: 1.5rem;
@@ -21,32 +20,33 @@ form{
     width: var(--max-width);
 }
 
-.wrapper-transizione {
-    justify-content: center;
-    align-items: center;
-    gap: var(--gap);
+.transizione{
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.transizione-x2{
+    transition: all calc(var(--durata-transizione) / 1) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 h1{
     font-weight: bold;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-top: 0;
     text-align: center;
-}
-
-.flex-row{
-    gap: calc(var(--gap) / 2);
-    justify-content: center;
+    white-space: nowrap;
 }
 
 .form-item{
     display: flex;
     flex-direction: column;
     width: 100%;
+    position: relative;
 }
 
-.registrati{
+.piccolo{
+    text-align: center;
     font-size: .75rem;
+    color: #000;
 }
 
 label{
@@ -54,23 +54,8 @@ label{
     margin-bottom: .5rem;
 }
 
-.form-row{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    column-gap: 1rem;
-}
-
-a{
-    margin-inline: auto;
-    color: #000;
-}
-
-.btn-accento, h1{
-    margin-bottom: .5rem;
-}
-
-.transizione{
-    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+button{
+    margin-bottom: 10px;
 }
 
 .logo{

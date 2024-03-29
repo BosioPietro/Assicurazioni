@@ -5,98 +5,148 @@ import { Injectable } from '@angular/core';
 })
 export class TransizioneService {
 
-  private dimensioni : { [key: string]: string } = {}
-  public ultimaRoute? : string;
-  private main? : HTMLElement;
+  public formFinti : {[key : string] : HTMLElement} = {};
+  public formVeri : {[key : string] : HTMLElement} = {};
+  
+  public main?: HTMLElement;
+  public overlay?: HTMLElement;
 
-  private posizioniLogo : { [key: string]: [number, number] } = {}
+  public inTransizione:boolean = false;
+  public ultimaRoute?: string;
+  public routeAttuale?: string;
 
-  private wrapper: { [key: string]: HTMLElement } = {};
-
-  PrendiMain(m : HTMLElement){
-    this.main = m;
+  AggiungiForm(form : HTMLElement, route : string){
+    this.formFinti[route] = form;
   }
 
-  CalcolaWidth(el : Element, route : string){
-    const width = getComputedStyle(el).width
+  private CalcolaWidth(route : string){
+    const form = this.formFinti[route];
 
-    this.ultimaRoute = route;
-    this.dimensioni[route] = width;
-  }
+    const w = Array.from(form.children).map((c) => parseFloat(getComputedStyle(c).width))
+    const padding = parseFloat(getComputedStyle(form).paddingInline);
 
-  private widthPrecedente(){
-    return this.ultimaRoute ? this.dimensioni[this.ultimaRoute] : null;
-  }
-
-  private PosLogoPrecedente(){
-    return this.ultimaRoute ? this.posizioniLogo[this.ultimaRoute] : [null, null];
-  }
-
-  PosizioneLogo(c : HTMLElement, url : string ){
-    const rect = c.getBoundingClientRect()
-    this.posizioniLogo[url] = [rect.left, rect.top];
-  }
-
-  AperturaForm(formCambio : HTMLElement){
-    if(this.main && this.ultimaRoute)
-    {
-      
-      const maxWidth = this.widthPrecedente();
-      if(!maxWidth)return;
-      
-      const widthIniziale = this.CalcolaWidthContenitore(formCambio);
-      this.main.style.setProperty("--max-width", maxWidth)
-      formCambio.style.setProperty("--max-width", maxWidth)
-      this.main.classList.add("transizione");
-      formCambio.classList.add("transizione");
-      
-      setTimeout(() => {
-        this.main?.style.setProperty("--max-width", widthIniziale);
-        formCambio.style.setProperty("--max-width", widthIniziale);
-        setTimeout(() => {
-          this.main?.classList.remove("transizione");
-          formCambio.classList.remove("transizione");
-        }, 500)
-      }, 1);
-    }
-  }
-
-  CalcolaWidthContenitore(el : HTMLElement){
-    const padding = parseFloat(getComputedStyle(el).paddingLeft);
-    const w = Array.from(el.children).map((m) => parseFloat(getComputedStyle(m).width))
     return Math.max(...w) + padding * 2 + "px";
   }
 
-  SpostamentoLogo(logo : HTMLElement){
+  TransizioneUscita(form : HTMLElement, route : string){
 
-    const [xPrec, yPrec] = this.PosLogoPrecedente();
-    if(!yPrec || !xPrec)return;
+    if(!this.main) return;
+    this.inTransizione =  true;
 
-    const rect = logo.getBoundingClientRect();
-    const [xAtt, yAtt] = [rect.left, rect.top];
+    const wIniziale = getComputedStyle(form).width;
+    const w = this.CalcolaWidth(route);
+
+    console.log(w, wIniziale)
+    console.log(form)
+
+    this.main.style.setProperty("--max-width", wIniziale)
+    form.style.setProperty("--max-width", wIniziale)
+
+
+    this.main.classList.add("transizione")
+    form.classList.add("transizione")
     
-    // const x = xAtt - xPrec;
-    const y = yPrec - yAtt;
+    setTimeout(() => {
+      form.style.setProperty("--max-width", w)
+      this.main?.style.setProperty("--max-width", w)
+    }, 1);
+    
+  }
 
-    // logo.style.setProperty("--x", `${x}px`)
-    logo.style.setProperty("--y", `${y}px`)
+  MostraOverlay(){
+    if(!this.overlay || !this.ultimaRoute || !this.routeAttuale) return;
+
+    const formPrec = this.formFinti[this.ultimaRoute]
+    const formAtt = this.formVeri[this.routeAttuale]
+
+    formPrec.classList.add("mostra")
+    this.overlay.classList.add("visibile")
+    if(!this.ControllaLogo(formAtt)){
+      setTimeout(() => {
+        this.MostraOverlay();
+      }, 1)
+      return;
+    }
+    
+    this.MuoviLogo(formPrec, formAtt);
+    this.NascondiFigli(formPrec);
+    this.NascondiFigli(formAtt, false)
 
     setTimeout(() => {
-      logo.classList.add("transizione-x2");
-      logo.style.setProperty("--y", "0")
-      // logo.style.setProperty("--x", "0")
-    }, 1);
+      this.overlay?.classList.remove("visibile")
+      
+      this.MostraFigli(formAtt)
+      this.ResettaForm(formPrec) 
+      this.inTransizione = false;
+    }, 500);
   }
 
-  NascondiWrapperTransizione(el : HTMLElement, route : string){
-    el.classList.add("nascosto");
-    this.wrapper[route] = el;
+  ResettaForm(form : HTMLElement){
+    form.classList.remove("mostra")
+
+    this.MostraFigli(form, false)
+    
+    Object.values(this.formVeri).forEach((f) => {
+      f.style.setProperty("--max-width", null)
+    })
+
+    const logo = form.querySelector(".logo") as HTMLElement
+    if(!logo)return;
+
+    logo.classList.remove("transizione")
+    logo.style.setProperty("--y", "0")
   }
 
-  MostraProssimoWrapper(route : string){
-    if(route in this.wrapper)
+  NascondiFigli(form :  HTMLElement, transizione = true){
+    const f = Array.from(form.querySelectorAll(":not(.logo)")).map((c) => c as HTMLElement)
+
+    if(transizione)
     {
-      this.wrapper[route].classList.remove("nascosto")
+      f.forEach((c) => c.classList.add("transizione"))
     }
+    else f.forEach((c) => c.classList.remove("transizione"))
+    f.forEach((c) => c.classList.add("nascosto"))
   }
+
+  MostraFigli(form :  HTMLElement, transizione = true){
+    const f = Array.from(form.querySelectorAll(":not(.logo)")).map((c) => c as HTMLElement)
+
+    if(transizione){
+      f.forEach((c) => c.classList.add("transizione"))
+    }
+    else f.forEach((c) => c.classList.remove("transizione"))
+    f.forEach((c) => c.classList.remove("nascosto"))
+  }
+
+  MuoviLogo(prec: HTMLElement, att: HTMLElement){
+    const logoPrec = prec.querySelector(".logo")! as HTMLElement
+    const logoAtt = att.querySelector(".logo")! as HTMLElement
+
+    const [xPrec, yPrec] = this.CalcolaCoordinate(logoPrec)
+    const [xAtt, yAtt] = this.CalcolaCoordinate(logoAtt)
+
+    const yDiff = yAtt - yPrec;
+
+    logoPrec.style.setProperty("--y", `${yDiff}px`)
+    logoPrec.classList.add("transizione")
+  }
+
+  ControllaLogo(f : HTMLElement){
+    return !!f.querySelector(".logo")?.getBoundingClientRect().top
+  }
+
+  CalcolaCoordinate(logo: HTMLElement){
+    const r = logo.getBoundingClientRect()
+    return [r.left, r.top]
+  }
+
+  NascondiOverlay(){
+    if(!this.overlay || !this.ultimaRoute) return;
+
+
+    const form = this.formFinti[this.ultimaRoute]
+    form.classList.remove("mostra")
+    this.overlay.classList.remove("visibile")
+  }
+
 }

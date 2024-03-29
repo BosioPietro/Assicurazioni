@@ -19,21 +19,10 @@ import { TransizioneService } from '../servizio-transizione.service';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  router = new Router();
-
-  constructor(private servizio : LoginService, private authService: SocialAuthService, private transizione : TransizioneService) {
+  constructor(private servizio : LoginService, private authService: SocialAuthService, private transizione : TransizioneService, private router : Router) {
   }
-  
-  @ViewChild("formLogin")
-  formHtml! : ElementRef<HTMLElement>;
-
-  @ViewChild("logo")
-  logoHtml! : ElementRef<HTMLElement>;
-
-  @ViewChild("wrapperInput")
-  wrapperInput! : ElementRef<HTMLElement>;
 
   private activatedRoute = inject(ActivatedRoute);
 
@@ -56,31 +45,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
-
-    this.router.events.subscribe((e) => {
-      if(e instanceof NavigationEnd && this.router.url == "/login")
-      {
-        if(this.transizione.ultimaRoute)
-        {
-          this.wrapperInput.nativeElement.classList.add("nascosto")
-          this.wrapperInput.nativeElement.classList.add("transizione-x2")
-        }
-        
-        if(!this.logoHtml.nativeElement.getBoundingClientRect().left)
-        {
-          this.logoHtml.nativeElement.classList.add("nascosto")
-        }
-        setTimeout(() => {
-          
-          setTimeout(() => this.wrapperInput.nativeElement.classList.remove("nascosto"), 250)
-
-          this.logoHtml.nativeElement.classList.remove("nascosto")
-          this.transizione.AperturaForm(this.formHtml.nativeElement);
-          this.transizione.SpostamentoLogo(this.logoHtml.nativeElement);
-        }, 1)
-      }
-    })
   }
+
+  @ViewChild("formHtml")
+  formHtml!: ElementRef<HTMLElement>
+
+  ngAfterViewInit(): void {
+    this.transizione.formVeri["/login"] = this.formHtml.nativeElement;
+  }
+
 
   googleSignin(googleWrapper: any) {
     googleWrapper.click();
@@ -116,12 +89,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   CredenzialiDimenticate(){
-    this.logoHtml.nativeElement.classList.remove("transizione-x2");
-    this.transizione.CalcolaWidth(this.formHtml.nativeElement, this.router.url)
-    this.transizione.PosizioneLogo(this.logoHtml.nativeElement, this.router.url)
-    this.transizione.MostraProssimoWrapper("/login/recupero-credenziali")
-    this.transizione.NascondiWrapperTransizione(this.formHtml.nativeElement, this.router.url)
-    this.router.navigateByUrl("/login/recupero-credenziali")
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
+    setTimeout(() => {
+      this.router.navigateByUrl("/login/recupero-credenziali");
+    }, 500);
   }
 
 }
