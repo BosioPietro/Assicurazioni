@@ -3,14 +3,11 @@
     --larghezza-pannello: 30rem;
     --br: 1.5rem;
     --durata-transizione: .5s;
-}
-
-.backdrop{
     display: grid;
     place-items: center;
+    justify-content: initial !important;
     height: 100dvh;
     width: 100dvw;
-    background-color: var(--sfondo);
 }
 
 .flex-row{
@@ -26,10 +23,6 @@ main{
     display: flex;
     width: var(--max-width);
     z-index: 0;
-}
-
-.transizione{
-    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .flex-row:has(Tooltip){

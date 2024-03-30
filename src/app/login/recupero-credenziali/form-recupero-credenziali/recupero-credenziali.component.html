@@ -1,0 +1,57 @@
+<div class="form flex-col" #formHtml>
+  <img class="logo" src="assets/google-logo.svg"/>
+  <span class="flex-col jc-c invisibile">
+    <h1>Recupero Credenziali</h1>
+    <span class="piccolo flex-row jc-c">
+      @switch (sinc.stato) {
+        @case (0) {
+          {{"Ti invieremo una mail per il recupero dei dati"}}
+        }
+        @case (1) {
+          {{"Ti abbiamo inviato un codice di 6 cifre. Inseriscilo per procedere"}}
+        }
+      }
+    </span>    
+  </span>
+
+  @switch (sinc.stato) {
+    @case (0) {
+      <form class="flex-col" [formGroup]="sinc.formInvioMail" (ngSubmit)="InviaMail()">
+        <span class="flex-col jc-c">
+          <h1>Recupero Credenziali</h1>
+          <span class="piccolo flex-row jc-c">
+            Ti invieremo una mail per il recupero dei dati
+          </span>   
+        </span>
+        <div class="form-item">
+          <label for="mail-recupero">E-Mail</label>
+          <input type="text" id="mail-recupero" name="mail-recupero" required formControlName="mail-recupero" (input)="sinc.mail = sinc.formInvioMail.get('mail-recupero')?.value || '' ">
+        </div>
+        
+        <div class="form-item">
+          <button type="submit" [disabled]="!sinc.formInvioMail.valid" class="btn-accento">Invia Mail</button>
+          <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
+        </div>
+      </form>
+    }
+    @case (1) {
+      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione">
+        <span class="flex-col jc-c">
+          <h1>Verifica Codice</h1>
+          <span class="piccolo flex-row jc-c">
+            Codice non ricevuto?&nbsp;<a>Invia dinuovo</a>
+          </span>   
+        </span>
+        <div class="form-item">
+          <label>Codice</label>
+          <InputCodice (CodiceCambiato)="ControllaCodice($event)" id="codice-mail"/>
+        </div>
+        <div class="form-item">
+          <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento" (click)="InviaMail()">Verifica Codice</button>
+          <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
+        </div>
+      </form>
+    }
+  }
+  
+</div>

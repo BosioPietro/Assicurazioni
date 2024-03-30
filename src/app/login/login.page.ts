@@ -3,9 +3,9 @@ import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angula
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { TransizioneService } from './servizio-transizione.service';
-import { RecuperoCredenzialiFinto } from './form-recupero-credenziali-mockup/recupero-credenziali-mockup.component';
 import { LoginFinto } from './form-login-mockup/login-mockup.component';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { RecuperoCredenzialiFinto } from './recupero-credenziali/form-recupero-credenziali-mockup/recupero-credenziali-mockup.component';
 
 @Component({
   selector: 'app-login',

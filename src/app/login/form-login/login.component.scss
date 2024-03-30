@@ -5,7 +5,6 @@
     contain: initial !important;
     flex-grow: 1;
     --gap: 1.5rem;
-    --durata-transizione: .5s;
 }
 
 form{
@@ -67,10 +66,6 @@ a{
 
 .btn-accento, h1{
     margin-bottom: .5rem;
-}
-
-.transizione{
-    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .logo{

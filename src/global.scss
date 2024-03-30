@@ -28,6 +28,7 @@
 :root{
     --sfondo: #e6e6e6;
     --op1: color-mix(in hsl, #000 25%, transparent);
+    --durata-transizione: .5s;
 }
 
 *{
@@ -53,7 +54,8 @@
 }
 
 input[type="text"],
-input[type="password"]{
+input[type="password"],
+input[type="number"]{
     padding: .5rem 1rem;
     border: 0;
     border-radius: 1rem;
@@ -94,8 +96,42 @@ button:disabled{
 a:not([href]){
     cursor: pointer;
     text-decoration: underline;
+    color: #000;
 }
 
 .nascosto{
     opacity: 0;
+}
+
+input[type="number"].numero-singolo {
+    box-sizing: content-box;
+    width: 1ch;
+    appearance: initial;
+    -moz-appearance: textfield;
+    border-radius: .5rem;
+    caret-color: transparent;
+}
+
+.numero-singolo::-webkit-outer-spin-button,
+.numero-singolo::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--sfondo) inset !important;
+    caret-color: transparent;
+}
+
+input:-webkit-autofill{
+    -webkit-text-fill-color:  #000 !important;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.transizione{
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }

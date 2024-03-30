@@ -1,0 +1,9 @@
+<div class="flex-row">
+  <input type="number" name="n1" id="n1" class="numero-singolo" placeholder="0" (input)="CambiaInput(0)" #n0 (keydown)="GestisciKey($event, 0)" [(ngModel)]="sinc.numeriCodice[0]">
+  <input type="number" name="n0" id="n0" class="numero-singolo" placeholder="0" (input)="CambiaInput(1)" #n1 (keydown)="GestisciKey($event, 1)" [(ngModel)]="sinc.numeriCodice[1]">
+  <input type="number" name="n2" id="n2" class="numero-singolo" placeholder="0" (input)="CambiaInput(2)" #n2 (keydown)="GestisciKey($event, 2)" [(ngModel)]="sinc.numeriCodice[2]">
+  <div class="separatore"></div>
+  <input type="number" name="n3" id="n3" class="numero-singolo" placeholder="0" (input)="CambiaInput(3)" #n3 (keydown)="GestisciKey($event, 3)" [(ngModel)]="sinc.numeriCodice[3]">
+  <input type="number" name="n4" id="n4" class="numero-singolo" placeholder="0" (input)="CambiaInput(4)" #n4 (keydown)="GestisciKey($event, 4)" [(ngModel)]="sinc.numeriCodice[4]">
+  <input type="number" name="n5" id="n5" class="numero-singolo" placeholder="0" (input)="CambiaInput(5)" #n5 (keydown)="GestisciKey($event, 5)" [(ngModel)]="sinc.numeriCodice[5]">
+</div>

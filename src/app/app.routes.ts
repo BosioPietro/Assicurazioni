@@ -24,7 +24,7 @@ export const routes: Routes = [
       },
       {
         path: "recupero-credenziali",
-        loadComponent: () => import("./login/form-recupero-credenziali/recupero-credenziali.component").then((m) => m.RecuperoCredenzialiComponent)
+        loadComponent: () => import("./login/recupero-credenziali/form-recupero-credenziali/recupero-credenziali.component").then((m) => m.RecuperoCredenzialiComponent)
       }
     ]
   },

@@ -1,0 +1,53 @@
+<div class="form flex-col" #form>
+  <img class="logo" src="assets/google-logo.svg"/>
+  <span class="flex-col jc-c invisibile">
+    <h1>Recupero Credenziali</h1>
+    <span class="piccolo flex-row jc-c">
+      @switch (sinc.stato) {
+        @case (0) 
+        {
+          {{"Ti invieremo una mail per il recupero dei dati"}}
+        }
+        @case (1) 
+        {
+          {{"Ti abbiamo inviato un codice di 6 cifre. Inseriscilo per procedere"}}
+        }
+      }
+    </span>
+  </span>
+  <form class="flex-col" [class.rimosso]="sinc.stato != 0" #formMail>
+    <span class="flex-col jc-c">
+      <h1>Recupero Credenziali</h1>
+      <span class="piccolo flex-row jc-c">
+        Ti invieremo una mail per il recupero dei dati"
+      </span>    
+    </span>
+    <div class="form-item">
+      <label>E-Mail</label>
+      <input type="text" name="mail-recupero" [(ngModel)]="sinc.mail">
+    </div>
+    
+    <div class="form-item">
+      <button type="submit" class="btn-accento" [disabled]="!sinc.formInvioMail.valid">Invia Mail</button>
+      <a class="piccolo">Torna al login</a>
+    </div>
+  </form>
+
+  <form class="flex-col" [class.rimosso]="sinc.stato != 1" #formCodice>
+    <span class="flex-col jc-c">
+      <h1>Verifica Codice</h1>
+      <span class="piccolo flex-row jc-c">
+        Codice non ricevuto?&nbsp;<a>Invia dinuovo</a>
+      </span>  
+    </span>
+    <div class="form-item">
+      <label>Codice</label>
+      <InputCodiceFinto />
+    </div>
+    <div class="form-item">
+      <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento">Verifica Codice</button>
+      <a class="piccolo">Torna al login</a>
+    </div>
+  </form>
+  
+</div>

@@ -1,14 +1,10 @@
-<ion-content [fullscreen]="true">
-  <div class="backdrop">
-    <div class="flex-row">
-      <main #main>
-        <ion-router-outlet [animated]="false"></ion-router-outlet>
-        <div class="overlay" #overlay>
-          <RecuperoCredenzialiFinto/>
-          <LoginFinto/>
-        </div>
-      </main>
-      <div class="img"></div>
+<div class="flex-row">
+  <main #main>
+    <ion-router-outlet [animated]="false"></ion-router-outlet>
+    <div class="overlay" #overlay>
+      <RecuperoCredenzialiFinto/>
+      <LoginFinto/>
     </div>
-  </div>
-</ion-content>
+  </main>
+  <div class="img"></div>
+</div>

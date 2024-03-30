@@ -36,21 +36,22 @@ export class TransizioneService {
     const wIniziale = getComputedStyle(form).width;
     const w = this.CalcolaWidth(route);
 
-    console.log(w, wIniziale)
-    console.log(form)
+    this.CambiaWidthForm(wIniziale, w, form)
+    
+  }
 
-    this.main.style.setProperty("--max-width", wIniziale)
-    form.style.setProperty("--max-width", wIniziale)
-
+  CambiaWidthForm(iniziale: string, finale: string, form: HTMLElement){
+    if(!this.main) return;
+    this.main.style.setProperty("--max-width", iniziale)
+    form.style.setProperty("--max-width", iniziale)
 
     this.main.classList.add("transizione")
     form.classList.add("transizione")
     
     setTimeout(() => {
-      form.style.setProperty("--max-width", w)
-      this.main?.style.setProperty("--max-width", w)
+      form.style.setProperty("--max-width", finale)
+      this.main?.style.setProperty("--max-width", finale)
     }, 1);
-    
   }
 
   MostraOverlay(){
@@ -78,6 +79,10 @@ export class TransizioneService {
       this.MostraFigli(formAtt)
       this.ResettaForm(formPrec) 
       this.inTransizione = false;
+
+      setTimeout(() => {
+        formAtt.querySelectorAll("*").forEach((c) => c.classList.remove("transizione"))
+      }, 500);
     }, 500);
   }
 
@@ -92,8 +97,6 @@ export class TransizioneService {
 
     const logo = form.querySelector(".logo") as HTMLElement
     if(!logo)return;
-
-    logo.classList.remove("transizione")
     logo.style.setProperty("--y", "0")
   }
 
@@ -142,7 +145,6 @@ export class TransizioneService {
 
   NascondiOverlay(){
     if(!this.overlay || !this.ultimaRoute) return;
-
 
     const form = this.formFinti[this.ultimaRoute]
     form.classList.remove("mostra")
