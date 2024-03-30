@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'login/reset-password',
     pathMatch: 'full',
   },
   {
@@ -16,7 +16,7 @@ export const routes: Routes = [
     children : [
       {
         path : "",
-        loadComponent: () => import("./login/form-login/login.component").then((m) => m.LoginComponent)
+        loadComponent: () => import("./login/login/form/login.component").then((m) => m.LoginComponent)
       },
       {
         path : "cambio-password",
@@ -24,7 +24,11 @@ export const routes: Routes = [
       },
       {
         path: "recupero-credenziali",
-        loadComponent: () => import("./login/recupero-credenziali/form-recupero-credenziali/recupero-credenziali.component").then((m) => m.RecuperoCredenzialiComponent)
+        loadComponent: () => import("./login/recupero-credenziali/form/recupero-credenziali.component").then((m) => m.RecuperoCredenzialiComponent)
+      },
+      {
+        path: "reset-password",
+        loadComponent: () => import("./login/reset-password/form/form-reset-password.component").then((m) => m.ResetPasswordComponent)
       }
     ]
   },

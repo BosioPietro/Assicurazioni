@@ -14,7 +14,7 @@ import { SincronizzazioneService } from '../servizio.sincronizzazione';
 })
 export class RecuperoCredenzialiComponent implements AfterViewInit{
   
-  constructor(private transizione : TransizioneService, public sinc: SincronizzazioneService, private router : Router){}
+  constructor(public transizione : TransizioneService, public sinc: SincronizzazioneService, public router : Router){}
 
   @ViewChild("formHtml")
   formHtml!: ElementRef<HTMLElement>
@@ -36,5 +36,12 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
 
   ControllaCodice(corretto: boolean){
     this.sinc.codiceCorretto = corretto;
+  }
+
+  ResetPassword(){
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/reset-password");
+    setTimeout(() => {
+      this.router.navigateByUrl("/login/reset-password");
+    }, 500);
   }
 }

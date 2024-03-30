@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TransizioneService } from '../servizio-transizione.service';
+import { RegexInput } from 'src/app/utils/Input';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class SincronizzazioneService {
     public formHtmlFinti: {[key:string] : HTMLElement} = {}
 
     public formInvioMail : FormGroup = new FormGroup({
-      "mail-recupero" : new FormControl("", [Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)])
+      "mail-recupero" : new FormControl("", [Validators.pattern(RegexInput["email"])])
     })
 
     TransizioneForm(form: HTMLElement){
@@ -64,17 +65,3 @@ export class SincronizzazioneService {
       return w + padding * 2 + "px";
     }
 }
-
-// this.transizione.CambiaWidthForm(wIniziale, wFinale, form);
-// this.transizione.NascondiFigli(form)  
-
-// this.staAnimando = true;
-// this.inTransizione = true;
-
-// ++this.stato;
-// this.staAnimando = false;
-
-// setTimeout(() => {
-//   this.transizione.MostraFigli(form, false)
-//   this.inTransizione = false; 
-// }, 500);

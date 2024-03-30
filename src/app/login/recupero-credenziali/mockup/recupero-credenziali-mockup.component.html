@@ -42,7 +42,7 @@
     </span>
     <div class="form-item">
       <label>Codice</label>
-      <InputCodiceFinto />
+      <InputCodiceFinto  [class.inTransizione]="transizione.inTransizione && transizione.ultimaRoute == '/login/recupero-credenziali'"/>
     </div>
     <div class="form-item">
       <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento">Verifica Codice</button>

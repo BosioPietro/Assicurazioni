@@ -13,7 +13,7 @@ import { InputCodiceFintoComponent } from './input-codice-mockup/input-codice-mo
 })
 export class RecuperoCredenzialiFinto implements AfterViewInit{
 
-  constructor(private transizione: TransizioneService, public sinc: SincronizzazioneService){}
+  constructor(public transizione: TransizioneService, public sinc: SincronizzazioneService){}
 
   @ViewChild("form")
   formHtml!: ElementRef<HTMLElement>;

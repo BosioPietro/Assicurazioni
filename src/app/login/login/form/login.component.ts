@@ -9,7 +9,7 @@ import { LoginGoogleComponent } from './bottone-login-google/login-google.compon
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
-import { TransizioneService } from '../servizio-transizione.service';
+import { TransizioneService } from '../../servizio-transizione.service';
 
 
 @Component({

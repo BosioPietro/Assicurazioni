@@ -4,8 +4,7 @@ import { FormGroup, FormsModule, FormControl, ReactiveFormsModule, ValidatorFn, 
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 
-import RegexInput from 'src/app/utils/RegexInput';
-import { Nullabile } from 'src/app/utils/TipiSpeciali';
+import { RegexInput } from 'src/app/utils/Input';
 import { RegistrazioneService } from './registrazione.service';
 import { AxiosError } from 'axios';
 

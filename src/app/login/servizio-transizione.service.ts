@@ -22,14 +22,22 @@ export class TransizioneService {
   private CalcolaWidth(route : string){
     const form = this.formFinti[route];
 
-    const w = Array.from(form.children).map((c) => parseFloat(getComputedStyle(c).width))
+    const figli = Array.from(form.children);
+    
+    figli.forEach((c) => c.classList.add("controlla-width"))
+    
+    const w = figli
+    .filter((c) => !(c.classList.contains("invisibile")))
+    .map((c) => c.clientWidth)
+
+    figli.forEach((c) => c.classList.remove("controlla-width"))
+
     const padding = parseFloat(getComputedStyle(form).paddingInline);
 
     return Math.max(...w) + padding * 2 + "px";
   }
 
   TransizioneUscita(form : HTMLElement, route : string){
-
     if(!this.main) return;
     this.inTransizione =  true;
 
@@ -78,9 +86,9 @@ export class TransizioneService {
       
       this.MostraFigli(formAtt)
       this.ResettaForm(formPrec) 
-      this.inTransizione = false;
-
+      
       setTimeout(() => {
+        this.inTransizione = false;
         formAtt.querySelectorAll("*").forEach((c) => c.classList.remove("transizione"))
       }, 500);
     }, 500);

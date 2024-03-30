@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import {  LoginGoogleFinto } from './bottone-login-google-mockup/login-google-mockup.component';
-import { TransizioneService } from '../servizio-transizione.service';
+import { TransizioneService } from '../../servizio-transizione.service';
 
 @Component({
   selector: 'LoginFinto',

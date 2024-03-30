@@ -52,7 +52,6 @@ ion-router-outlet{
     inset: 0;
     display: flex;
     z-index: -1;
-    // filter: invert(1);
     pointer-events: none;
 }
 
@@ -61,6 +60,8 @@ ion-router-outlet{
     inset: 0;
     pointer-events: none;
     visibility: hidden;
+    top: 0;
+    bottom: 0;
 }
 
 .overlay.visibile{

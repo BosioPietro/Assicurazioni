@@ -44,10 +44,10 @@
         </span>
         <div class="form-item">
           <label>Codice</label>
-          <InputCodice (CodiceCambiato)="ControllaCodice($event)" id="codice-mail"/>
+          <InputCodice (CodiceCambiato)="ControllaCodice($event)" id="codice-mail" [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute ) == '/login/recupero-credenziali'"/>
         </div>
         <div class="form-item">
-          <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento" (click)="InviaMail()">Verifica Codice</button>
+          <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento" (click)="ResetPassword()">Verifica Codice</button>
           <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
         </div>
       </form>
