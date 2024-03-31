@@ -3,17 +3,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { SincronizzazioneService } from '../servizio.sincronizzazione';
 import { InputCodiceFintoComponent } from './input-codice-mockup/input-codice-mockup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'RecuperoCredenzialiFinto',
   templateUrl: './recupero-credenziali-mockup.component.html',
-  styleUrls: ['./recupero-credenziali-mockup.component.scss'],
+  styleUrls: ['../stile-form.scss','./recupero-credenziali-mockup.component.scss'],
   standalone: true,
   imports: [ReactiveFormsModule, InputCodiceFintoComponent, FormsModule]
 })
 export class RecuperoCredenzialiFinto implements AfterViewInit{
 
-  constructor(public transizione: TransizioneService, public sinc: SincronizzazioneService){}
+  constructor(public transizione: TransizioneService, public sinc: SincronizzazioneService, public router: Router){}
 
   @ViewChild("form")
   formHtml!: ElementRef<HTMLElement>;

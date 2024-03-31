@@ -9,7 +9,7 @@ import { animazione } from './animazioni';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './form-reset-password.component.html',
-  styleUrls: ['./form-reset-password.component.scss'],
+  styleUrls: ['../stile-form.scss', './form-reset-password.component.scss'],
   imports: [ReactiveFormsModule, TooltipComponent],
   animations: [animazione],
   standalone: true

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'InputCodiceFinto',
   templateUrl: './input-codice-mockup.component.html',
-  styleUrls: ['./input-codice-mockup.component.scss'],
+  styleUrls: ['../../stile-input-codice.scss'],
   imports: [FormsModule],
   standalone: true
 })

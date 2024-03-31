@@ -42,12 +42,6 @@ input{
     top: calc(50% - var(--altezza) / 2);
 }
 
-
-:host.inTransizione *{
-    width: auto;
-    min-width: 0;
-}
-
 :host.inTransizione ::placeholder{
     color: transparent;
 }

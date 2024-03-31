@@ -15,7 +15,7 @@ import { TransizioneService } from '../../servizio-transizione.service';
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['../stile-form.scss','./login.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent],
 })

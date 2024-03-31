@@ -4,7 +4,7 @@ import { TransizioneService } from '../../servizio-transizione.service';
 @Component({
   selector: 'ResetPasswordFinto',
   templateUrl: './reset-password-form-mockup.component.html',
-  styleUrls: ['./reset-password-form-mockup.component.scss'],
+  styleUrls: ['../stile-form.scss'],
   standalone: true
 })
 export class ResetPasswordFinto  implements AfterViewInit {

@@ -9,7 +9,7 @@ import { SincronizzazioneService } from '../servizio.sincronizzazione';
   selector: 'form-recupero-credenziali',
   templateUrl: './recupero-credenziali.component.html',
   standalone: true,
-  styleUrls: ['./recupero-credenziali.component.scss'],
+  styleUrls: ['../stile-form.scss', './recupero-credenziali.component.scss'],
   imports: [ReactiveFormsModule, InputCodiceComponent, FormsModule],
 })
 export class RecuperoCredenzialiComponent implements AfterViewInit{

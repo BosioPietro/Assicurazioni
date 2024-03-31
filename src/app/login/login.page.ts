@@ -20,7 +20,7 @@ import { PlatformLocation } from '@angular/common'
 export class LoginPage implements OnInit, AfterViewInit {
 
   constructor(private transizione: TransizioneService, private router : Router, location: PlatformLocation){
-    location.onPopState(() => window.location.reload);
+    location.onPopState(() => window.location.reload());
   }
   
   @ViewChild("main")
