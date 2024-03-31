@@ -10,10 +10,10 @@ export class SincronizzazioneService {
 
     constructor(private transizione: TransizioneService){}
 
-    public stato: number = 0;
+    public stato: number = 1;
     public mail: string = "";
     public codiceCorretto: boolean = false;
-    public numeriCodice = new Array(6).fill("");
+    public caratteriCodice = new Array(6).fill("");
     public staAnimando = false;
     public inTransizione = false;
 

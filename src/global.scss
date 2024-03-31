@@ -103,21 +103,6 @@ a:not([href]){
     opacity: 0;
 }
 
-input[type="number"].numero-singolo {
-    box-sizing: content-box;
-    width: 1ch;
-    appearance: initial;
-    -moz-appearance: textfield;
-    border-radius: .5rem;
-    caret-color: transparent;
-}
-
-.numero-singolo::-webkit-outer-spin-button,
-.numero-singolo::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 

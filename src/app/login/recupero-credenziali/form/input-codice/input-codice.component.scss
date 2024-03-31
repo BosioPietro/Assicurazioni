@@ -12,6 +12,12 @@
     transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+input{
+    box-sizing: content-box;
+    width: 1.1ch;
+    border-radius: .5rem;
+}
+
 .separatore{
     --width: .3rem;
     width: .3rem;

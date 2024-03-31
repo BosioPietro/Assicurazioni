@@ -62,11 +62,12 @@ export class InputCodiceComponent{
       attuale.value = Array.from(attuale.value).at(-1)!;
     }
 
+    attuale.value = attuale.value.toUpperCase();
+
     if(!attuale.value || indice == 5)return;
 
     const prossimo = this.PrendiInput(++indice as any)
     
-    console.log(attuale, prossimo)
     attuale.blur();
     prossimo.focus();
   }
@@ -79,5 +80,29 @@ export class InputCodiceComponent{
     const precedente = this.PrendiInput(--indice as any)
     attuale.blur();
     precedente.focus();
+  }
+
+  Incolla(e: ClipboardEvent, indice: number){
+    const clip = e.clipboardData || (window as any).clipboardData;
+    e.preventDefault();
+    if(!clip) return;
+
+    const testo: string = clip.getData('text/plain').toString().trim()
+    let ultimoInput;
+
+
+    for(let i = indice; i < Math.min(testo.length, 6 - indice); ++i)
+    {
+      const input = this.PrendiInput(i as any)
+      input.value = testo[i].toUpperCase();
+      input.blur()
+      ultimoInput = input;
+    }
+
+    if(testo.length < 6 - indice){
+      const input = this.PrendiInput(testo.length as any)
+      input.focus();
+    }
+    else ultimoInput?.focus();
   }
 }
