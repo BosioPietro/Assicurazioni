@@ -1,0 +1,16 @@
+@if(icona){
+    <ion-icon [name]="icona" class="icona"/>
+    <hr/>
+}
+<div class="flex-row">
+    <label [attr.for]="idInput">{{ testoLabel }}</label>
+    <input 
+      type="text" 
+      placeholder="" 
+      [attr.name]="name"
+      [attr.value]="value"
+      [attr.id]="idInput" 
+      (input)="!mockup && Cambiato($event)" 
+      (blur)="!mockup && onTouched()"
+    />
+</div>

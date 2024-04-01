@@ -1,0 +1,21 @@
+ion-icon{
+    filter: drop-shadow(0 0 1rem transparent);
+}
+
+
+
+:host:has(input:focus-visible){
+    ion-icon{
+        filter: drop-shadow(0 0 1rem var(--accento));
+    }
+
+    label{
+        color: var(--accento);
+    }
+}
+
+:host:has(input:disabled){    
+    label, ion-icon{
+        color: var(--colore-disabilitato);
+    }
+}

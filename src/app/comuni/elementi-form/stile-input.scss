@@ -1,0 +1,117 @@
+:host{
+    --testo-label: .75rem;
+    --padding: .5rem;
+    --colore-normale: #d1d5db;
+    --colore-disabilitato: #0003;
+    --colore-testo: #4b5563;
+    --font-size: 1rem;
+
+    display: flex;
+    align-items: center;
+    padding: var(--padding) calc(var(--padding) * 1.5);
+    border: 1px solid var(--colore-normale);
+    border-radius: 100vw;
+    background-color: #FFF;
+    outline: 3px solid;
+    outline-color: transparent;
+}
+
+:host{
+    user-select: none;
+    caret-color: transparent;
+}
+
+div{
+    position: relative;
+    align-items: center;
+}
+
+hr{
+    width: 0;
+    height: 100%;
+    margin-inline: var(--padding);
+    border-left: 1px solid;
+    border-color: var(--colore-normale);
+}
+
+input{
+    width: 100%;
+    background-color: transparent;
+    outline-color: transparent;
+    border: 0;
+    caret-color: var(--colore-testo);
+    color: var(--colore-testo);
+    font-size: var(--font-size);
+}
+
+label{
+    content: attr(testo-label);
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-inline: 0;
+    pointer-events: none;
+    border-radius: var(--padding);
+    background-color: #FFF;
+    color: color-mix(in srgb, var(--colore-testo) 50%, transparent 50%);
+    font-size: var(--font-size);
+}
+
+ion-icon{
+    color: var(--colore-testo);
+}
+
+:host, label, ion-icon, hr, input{
+    transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+input:focus-visible{
+    outline: none;
+    border: 0;
+}
+
+:host:hover,
+:host:has(input:focus-visible){
+    border-color: var(--accento);
+
+    ion-icon{
+        color: var(--accento);
+    }
+
+    hr{
+        border-color: var(--accento);        
+    }
+}
+
+:host:has(input:focus-visible),
+:host:not(:has(input:placeholder-shown)){
+    label{
+        top: calc(var(--padding) * -2);
+        left: calc(var(--padding) * -1);
+        font-size: var(--testo-label);
+        padding-inline: calc(var(--padding) / 2);
+    }
+}
+
+:host(:has(input:focus-visible)){
+    outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
+}
+
+:host.cambia-form input,
+:host.cambia-form input{
+    color: transparent !important;
+}
+
+:host.errore{
+    --accento: #e24c4c;
+    --colore-normale: #e24c4c;
+    --colore-testo: #e24c4c;
+    animation: errore .5s;
+}
+
+@keyframes errore {
+    0%, 100% { transform: translateX(0); }
+    25%, 75% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+  }
+  
