@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SincronizzazioneService } from '../../servizio.sincronizzazione';
+import { SincronizzazioneService } from '../../sincronizzazione.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({

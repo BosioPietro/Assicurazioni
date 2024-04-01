@@ -1,3 +1,38 @@
+:host{
+    --padding: .5rem;
+    --colore-normale: #d1d5db;
+    --font-size: 1rem;
+    --colore-testo: #4b5563;
+}
+
+input{    
+    // --altezza-input: calc(var(--padding) * 2 + var(--font-size));
+
+    padding: var(--padding);
+    aspect-ratio: 1;
+    text-align: center;
+    width: 2ch;
+    box-sizing: content-box;
+    border-radius: .5rem;
+    font-size: var(--font-size);
+    border: 1px solid var(--colore-normale);
+    background-color: transparent;
+    outline: 3px solid;
+    outline-color: transparent;
+    caret-color: var(--colore-testo);
+    color: var(--colore-testo);
+    transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+input:hover,
+input:focus-visible{
+    border-color: var(--accento);
+}
+
+input:focus-visible{
+    outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
+}
+
 .flex-row{
     justify-content: space-between;
     gap: .25rem;
@@ -10,12 +45,6 @@
 
 .flex-row > *::placeholder{
     transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-input{
-    box-sizing: content-box;
-    width: 1.1ch;
-    border-radius: .5rem;
 }
 
 .separatore{

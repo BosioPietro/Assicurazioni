@@ -1,16 +1,18 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { Router } from '@angular/router';
 import { InputCodiceComponent } from './input-codice/input-codice.component';
-import { SincronizzazioneService } from '../servizio.sincronizzazione';
+import { SincronizzazioneService } from '../sincronizzazione.service';
+import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
+import { RegexInput } from 'src/app/utils/Input';
 
 @Component({
   selector: 'form-recupero-credenziali',
   templateUrl: './recupero-credenziali.component.html',
   standalone: true,
-  styleUrls: ['../stile-form.scss', './recupero-credenziali.component.scss'],
-  imports: [ReactiveFormsModule, InputCodiceComponent, FormsModule],
+  styleUrls: ['./recupero-credenziali.component.scss'],
+  imports: [ReactiveFormsModule, InputCodiceComponent, FormsModule, InputTextComponent],
 })
 export class RecuperoCredenzialiComponent implements AfterViewInit{
   
@@ -22,6 +24,10 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     this.transizione.formVeri["/login/recupero-credenziali"] = this.formHtml.nativeElement;
   }
+
+  public formInvioMail : FormGroup = new FormGroup({
+    "mail-recupero" : new FormControl("", [Validators.required, Validators.pattern(RegexInput["email"])])
+  })
 
   NavigaLogin(){
     this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login");

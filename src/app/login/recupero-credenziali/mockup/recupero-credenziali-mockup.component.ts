@@ -1,16 +1,17 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
-import { SincronizzazioneService } from '../servizio.sincronizzazione';
+import { SincronizzazioneService } from '../sincronizzazione.service';
 import { InputCodiceFintoComponent } from './input-codice-mockup/input-codice-mockup.component';
 import { Router } from '@angular/router';
+import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 
 @Component({
   selector: 'RecuperoCredenzialiFinto',
   templateUrl: './recupero-credenziali-mockup.component.html',
-  styleUrls: ['../stile-form.scss','./recupero-credenziali-mockup.component.scss'],
+  styleUrls: ['./recupero-credenziali-mockup.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, InputCodiceFintoComponent, FormsModule]
+  imports: [ReactiveFormsModule, InputCodiceFintoComponent, FormsModule, InputTextComponent]
 })
 export class RecuperoCredenzialiFinto implements AfterViewInit{
 

@@ -16,7 +16,7 @@
 
   @switch (sinc.stato) {
     @case (0) {
-      <form class="flex-col" [formGroup]="sinc.formInvioMail" (ngSubmit)="InviaMail()">
+      <form class="flex-col" [formGroup]="formInvioMail" (ngSubmit)="InviaMail()">
         <span class="flex-col jc-c">
           <h1>Recupero Credenziali</h1>
           <span class="piccolo flex-row jc-c">
@@ -24,12 +24,18 @@
           </span>   
         </span>
         <div class="form-item">
-          <label for="mail-recupero">E-Mail</label>
-          <input type="text" id="mail-recupero" name="mail-recupero" required formControlName="mail-recupero" (input)="sinc.mail = sinc.formInvioMail.get('mail-recupero')?.value || '' ">
+          <InputText 
+            icona="mail" 
+            testo-label="E-Mail" 
+            id-input="mail-recupero" 
+            name="mail-recupero" 
+            formControlName="mail-recupero"
+            (onInput)="sinc.Aggiorna($event, formInvioMail.valid);"
+          />
         </div>
         
         <div class="form-item">
-          <button type="submit" [disabled]="!sinc.formInvioMail.valid" class="btn-accento">Invia Mail</button>
+          <button type="submit" [disabled]="!formInvioMail.valid" class="btn-accento">Invia Mail</button>
           <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
         </div>
       </form>
@@ -44,10 +50,20 @@
         </span>
         <div class="form-item">
           <label>Codice</label>
-          <InputCodice (CodiceCambiato)="ControllaCodice($event)" id="codice-mail" [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || router.url) == '/login/recupero-credenziali'"/>
+          <InputCodice 
+            id="codice-mail" 
+            [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || router.url) == '/login/recupero-credenziali'"
+            (CodiceCambiato)="ControllaCodice($event)" 
+          />
         </div>
         <div class="form-item">
-          <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento" (click)="ResetPassword()">Verifica Codice</button>
+          <button 
+            type="button" 
+            [disabled]="!sinc.codiceCorretto" 
+            class="btn-accento" 
+            (click)="ResetPassword()"
+          >
+          Verifica Codice</button>
           <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
         </div>
       </form>

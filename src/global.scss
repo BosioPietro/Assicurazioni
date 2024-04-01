@@ -29,6 +29,7 @@
     --sfondo: #e6e6e6;
     --op1: color-mix(in hsl, #000 25%, transparent);
     --durata-transizione: .5s;
+    --accento: #245c73
 }
 
 *{
@@ -53,15 +54,15 @@
     align-items: center;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="number"]{
-    padding: .5rem 1rem;
-    border: 0;
-    border-radius: 1rem;
-    background-color: #e6e6e6;
-    // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
-}
+// input[type="text"],
+// input[type="password"],
+// input[type="number"]{
+//     padding: .5rem 1rem;
+//     border: 0;
+//     border-radius: 1rem;
+//     background-color: #e6e6e6;
+//     // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
+// }
 
 button{
     --dim: 1rem;
@@ -85,18 +86,37 @@ button:disabled{
 
 .btn-accento{
     color: #F2F2F2;
-    background-color: #2b2b2b;
+    background-color: var(--accento);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+.btn-accento:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--accento));
+}
+
+.btn-accento:disabled{
+    background-color: #F2F2F2;
+    color: #9f9f9f;
+}
+
+.btn-accento:not(:disabled):active{
+    transform: scale(.95);
+    background-color: color-mix(in hsl, var(--accento) 95%, #000 5%);
+}
 .logo{
     user-select: none;
     caret-color: transparent;
 }
 
-a:not([href]){
+a{
     cursor: pointer;
     text-decoration: underline;
-    color: #000;
+    color: var(--accento);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+a:hover{
+    filter: drop-shadow(0 0 1.5rem var(--accento));
 }
 
 .nascosto{

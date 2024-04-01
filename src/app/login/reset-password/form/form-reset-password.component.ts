@@ -5,18 +5,26 @@ import { TransizioneService } from '../../servizio-transizione.service';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { CambioPasswordService } from './cambio-password.service';
 import { animazione } from './animazioni';
+import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
+import { SincronizzazioneService } from '../sincronizzazione.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
   templateUrl: './form-reset-password.component.html',
-  styleUrls: ['../stile-form.scss', './form-reset-password.component.scss'],
-  imports: [ReactiveFormsModule, TooltipComponent],
+  styleUrls: ['./form-reset-password.component.scss'],
+  imports: [ReactiveFormsModule, TooltipComponent, InputPasswordComponent],
   animations: [animazione],
   standalone: true
 })
 export class ResetPasswordComponent implements OnInit, AfterViewInit{
   
-  constructor(private transizione: TransizioneService, public servizio:CambioPasswordService){}
+  constructor(
+    private transizione: TransizioneService, 
+    public servizio: CambioPasswordService, 
+    public sinc: SincronizzazioneService,
+    public router: Router,
+  ){}
 
   @ViewChild("formHtml")
   formHtml!: ElementRef<HTMLElement>
@@ -40,7 +48,10 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
   }
 
   CambiaPassword(){
-
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login");
+    setTimeout(() => {
+      this.router.navigateByUrl("/login");
+    }, 500);
   }
 
   MostraTooltip(){
@@ -48,7 +59,8 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     setTimeout(() => this.servizio.Controlla(this.form.controls["password"].value), 50)
   }
 
-  Controlla(){
-    this.servizio.Controlla(this.form.controls["password"].value)
+  Controlla(e: Event){
+    const val = (e.target as HTMLInputElement).value;
+    this.servizio.Controlla(val)
   }
 }

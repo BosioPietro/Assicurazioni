@@ -20,12 +20,26 @@
     <FintoHr testo="Oppure"/>
   
     <div class="form-item">
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" required formControlName="username">
+      <InputText 
+        name="username" 
+        testo-label="E-Mail o Username" 
+        id-input="login-mail" 
+        icona="person" 
+        formControlName="username"
+        [class.cambia-form]="transizione.inTransizione"
+        (onInput)="sinc.Aggiorna($event, form.valid)"
+      />
     </div>
     <div class="form-item">
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required formControlName="password">
+      <InputPassword 
+        name="password" 
+        testo-label="Password" 
+        id-input="login-password" 
+        icona="lock-closed" 
+        formControlName="password" 
+        [class.cambia-form]="transizione.inTransizione"
+        (onInput)="sinc.Aggiorna($event, form.valid)"
+      />
     </div>
     <div class="form-item">
       <button type="submit" [disabled]="!form.valid" class="btn-accento">Login</button>

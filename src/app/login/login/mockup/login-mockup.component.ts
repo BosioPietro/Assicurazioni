@@ -5,17 +5,20 @@ import { IonicModule } from '@ionic/angular';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import {  LoginGoogleFinto } from './bottone-login-google-mockup/login-google-mockup.component';
 import { TransizioneService } from '../../servizio-transizione.service';
+import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
+import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
+import { SincronizzazioneService } from '../sincronizzazione.service';
 
 @Component({
   selector: 'LoginFinto',
   templateUrl: './login-mockup.component.html',
-  styleUrls: ['../stile-form.scss','./login-mockup.component.scss'],
+  styleUrls: ['./login-mockup.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleFinto, FintoHrComponent],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleFinto, FintoHrComponent, InputTextComponent, InputPasswordComponent],
 })
 export class LoginFinto implements AfterViewInit{
 
-  constructor(private transizione: TransizioneService){}
+  constructor(public transizione: TransizioneService, public sinc: SincronizzazioneService){}
 
   @ViewChild("form")
   formHtml!: ElementRef<HTMLElement>;

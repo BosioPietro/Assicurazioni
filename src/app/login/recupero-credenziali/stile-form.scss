@@ -1,16 +1,4 @@
-:host{
-    display: flex;
-    flex-direction: row !important;
-    contain: initial !important;
-    flex-grow: 1;
-    --gap: 1.5rem;
-}
-
-form, .form{
-    justify-content: center;
-    align-items: center;
-    gap: var(--gap);
-}
+@use '../stile-form.scss';
 
 form{
     width: 100%;
@@ -24,45 +12,6 @@ form{
     background-color: #FFF;
     width: var(--max-width);
 }
-
-h1{
-    font-weight: bold;
-    font-size: 2rem;
-    margin-top: 0;
-    text-align: center;
-    white-space: nowrap;
-}
-
-.form-item{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    position: relative;
-}
-
-.piccolo{
-    text-align: center;
-    font-size: .75rem;
-    color: #000;
-}
-
-label{
-    font-size: .75rem;
-    margin-bottom: .5rem;
-}
-
-button{
-    margin-bottom: 10px;
-}
-
-.logo{
-    --x:0;
-    --y:0;
-    transform: translate(var(--x), var(--y));
-    user-select: none;
-    caret-color: transparent;
-}
-
 
 .invisibile{
     visibility: hidden;

@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
-import { SincronizzazioneService } from '../../servizio.sincronizzazione';
+import { SincronizzazioneService } from '../../sincronizzazione.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -55,14 +55,27 @@ export class InputCodiceComponent{
     }
   }
 
+  ControllaCarattere(c: string){
+    const alfa = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const caratteri = alfa + alfa.toLowerCase() + "0123456789";
+
+    return caratteri.includes(c)
+  }
+
   CambiaInput(indice: 0|1|2|3|4|5){
     const attuale = this.PrendiInput(indice)
     
     if(attuale.value.length > 1){
-      attuale.value = Array.from(attuale.value).at(-1)!;
+      attuale.value = attuale.value.slice(-1);
     }
-
+    
     attuale.value = attuale.value.toUpperCase();
+    this.ControllaValore();
+    
+    if(!this.ControllaCarattere(attuale.value)){
+      attuale.value = "";
+      return;
+    }
 
     if(!attuale.value || indice == 5)return;
 
@@ -70,6 +83,17 @@ export class InputCodiceComponent{
     
     attuale.blur();
     prossimo.focus();
+    this.ControllaValore();
+  }
+
+  ControllaValore(){
+    let codice = ""
+    for(let i = 0; i < 6; ++i){
+      const input = this.PrendiInput(i as any)
+      codice += input.value;
+    }
+
+    this.CodiceCambiato.emit(codice.length == 6)
   }
 
   GestisciKey(e: KeyboardEvent, indice: 0|1|2|3|4|5){
@@ -97,6 +121,12 @@ export class InputCodiceComponent{
       input.value = testo[i].toUpperCase();
       input.blur()
       ultimoInput = input;
+
+      if(!this.ControllaCarattere(testo.charAt(i))){
+        input.focus()
+        input.value = ""
+        return;
+      }
     }
 
     if(testo.length < 6 - indice){

@@ -1,35 +1,43 @@
-import { Component, OnInit, inject, OnDestroy, ViewChild, ElementRef, AfterViewChecked, AfterContentInit, AfterViewInit, } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, ViewChild, ElementRef, AfterViewInit, } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { LoginService } from './login.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './bottone-login-google/login-google.component';
 import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import { TransizioneService } from '../../servizio-transizione.service';
+import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
+import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
+import { SincronizzazioneService } from '../sincronizzazione.service';
 
 
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../stile-form.scss','./login.component.scss'],
+  styleUrls: ['./login.component.scss'],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent],
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  constructor(private servizio : LoginService, private authService: SocialAuthService, private transizione : TransizioneService, private router : Router) {
-  }
+  constructor(
+    private servizio : LoginService, 
+    private authService: SocialAuthService, 
+    public transizione : TransizioneService, 
+    private router : Router,
+    public sinc: SincronizzazioneService
+  ) {}
 
   private activatedRoute = inject(ActivatedRoute);
 
   private username = this.activatedRoute.snapshot.queryParams["username"] || "";
 
   form : FormGroup = new FormGroup({
-    username : new FormControl(this.username, [Validators.required]),
+    username : new FormControl(this.username, [Validators.required, Validators.minLength(3)]),
     password : new FormControl("", [Validators.required])
   });
 

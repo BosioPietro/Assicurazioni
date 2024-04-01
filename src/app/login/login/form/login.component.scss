@@ -1,3 +1,5 @@
-:host{
+@use '../stile-form.scss';
+
+:host:not(.ion-page-invisible){
     position: relative !important;
 }

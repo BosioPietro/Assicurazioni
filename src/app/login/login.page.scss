@@ -3,6 +3,7 @@
     --larghezza-pannello: 30rem;
     --br: 1.5rem;
     --durata-transizione: .5s;
+    --sfondo-form: #FFF;
     display: grid;
     place-items: center;
     justify-content: initial !important;
@@ -11,7 +12,7 @@
 }
 
 .flex-row{
-    background-color: #FFF;
+    background-color: var(--sfondo-form);
     border-radius: var(--br);
     overflow: clip;
 }
@@ -36,15 +37,21 @@ ion-router-outlet{
     contain: initial;
 }
 
-.img{
+.cont-img{
     --offset-interno: .5rem;
+    width: var(--larghezza-pannello);
+    padding: var(--offset-interno);
     background-color: #FFF;
+    position: relative;
+}
+
+.img{
     background-image: url(https://images.unsplash.com/photo-1643228995868-bf698f67d053?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
     background-size: cover;
-    width: var(--larghezza-pannello);
-    margin: var(--offset-interno);
     border-radius: calc(var(--br) - var(--offset-interno));
     z-index: 1;
+    position: absolute;
+    inset: var(--offset-interno);
 }
 
 .overlay{
@@ -72,3 +79,5 @@ ion-router-outlet{
     display: flex block;
     visibility: visible;
 }
+
+// :host:has(.overlay.visibile){}

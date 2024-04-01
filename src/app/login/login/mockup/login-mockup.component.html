@@ -21,15 +21,27 @@
     <FintoHr testo="Oppure"/>
   
     <div class="form-item">
-      <label>Username</label>
-      <input type="text" disabled>
+      <InputText 
+        name="username" 
+        testo-label="E-Mail o Username" 
+        icona="person"
+        [valore]="sinc.valori['username']" 
+        [mockup]="true" 
+        [class.cambia-form]="transizione.inTransizione"
+      />
     </div>
     <div class="form-item">
-      <label>Password</label>
-      <input type="password" disabled>
+      <InputPassword 
+        name="username" 
+        testo-label="Password" 
+        icona="lock-closed"
+        [valore]="sinc.valori['password']"  
+        [mockup]="true" 
+        [class.cambia-form]="transizione.inTransizione"
+      />
     </div>
     <div class="form-item">
-      <button type="button"class="btn-accento" disabled>Login</button>
+      <button type="button" class="btn-accento" [disabled]="!sinc.valido">Login</button>
       <a class="piccolo">Credenziali dimenticate?</a>
     </div>
   </span>

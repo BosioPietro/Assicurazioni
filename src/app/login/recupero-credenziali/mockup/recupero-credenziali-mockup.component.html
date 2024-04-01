@@ -19,16 +19,21 @@
     <span class="flex-col jc-c">
       <h1>Recupero Credenziali</h1>
       <span class="piccolo flex-row jc-c">
-        Ti invieremo una mail per il recupero dei dati"
+        Ti invieremo una mail per il recupero dei dati
       </span>    
     </span>
     <div class="form-item">
-      <label>E-Mail</label>
-      <input type="text" name="mail-recupero" [(ngModel)]="sinc.mail">
+      <InputText 
+        icona="mail" 
+        testo-label="E-Mail" 
+        name="mail-recupero" 
+        [valore]="sinc.valori['mail-recupero']"
+        [mockup]="true"
+      />
     </div>
     
     <div class="form-item">
-      <button type="submit" class="btn-accento" [disabled]="!sinc.formInvioMail.valid">Invia Mail</button>
+      <button type="submit" class="btn-accento" [disabled]="!sinc.formValido">Invia Mail</button>
       <a class="piccolo">Torna al login</a>
     </div>
   </form>
@@ -45,7 +50,7 @@
       <InputCodiceFinto  [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || router.url) == '/login/recupero-credenziali'"/>
     </div>
     <div class="form-item">
-      <button type="button" [disabled]="sinc.codiceCorretto" class="btn-accento">Verifica Codice</button>
+      <button type="button" [disabled]="!sinc.codiceCorretto" class="btn-accento">Verifica Codice</button>
       <a class="piccolo">Torna al login</a>
     </div>
   </form>

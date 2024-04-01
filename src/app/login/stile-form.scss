@@ -1,0 +1,62 @@
+:host{
+    display: flex;
+    flex-direction: row !important;
+    contain: initial !important;
+    flex-grow: 1;
+    --gap: 1.5rem;
+}
+
+form, .form{
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+}
+
+h1{
+    font-weight: bold;
+    font-size: 2rem;
+    margin-top: 0;
+    text-align: center;
+    white-space: nowrap;
+}
+
+label{
+    font-size: .75rem;
+    margin-bottom: .5rem;
+}
+
+.btn-accento, h1{
+    margin-bottom: .5rem;
+}
+
+.form-item{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.form-row{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+}
+
+.logo{
+    --x:0;
+    --y:0;
+    transform: translate(var(--x), var(--y));
+    user-select: none;
+    caret-color: transparent;
+}
+
+.piccolo{
+    text-align: center;
+    font-size: .75rem;
+}
+
+:host.ion-page-invisible{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
