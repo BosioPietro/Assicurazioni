@@ -1,14 +1,36 @@
-<div id="wrapper">
-  <span id="wrapperCoords">
+<div id="wrapper" [ngClass]="{'appari': this.flag}">
+  <!-- <span id="wrapperCoords">
     <p>Latitude: <strong>{{this.lat}}</strong></p>
     <p>Longitude: <strong>{{this.lng}}</strong></p>
   </span>
   <span id="wrapperLocation">
     <p>Location: <strong>{{this.city}}</strong></p>
-  </span>
+  </span> -->
   <span id="wrapperMap">
-    <google-map [center]="this.coords" [height]="300" [width]="480">
-      <map-marker [position]="this.coords"></map-marker>
-    </google-map>
+    <span id="mask">
+      <div #mapElement></div>
+    </span>
+  </span>
+  <span id="line" [ngClass]="{'appariLinea':this.flag}">
+    <div [ngClass]="{'appariContent':this.flag}">
+      <span>
+        <span class="material-symbols-outlined">
+          calendar_month
+        </span>
+        <span>{{date}}</span>
+      </span>
+      <span>
+        <span class="material-symbols-outlined">
+          directions_car
+        </span>
+        <span>{{travelDuration}}</span>
+      </span>
+      <span>
+        <span class="material-symbols-outlined">
+          person
+        </span>
+        <span>{{user}}</span>
+      </span>
+    </div>
   </span>
 </div>

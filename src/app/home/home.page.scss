@@ -5,7 +5,21 @@
   width: 100dvw;
   height: 100dvh;
 }
-.map-container{
-  width: 500px !important;
-  height: 250px !important;
+#wrapper > span{
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+#spanBackground{
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsl(0, 0%, 13%);
+  z-index: -1;
+  transition: opacity 1s, z-index 0.1s;
+}
+.markerCliccato{
+  opacity: 0.6 !important;
+  z-index: 1 !important;
 }
