@@ -86,6 +86,7 @@ button:disabled{
 
 .btn-accento{
     color: #F2F2F2;
+    caret-color: transparent;
     background-color: var(--accento);
     transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }

@@ -1,6 +1,6 @@
-@use '../stile-form.scss';
-
 form{
+    --height: auto;
+    height: var(--height);
     width: 100%;
 }
 
@@ -15,7 +15,6 @@ form{
 
 .invisibile{
     visibility: hidden;
-    transform: scaleY(0);
     position: absolute;
     width: auto;
 }
