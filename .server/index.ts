@@ -39,7 +39,9 @@ Autenticazione.RegistraUtente(app, driver);
 Autenticazione.LoginUtente(app, driver);
 Autenticazione.LoginGoogle(app, driver);
 Autenticazione.LogoutUtente(app);
-Autenticazione.CambiaPassword(app, driver)
+Autenticazione.CambiaPassword(app, driver);
+Autenticazione.RecuperoCredenziali(app, driver);
+Autenticazione.VerificaCodice(app, driver);
 Autenticazione.ControlloToken(app, driver);
 Autenticazione.ControlloTokenMiddleware(app, driver);
 

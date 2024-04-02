@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken } from "../encrypt.js";
-import { InviaMailNuovaPassword, InviaMailPasswordCambiata } from "./mail.js";
+import { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken } from "../encrypt.js";
+import { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
+import { DataInStringa, StringaInData } from "../funzioni.js";
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -15,7 +16,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
         if(data) return res.status(400).send("Username già esistente")
     
-        const password = GeneraPwd()
+        const password = GeneraPassword()
         const d = new Date();
         const inserimento = await driver.Inserisci({ 
             username, 
@@ -41,15 +42,15 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const tipo = utente.includes("@") ? "email" : "username";
-        const data = await driver.PrendiUno({ [tipo] : utente }, { "password" : 1, "cambioPwd" : 1 })
+        const user = await driver.PrendiUno({ [tipo] : utente }, { "password" : 1, "cambioPwd" : 1 })
     
-        if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
-        if(!data) return res.status(400).send("Username non esistente") 
+        if(driver.ChkErrore(user)) return res.status(500).send(user["errore"])
+        if(!user) return res.status(400).send("Username non esistente") 
     
-        if(ConfrontaPwd(password, data["password"]))
+        if(ConfrontaPwd(password, user["password"]))
         {
-            const token = CreaToken({username: utente, _id : data["_id"].toString()})
-            RispondiToken(res, token, { "ok" : "Login Effettuato", "deveCambiare" : data["cambioPwd"]})
+            const token = CreaToken({username: user["username"], _id : user["_id"].toString()})
+            RispondiToken(res, token, { "ok" : "Login Effettuato", "deveCambiare" : user["cambioPwd"]})
         }
         else return res.status(401).send("Password errata");
     });   
@@ -75,7 +76,7 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
     });
 }
 
-const CambiaPassword = async (app: Express, driver : MongoDriver) => {
+const CambiaPassword = (app: Express, driver : MongoDriver) => {
     app.post("/api/cambio-password", async (req : Request, res : Response) => {
 
         const { password } = req["body"];
@@ -98,6 +99,70 @@ const CambiaPassword = async (app: Express, driver : MongoDriver) => {
     })
 }
 
+const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
+    app.post("/api/recupero-credenziali", async (req: Request, res: Response) => {
+        const { email } = req["body"];
+        
+        const user = await driver.PrendiUno({ email }) as any;
+        if(driver.ChkErrore(user)) return res.status(500).send("Errore interno nel server")
+
+        if(!user)return res.status(400).send("User non esistente")
+        delete user["_id"];
+
+        const codice = GeneraCodice();
+        const recupero = {
+            data: DataInStringa(new Date()),
+            codice
+        }
+
+        const data = await driver.Replace({ email }, { ...user, recupero })
+        if(driver.ChkErrore(data)) return res.status(500).send("Errore interno nel server")
+
+        InviaMailRecupero(email, user["username"], codice)
+        .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
+        .catch(() => res.status(500).send("Errore nell'invio della mail"))
+    })
+}
+
+const VerificaCodice = (app: Express, driver: MongoDriver) => {
+    app.post("/api/verifica-codice", async (req: Request, res: Response) => {
+        const payload = DecifraToken(req.headers["authorization"]!);
+        const { username } = payload;
+        const { codice } = req["body"]
+
+        const user = await driver.PrendiUno({ username }) as any;
+        if(driver.ChkErrore(user)) return res.status(500).send("Errore interno nel server")
+
+        if(!user) return res.status(400).send("Mail non esistente")
+
+        if(!user["recupero"])return res.status(401).send("Recupero non richiesto");
+
+        const { recupero } = user;
+        const oggi = new Date();
+        const dataRichiesta = StringaInData(recupero["data"])
+
+        if((oggi.getTime() - dataRichiesta.getTime()) > 60 * 30 * 1000){
+            const info = await driver.Replace({ username }, user)
+            if(driver.ChkErrore(info)) return res.status(500).send("Errore interno nel server")
+            res.status(402).send("Tempo scaduto")
+            return;
+        }
+
+        if(codice !== recupero["codice"]){
+            res.status(403).send("Codice errato")
+            return;
+        }
+
+        delete user["recupero"]
+        delete user["_id"]
+
+        const info = await driver.Replace({ username }, user)
+        if(driver.ChkErrore(info)) return res.status(500).send("Errore interno nel server")
+
+        res.send({ "ok" : "Codice corretto" })
+    })
+}
+
 const LogoutUtente = (app : Express) => {
     app.get("/api/logout", (req : Request, res : Response) => {
         res.send({ "ok" : "Logout effettuato" })
@@ -112,4 +177,4 @@ const ControlloTokenMiddleware = (app : Express, driver : MongoDriver) => {
     app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(driver, req, res, next));
 }
 
-export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle, CambiaPassword }
+export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle, CambiaPassword, RecuperoCredenziali, VerificaCodice }

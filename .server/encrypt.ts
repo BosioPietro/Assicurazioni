@@ -59,7 +59,7 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
 
 const DecifraToken = (token : string) : any => jwt.decode(token);
 
-const GeneraPwd = () : string => {
+const GeneraPassword = () : string => {
     const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numeri = "0123456789";
     const speciali = "!@#$%^&*()_+";
@@ -74,4 +74,17 @@ const GeneraPwd = () : string => {
     return pwd;
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPwd, CifraPwd, DecifraToken }
+const GeneraCodice = () => {
+    const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numeri = "0123456789";
+    const caratteri = alfabeto + numeri;
+
+    let codice = "";
+    for(let i = 0; i < 6; ++i){
+        codice += caratteri.charAt(Math.floor(Math.random() * caratteri.length))
+    }
+
+    return codice;
+}
+
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken }

@@ -41,9 +41,10 @@ const AccessToken = async () => {
 
 //#endregion
 
-const [nuovaPassword, passwordCambiata] = await Promise.all([
+const [nuovaPassword, passwordCambiata, recuperoCredenziali] = await Promise.all([
     ReadFileAsync("./mail/nuovaPassword.html"), 
-    ReadFileAsync("./mail/passwordCambiata.html")
+    ReadFileAsync("./mail/passwordCambiata.html"),
+    ReadFileAsync("./mail/recuperoCredenziali.html")
 ]);
 
 const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve, reject) => {
@@ -63,7 +64,7 @@ const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve,
     })
 });
 
-const InviaMailNuovaPassword = async (username : string, password : string, email : string) => {
+const InviaMailNuovaPassword = (username : string, password : string, email : string) => {
 
     const opzioni : MailOptions = {
         from: env["EMAIL"],
@@ -74,7 +75,7 @@ const InviaMailNuovaPassword = async (username : string, password : string, emai
     return InviaMail(opzioni);
 }
 
-const InviaMailPasswordCambiata = async (username : string, email : string) => {
+const InviaMailPasswordCambiata = (username : string, email : string) => {
     const opzioni : MailOptions = {
         from: env["EMAIL"],
         to: email,
@@ -84,4 +85,14 @@ const InviaMailPasswordCambiata = async (username : string, email : string) => {
     return InviaMail(opzioni);
 }
 
-export { InviaMailNuovaPassword, InviaMailPasswordCambiata }
+const InviaMailRecupero = (email: string, username: string, codice: string) =>{
+    const opzioni: MailOptions = {
+        from: env["EMAIL"],
+        to: email,
+        subject: "Recupero Credenziali",
+        html: recuperoCredenziali.replace("${username}", username).replace("${codice}", codice)
+    }
+    return InviaMail(opzioni);
+}
+
+export { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero }
