@@ -31,8 +31,14 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input("valore")
   public value: string = "";
 
+  @Input("messaggio-errore")
+  public errore?: string;
+
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
+
+  @Output()
+  onChange: EventEmitter<Event> = new EventEmitter<Event>();
 
   constructor(
     @Self()
@@ -60,19 +66,23 @@ export class InputTextComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+    this.onValueChange = fn;
   }
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  public onChange(value?: string) {}
+  public onValueChange(value?: string) {}
   public onTouched() {}
 
-  public Cambiato(e: Event){
+  public Input(e: Event){
     this.onInput.emit(e)
-    return this.onChange((e.target as HTMLInputElement | null)?.value)
+    return this.onValueChange((e.target as HTMLInputElement | null)?.value)
+  }
+
+  public Cambiato(e: Event){
+    this.onChange.emit(e)
   }
   
 }

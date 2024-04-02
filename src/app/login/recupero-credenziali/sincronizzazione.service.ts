@@ -21,6 +21,12 @@ export class SincronizzazioneService {
     }
     public formValido: boolean = false;
 
+    public errori = {
+      mail: "",
+      codice: ""
+    }
+  
+
     Aggiorna(e: Event, valido: boolean){
       const input = e.target as HTMLInputElement;
       if(!input) return;
@@ -40,6 +46,12 @@ export class SincronizzazioneService {
       const wIniziale = getComputedStyle(form).width
       const wFinale = padding + formFinto.clientWidth + "px"
 
+      const formInterno = form.querySelector("form")!  
+      const hIniziale = formInterno.clientHeight + "px";
+      const hFinale = formFinto.clientHeight + "px";
+
+      this.CambiaHeightForm(hIniziale, hFinale, formInterno);
+      
       formFinto.style.display = "";
       formFinto.classList.remove("invisibile")
 
@@ -56,11 +68,22 @@ export class SincronizzazioneService {
         setTimeout(() => {
           this.staAnimando = false;
           setTimeout(() => {
+            formInterno.style.setProperty("--height", "auto")
+            formInterno.classList.remove("transizione")
             this.inTransizione = false;
           }, 500);
         }, 1);
       }, 500);
     
+    }
+
+    CambiaHeightForm(iniziale: string, finale: string, form: HTMLElement){
+      form.style.setProperty("--height", iniziale)
+      form.classList.add("transizione")
+      
+      setTimeout(() => {
+        form.style.setProperty("--height", finale)
+      }, 1);
     }
 
     WidthForm(form:HTMLElement){

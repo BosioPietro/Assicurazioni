@@ -9,6 +9,11 @@ export class SincronizzazioneService {
       password: ""
     }
 
+    public errori = {
+      username: "",
+      password: "",
+    }
+
     public valido: boolean = false;
 
     public Aggiorna(e: Event, valido: boolean){

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './form-reset-password.component.html',
-  styleUrls: ['./form-reset-password.component.scss'],
+  styleUrls: ['../../stile-form.scss', '../stile-form.scss', './form-reset-password.component.scss'],
   imports: [ReactiveFormsModule, TooltipComponent, InputPasswordComponent],
   animations: [animazione],
   standalone: true

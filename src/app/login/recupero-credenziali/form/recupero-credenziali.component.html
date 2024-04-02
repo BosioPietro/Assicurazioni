@@ -30,7 +30,8 @@
             id-input="mail-recupero" 
             name="mail-recupero" 
             formControlName="mail-recupero"
-            (onInput)="sinc.Aggiorna($event, formInvioMail.valid);"
+            [messaggio-errore]="sinc.errori['mail']"
+            (onInput)="sinc.Aggiorna($event, formInvioMail.valid); sinc.errori['mail']=''"
           />
         </div>
         
@@ -52,8 +53,9 @@
           <label>Codice</label>
           <InputCodice 
             id="codice-mail" 
-            [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || router.url) == '/login/recupero-credenziali'"
-            (CodiceCambiato)="ControllaCodice($event)" 
+            [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || RimuoviParametri(router.url)) == '/login/recupero-credenziali'"
+            (CodiceCambiato)="ControllaCodice($event); sinc.errori['codice'] = ''" 
+            [messaggio-errore]="sinc.errori['codice']"
           />
         </div>
         <div class="form-item">

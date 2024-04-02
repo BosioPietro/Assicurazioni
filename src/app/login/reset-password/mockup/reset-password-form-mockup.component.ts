@@ -6,7 +6,7 @@ import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-passw
 @Component({
   selector: 'ResetPasswordFinto',
   templateUrl: './reset-password-form-mockup.component.html',
-  styleUrls: ['../stile-form.scss'],
+  styleUrls: ['../../stile-form.scss', '../stile-form.scss'],
   imports: [InputPasswordComponent],
   standalone: true
 })

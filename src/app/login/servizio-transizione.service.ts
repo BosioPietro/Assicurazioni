@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { RimuoviParametri } from '../utils/funzioni';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,27 @@ export class TransizioneService {
   public overlay?: HTMLElement;
 
   public inTransizione:boolean = false;
-  public ultimaRoute?: string;
-  public routeAttuale?: string;
+  private ultimaRoutePagina?: string;
+  private routeAttualePagina?: string;
 
   AggiungiForm(form : HTMLElement, route : string){
     this.formFinti[route] = form;
+  }
+
+  public get ultimaRoute() : string | undefined{
+    return this.ultimaRoutePagina;
+  }
+  public get routeAttuale() : string | undefined{
+    return this.routeAttualePagina;
+  }
+
+  public set ultimaRoute(route: string){
+    this.ultimaRoutePagina = RimuoviParametri(route)
+  }
+
+  
+  public set routeAttuale(route: string){
+    this.routeAttualePagina = RimuoviParametri(route)
   }
 
   private CalcolaWidth(route : string){
@@ -63,10 +80,13 @@ export class TransizioneService {
   }
 
   MostraOverlay(){
-    if(!this.overlay || !this.ultimaRoute || !this.routeAttuale) return;
+    if(!this.overlay || !this.ultimaRoutePagina || !this.routeAttualePagina) return;
 
-    const formPrec = this.formFinti[this.ultimaRoute]
-    const formAtt = this.formVeri[this.routeAttuale]
+    console.log(this.ultimaRoute)
+    console.log(this.routeAttuale)
+
+    const formPrec = this.formFinti[this.ultimaRoutePagina]
+    const formAtt = this.formVeri[this.routeAttualePagina]
 
     formPrec.classList.add("mostra")
     this.overlay.classList.add("visibile")
@@ -152,9 +172,9 @@ export class TransizioneService {
   }
 
   NascondiOverlay(){
-    if(!this.overlay || !this.ultimaRoute) return;
+    if(!this.overlay || !this.ultimaRoutePagina) return;
 
-    const form = this.formFinti[this.ultimaRoute]
+    const form = this.formFinti[this.ultimaRoutePagina]
     form.classList.remove("mostra")
     this.overlay.classList.remove("visibile")
   }

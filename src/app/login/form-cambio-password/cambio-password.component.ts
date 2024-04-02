@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { TooltipComponent } from './tooltip/tooltip.component';
 import { CambioPasswordService } from './cambio-password.service';
 import { NavigationStart, Router } from '@angular/router';
-import { ControllaToken } from 'src/app/utils/funzioni';
+import { ControllaToken, RimuoviParametri } from 'src/app/utils/funzioni';
 import { InfoComponent } from 'src/app/comuni/info/info.component';
 import { ErroreComponent } from 'src/app/comuni/errore/errore.component';
 
@@ -37,7 +37,7 @@ export class CambioPasswordComponent implements OnInit{
 
     this.router.events.forEach(async (event) => {
         if(event instanceof NavigationStart) {
-          if(event.url === "/login/cambio-password")
+          if(RimuoviParametri(event.url) == "/login/cambio-password")
           await ControllaToken(this.router);
         }
       }

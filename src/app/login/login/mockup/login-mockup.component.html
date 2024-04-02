@@ -26,6 +26,7 @@
         testo-label="E-Mail o Username" 
         icona="person"
         [valore]="sinc.valori['username']" 
+        [messaggio-errore]="sinc.errori['username']"
         [mockup]="true" 
         [class.cambia-form]="transizione.inTransizione"
       />
@@ -35,7 +36,8 @@
         name="username" 
         testo-label="Password" 
         icona="lock-closed"
-        [valore]="sinc.valori['password']"  
+        [valore]="sinc.valori['password']"
+        [messaggio-errore]="sinc.errori['password']"
         [mockup]="true" 
         [class.cambia-form]="transizione.inTransizione"
       />

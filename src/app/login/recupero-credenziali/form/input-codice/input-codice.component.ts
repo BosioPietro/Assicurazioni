@@ -1,20 +1,24 @@
-import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { SincronizzazioneService } from '../../sincronizzazione.service';
 import { FormsModule } from '@angular/forms';
+import { IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'InputCodice',
   templateUrl: './input-codice.component.html',
   styleUrls: ['../../stile-input-codice.scss'],
-  imports: [FormsModule],
+  imports: [FormsModule, IonIcon],
   standalone: true
 })
 export class InputCodiceComponent{
 
   constructor(public sinc: SincronizzazioneService){}
 
+  @Input("messaggio-errore")
+  errore?: string;
+
   @Output()
-  CodiceCambiato = new EventEmitter<boolean>()
+  CodiceCambiato = new EventEmitter<[boolean, string]>()
 
   @ViewChild("n0")
   n0!: ElementRef<HTMLInputElement>
@@ -33,10 +37,6 @@ export class InputCodiceComponent{
 
   @ViewChild("n5")
   n5!: ElementRef<HTMLInputElement>
-
-  CodiceCambiatoEvent(){
-    this.CodiceCambiato.emit(true)
-  }
 
   private PrendiInput(indice: 0|1|2|3|4|5){
     switch(indice){
@@ -93,7 +93,7 @@ export class InputCodiceComponent{
       codice += input.value;
     }
 
-    this.CodiceCambiato.emit(codice.length == 6)
+    this.CodiceCambiato.emit([codice.length == 6, codice])
   }
 
   GestisciKey(e: KeyboardEvent, indice: 0|1|2|3|4|5){
@@ -125,10 +125,12 @@ export class InputCodiceComponent{
       if(!this.ControllaCarattere(testo.charAt(i))){
         input.focus()
         input.value = ""
+        this.ControllaValore();
         return;
       }
     }
-
+    
+    this.ControllaValore();
     if(testo.length < 6 - indice){
       const input = this.PrendiInput(testo.length as any)
       input.focus();

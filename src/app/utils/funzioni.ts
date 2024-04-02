@@ -1,7 +1,7 @@
 import { Router } from "@angular/router";
 import { GestoreServerService } from "../server/gestore-server.service"
 import { Metodi } from "./TipiSpeciali";
-import moment, { Moment } from "moment";
+import moment from "moment";
 
 const server = new GestoreServerService();
 
@@ -16,6 +16,12 @@ const GiorniMancanti = (creazione : string) => {
     const scadenza = moment(creazione, "DD-MM-YYYY").startOf("day").add(GIORNI_CAMBIO_PWD, "days")
 
     return scadenza.diff(oggi, "days")
+}
+
+
+const RimuoviParametri = (route: string) => {
+    const i = route.indexOf("?")
+    return i == -1 ? route :  route.slice(0, i)
 }
 
 const ControllaToken = async (r : Router) : Promise<any> => {
@@ -53,4 +59,4 @@ const ControllaToken = async (r : Router) : Promise<any> => {
 
 
 
-export { ControllaToken }
+export { ControllaToken, RimuoviParametri }

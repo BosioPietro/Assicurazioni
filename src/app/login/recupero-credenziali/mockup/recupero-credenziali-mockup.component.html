@@ -27,6 +27,7 @@
         icona="mail" 
         testo-label="E-Mail" 
         name="mail-recupero" 
+        [messaggio-errore]="sinc.errori['mail']"
         [valore]="sinc.valori['mail-recupero']"
         [mockup]="true"
       />
@@ -47,7 +48,10 @@
     </span>
     <div class="form-item">
       <label>Codice</label>
-      <InputCodiceFinto  [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || router.url) == '/login/recupero-credenziali'"/>
+      <InputCodiceFinto  
+        [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || RimuoviParametri(router.url)) == '/login/recupero-credenziali'"
+        [messaggio-errore]="sinc.errori['codice']"
+      />
     </div>
     <div class="form-item">
       <button type="button" [disabled]="!sinc.codiceCorretto" class="btn-accento">Verifica Codice</button>

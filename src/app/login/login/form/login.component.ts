@@ -18,7 +18,7 @@ import { SincronizzazioneService } from '../sincronizzazione.service';
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login.component.scss'],
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent],
   standalone: true,
 })
@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   private activatedRoute = inject(ActivatedRoute);
-
   private username = this.activatedRoute.snapshot.queryParams["username"] || "";
 
   form : FormGroup = new FormGroup({
@@ -53,6 +52,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
+    
+    this.sinc.valori["username"] =  this.username;
   }
 
   @ViewChild("formHtml")
@@ -81,16 +82,18 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }
-  
+
   private GestisciErrore(err : AxiosError){
     switch(err.response?.status)
     {
       case 500: 
         return alert("Errore interno del server");
       case 400:
-        return alert("Username non esistente")
+        this.sinc.errori["username"] = "Username non esistente"
+        break;
       case 401:
-        return alert("Password errata")
+        this.sinc.errori["password"] = "Password errata";
+        break;
       default:
         return alert(`Errore: ${err.response?.data} (${err.response?.status})`);
     }

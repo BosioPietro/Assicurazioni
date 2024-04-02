@@ -31,6 +31,9 @@ export class InputPasswordComponent implements ControlValueAccessor, AfterViewIn
   @Input("valore")
   public value?: string;
 
+  @Input("messaggio-errore")
+  public errore?: string;
+
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
 
@@ -39,6 +42,9 @@ export class InputPasswordComponent implements ControlValueAccessor, AfterViewIn
 
   @Output()
   public focusOut: EventEmitter<null> = new EventEmitter();
+
+  @Output()
+  onChange: EventEmitter<Event> = new EventEmitter<Event>();
 
   public passwordVisibile: boolean = false;
 
@@ -78,21 +84,24 @@ export class InputPasswordComponent implements ControlValueAccessor, AfterViewIn
   }
 
   registerOnChange(fn: any): void {
-    this.onChange = fn;
+    this.onValueChange = fn;
   }
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
-  public onChange(value?: string) {}
+  public onValueChange(value?: string) {}
   public onTouched() {}
 
 
-  public Cambiato(e: Event){
-    console.log((e.target as any).value)
+  public Input(e: Event){
     this.onInput.emit(e);
-    return this.onChange((e.target as HTMLInputElement | null)?.value)
+    return this.onValueChange((e.target as HTMLInputElement | null)?.value)
+  }
+
+  public Cambiato(e: Event){
+    this.onChange.emit(e)
   }
   
 }

@@ -12,7 +12,7 @@ import { SincronizzazioneService } from '../sincronizzazione.service';
 @Component({
   selector: 'LoginFinto',
   templateUrl: './login-mockup.component.html',
-  styleUrls: ['./login-mockup.component.scss'],
+  styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login-mockup.component.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleFinto, FintoHrComponent, InputTextComponent, InputPasswordComponent],
 })

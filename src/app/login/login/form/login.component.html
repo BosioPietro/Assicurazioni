@@ -26,8 +26,9 @@
         id-input="login-mail" 
         icona="person" 
         formControlName="username"
+        [messaggio-errore]="sinc.errori['username']"
         [class.cambia-form]="transizione.inTransizione"
-        (onInput)="sinc.Aggiorna($event, form.valid)"
+        (onInput)="sinc.Aggiorna($event, form.valid); sinc.errori['username'] = ''"
       />
     </div>
     <div class="form-item">
@@ -37,8 +38,9 @@
         id-input="login-password" 
         icona="lock-closed" 
         formControlName="password" 
+        [messaggio-errore]="sinc.errori['password']"
         [class.cambia-form]="transizione.inTransizione"
-        (onInput)="sinc.Aggiorna($event, form.valid)"
+        (onInput)="sinc.Aggiorna($event, form.valid); sinc.errori['password'] = ''"
       />
     </div>
     <div class="form-item">
