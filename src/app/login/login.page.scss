@@ -15,6 +15,10 @@
     background-color: var(--sfondo-form);
     border-radius: var(--br);
     overflow: clip;
+    
+    & > *{
+        border-radius: var(--br);
+    }
 }
 
 main{

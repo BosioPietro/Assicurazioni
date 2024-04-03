@@ -75,33 +75,37 @@ button{
     width: 100%;
     border-radius: 100vh;
     background-color: #F2F2F2;
-    color: inherit;
+    color: var(--accento);
     font-size: var(--dim);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
     cursor: pointer;
+    caret-color: transparent;
 }
 
 button:disabled{
-   opacity: .5;
+    filter: saturate(.5);
+    opacity: .5;
+}
+
+button:not(:disabled):active{
+    transform: scale(.95);
+}
+
+button:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--sfondo));
 }
 
 .btn-accento{
     color: #F2F2F2;
-    caret-color: transparent;
     background-color: var(--accento);
-    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .btn-accento:not(:disabled):hover{
     filter: drop-shadow(0 0 5px var(--accento));
 }
 
-.btn-accento:disabled{
-    background-color: #F2F2F2;
-    color: #9f9f9f;
-}
 
 .btn-accento:not(:disabled):active{
-    transform: scale(.95);
     background-color: color-mix(in hsl, var(--accento) 95%, #000 5%);
 }
 .logo{

@@ -6,7 +6,11 @@ import moment from "moment";
 const server = new GestoreServerService();
 
 const UrlPagina = () : string => {
-    const url = window.location.href.replace(/https?:\/\//, "");
+    let url = window.location.href.replace(/https?:\/\//, "");
+    const i = url.indexOf("?")
+    if(i != -1){
+        url = url.split("?")[0]
+    }
     return url.split("/").slice(1).join("/"); 
 }
 
@@ -43,19 +47,23 @@ const ControllaToken = async (r : Router) : Promise<any> => {
             info["giorniMancanti"] = GiorniMancanti(info["dataCreazione"]);
         break;
         default:
-            const deveCambiare = info["deveCambiare"]
-            if(!deveCambiare)break;
-
-            const giorniRimanenti = GiorniMancanti(info["dataCreazione"]); 
-            if(giorniRimanenti <= 0)
-            {
-                r.navigate(["/login/cambio-password"])
-            }
+            DeveCambiare(info, r);
         break
     }
 
     return info;
 } 
+
+const DeveCambiare = (info: any, r: Router) => {
+    const deveCambiare = info["deveCambiare"]
+    if(!deveCambiare)return;
+
+    const giorniRimanenti = GiorniMancanti(info["dataCreazione"]); 
+    if(giorniRimanenti <= 0)
+    {
+        r.navigate(["/login/cambio-password"])
+    }
+}
 
 
 

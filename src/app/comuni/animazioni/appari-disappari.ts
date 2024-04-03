@@ -6,7 +6,7 @@ const animazione = trigger('appari', [
     transition(':enter', animate('300ms cubic-bezier(0.22, 0.61, 0.36, 1)')),
     transition(':leave', [
         style({ opacity: 1 }),
-        animate('300ms cubic-bezier(0.22, 0.61, 0.36, 1)', style({ opacity: 0 })) // animate to 0 opacity
+        animate('300ms cubic-bezier(0.22, 0.61, 0.36, 1)', style({ opacity: 0 }))
     ])
 ])
 

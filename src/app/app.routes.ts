@@ -20,7 +20,7 @@ export const routes: Routes = [
       },
       {
         path : "cambio-password",
-        loadComponent: () => import("./login/form-cambio-password/cambio-password.component").then((m) => m.CambioPasswordComponent)
+        loadComponent: () => import("./login/cambio-password/form/cambio-password.component").then((m) => m.CambioPasswordComponent)
       },
       {
         path: "recupero-credenziali",

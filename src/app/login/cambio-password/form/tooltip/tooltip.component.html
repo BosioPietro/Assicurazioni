@@ -18,13 +18,17 @@
   </div>
   <div class="regole">
     @for (p of servizio.parametri; track $index) {
-      <div class="voce-regola" [class.giusto]="servizio.stati[$index]">
+      @if(!p["nascosto"])
+      {
+
+        <div class="voce-regola" [class.giusto]="servizio.stati[$index]">
           <ion-icon name="ellipse-outline"></ion-icon>
           <ion-icon name="checkmark-circle"></ion-icon>
           <p>
             {{ p["regola"] }}
           </p>
-      </div>
+        </div>
+      }
     }
   </div>
 </div>

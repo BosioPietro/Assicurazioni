@@ -4,12 +4,6 @@ import { addIcons } from 'ionicons';
 import { ellipseOutline, checkmarkCircle } from 'ionicons/icons';
 import { CambioPasswordService } from '../cambio-password.service';
 
-
-type Parametro = {
-  regola : string,
-  controllo : (s : string) => boolean
-}
-
 @Component({
   selector: 'Tooltip',
   templateUrl: './tooltip.component.html',

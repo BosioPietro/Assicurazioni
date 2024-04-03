@@ -9,6 +9,10 @@ export class SincronizzazioneService {
       conferma: ""
     }
 
+    public errori = {
+      conferma: ""
+    }
+
     public valido: boolean = false;
 
     public Aggiorna(e: Event, valido: boolean){

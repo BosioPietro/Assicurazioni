@@ -2,7 +2,6 @@
     --testo-label: .75rem;
     --padding: .5rem;
     --colore-normale: #d1d5db;
-    --colore-disabilitato: #0003;
     --colore-testo: #4b5563;
     --font-size: 1rem;
 
@@ -81,12 +80,12 @@ input:focus-visible{
 :host:hover,
 :host:has(input:focus-visible){
     border-color: var(--accento);
-
-    ion-icon{
+   
+    ion-icon:not(.disabilitato){
         color: var(--accento);
     }
 
-    hr{
+    hr:not(.disabilitato){
         border-color: var(--accento);        
     }
 }
@@ -103,6 +102,16 @@ input:focus-visible{
 
 :host(:has(input:focus-visible)){
     outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
+}
+
+.disabilitato{
+    --colore-testo: #4b5563;
+    --colore-normale: #d1d5db;
+    &, label{
+        pointer-events: none;
+        opacity: .5;
+    }
+    
 }
 
 :host.cambia-form input,

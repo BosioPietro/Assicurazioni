@@ -1,20 +1,24 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { TooltipComponent } from './tooltip/tooltip.component';
 import { CambioPasswordService } from './cambio-password.service';
-import { NavigationStart, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ControllaToken, RimuoviParametri } from 'src/app/utils/funzioni';
 import { InfoComponent } from 'src/app/comuni/info/info.component';
 import { ErroreComponent } from 'src/app/comuni/errore/errore.component';
+import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
+import { ConfrontaPassword } from 'src/app/utils/Input';
+import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
+import { TooltipComponent } from './tooltip/tooltip.component';
 
 @Component({
   selector: 'app-cambio-password',
   templateUrl: './cambio-password.component.html',
-  styleUrls: ['./cambio-password.component.scss'],
+  styleUrls: ['../../stile-form.scss', './cambio-password.component.scss'],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, InfoComponent, ErroreComponent, InputPasswordComponent],
+  animations: [animazione],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, InfoComponent, ErroreComponent]
 })
 export class CambioPasswordComponent implements OnInit{
 
@@ -31,34 +35,18 @@ export class CambioPasswordComponent implements OnInit{
   constructor(public servizio : CambioPasswordService){}
 
   router : Router = new Router();
-  giorniMancanti? : number;
+  giorniMancanti? : number = 1;
 
   async ngOnInit(){
 
-    this.router.events.forEach(async (event) => {
-        if(event instanceof NavigationStart) {
-          if(RimuoviParametri(event.url) == "/login/cambio-password")
-          await ControllaToken(this.router);
-        }
-      }
-    );
+    // await ControllaToken(this.router);
 
-    const info : any = await ControllaToken(this.router);
-    this.giorniMancanti = info["giorniMancanti"]
+    // const info : any = await ControllaToken(this.router);
+    // this.giorniMancanti = info["giorniMancanti"]
 
     this.form.addValidators(
-      this.ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)
+      ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)
     )
-  }
-
-  ConfrontaPassword(controlOne: AbstractControl, controlTwo: AbstractControl) {
-      return () => {
-        if (controlOne.value !== controlTwo.value)
-        {
-          return { match_error: 'Value does not match' };
-        }
-        else return null;
-    };
   }
 
   MostraTooltip(){
@@ -66,8 +54,9 @@ export class CambioPasswordComponent implements OnInit{
     setTimeout(() => this.servizio.Controlla(this.form.controls["password"].value), 50)
   }
 
-  Controlla(){
-    this.servizio.Controlla(this.form.controls["password"].value)
+  Controlla($event : Event){
+    const input = $event.target as HTMLInputElement;
+    this.servizio.Controlla(input.value)
   }
 
   async Cambia(){

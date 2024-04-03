@@ -39,7 +39,7 @@ export class LoginPage implements OnInit, AfterViewInit {
       else if(e instanceof NavigationEnd && this.transizione.inTransizione)
       {
         this.transizione.routeAttuale = this.router.url;
-        this.transizione.MostraOverlay();
+        // this.transizione.MostraOverlay();
       }
     })
   }

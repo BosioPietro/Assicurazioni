@@ -34,6 +34,9 @@ export class InputPasswordComponent implements ControlValueAccessor, AfterViewIn
   @Input("messaggio-errore")
   public errore?: string;
 
+  @Input("disabilitato")
+  public disabilitato: boolean = false;
+
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
 

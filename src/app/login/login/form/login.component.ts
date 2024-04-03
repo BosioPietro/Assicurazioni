@@ -47,7 +47,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
-      localStorage.setItem("user", user["idToken"]);
       this.servizio.LoginGoogle(user)
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
