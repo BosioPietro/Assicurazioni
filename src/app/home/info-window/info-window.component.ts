@@ -14,7 +14,6 @@ export class InfoWindowComponent{
   @ViewChild('mapElement') mapElement!: any;
   map?: google.maps.Map;
   constructor(public mapService:MapService) { }
-  flag:boolean = false;
   lat?:number;
   lng?:number;
   city?:string;
@@ -23,9 +22,13 @@ export class InfoWindowComponent{
   travelDuration?:string;
   user?:string;
   date?:string;
+
   directionsService!: google.maps.DirectionsService;
   directionsRenderer!: google.maps.DirectionsRenderer;
   directionOptions!: google.maps.DirectionsRequest;
+  chiudiInfoWindow(){
+    this.mapService.flagInfoWindow = false;
+  }
   ngAfterViewInit() {
     this.directionsService = new google.maps.DirectionsService();
     this.directionsRenderer = new google.maps.DirectionsRenderer({
@@ -49,7 +52,7 @@ export class InfoWindowComponent{
     this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
     this.directionsRenderer.setMap(this.map);
     this.mapService.markerCoordsObservable.subscribe((marker:any)=>{
-      this.flag = true;
+      this.mapService.flagInfoWindow = true;
       this.lat = marker.coords.lat;
       this.lng = marker.coords.lng;
       this.city = marker.città;

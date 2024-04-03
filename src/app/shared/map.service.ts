@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 })
 export class MapService {
   markerCoordsObservable = new Subject<any>();
+  flagInfoWindow:boolean = false;
   constructor() { }
   markerCoords:any;
 }

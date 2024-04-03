@@ -1,13 +1,8 @@
 <ion-content [fullscreen]="true">
   <div id="wrapper">
     <span>
-      <span id="spanBackground" [ngClass]="{'markerCliccato': this.flag}"></span>
-      <google-map [center]="center" [zoom]="zoom">
-        <map-marker [position]="center"></map-marker>
-        @for(marker of markerList; track $index){
-          <map-marker [position]="marker.coords" (mapClick)="onMarkerClick($event, marker)"></map-marker>
-        }
-      </google-map>
+      <span id="spanBackground" [ngClass]="{'markerCliccato': this.mapService.flagInfoWindow, 'markerUnclickato': !this.mapService.flagInfoWindow}"></span>
+      <div #mapElement id="mappa"></div>
       <app-info-window></app-info-window>
     </span>
   </div>
