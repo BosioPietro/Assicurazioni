@@ -11,10 +11,14 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
         const { username, email } = req["body"];
     
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
-        const data = await driver.PrendiUno({ username })
-    
-        if(driver.ChkErrore(data)) return res.status(500).send(data["errore"])
+
+        let data = await driver.PrendiUno({ username })
+        if(driver.Errore(data, res)) return;
         if(data) return res.status(400).send("Username già esistente")
+
+        data = await driver.PrendiUno({ email })
+        if(driver.Errore(data, res)) return;
+        if(data) return res.status(400).send("Email già registrata")
     
         const password = GeneraPassword()
         const d = new Date();
@@ -25,7 +29,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
             cambioPwd : true, 
             dataCreazione: `${d.getDate().toString().padStart(2, "0")}-${(d.getMonth() + 1).toString().padStart(2, "0")}-${d.getFullYear()}`
         })
-        if(driver.ChkErrore(inserimento)) return res.status(500).send(inserimento["errore"])
+        if(driver.Errore(inserimento, res)) return;
     
         const token = CreaToken({username, _id : inserimento["insertedId"].toString()})
         
@@ -42,9 +46,9 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const tipo = utente.includes("@") ? "email" : "username";
-        const user = await driver.PrendiUno({ [tipo] : utente }, { "password" : 1, "cambioPwd" : 1 })
+        const user = await driver.PrendiUno({ [tipo] : utente }, { password : 1, cambioPwd : 1, username: 1 })
     
-        if(driver.ChkErrore(user)) return res.status(500).send(user["errore"])
+        if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Username non esistente") 
     
         if(ConfrontaPwd(password, user["password"]))
@@ -69,7 +73,8 @@ const LoginGoogle = async (app : Express, driver : MongoDriver) => {
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ email : regex }) as any;
-        if(driver.ChkErrore(user)) return res.status(500).send(user["errore"]);
+
+        if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Utente non autorizzato");
 
         RispondiToken(res, CreaToken(user), { "ok" : "Login effettuato" });
@@ -84,14 +89,18 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
         const tipo = payload["username"].includes("@") ? "email" : "username"
 
         const user : any = await driver.PrendiUno({ [tipo] : payload["username"] })
-        if(driver.ChkErrore(user)) return res.status(500).send("Errore update password")
+        if(driver.Errore(user, res)) return;
 
-        delete user["cambioPwd"]
         delete user["_id"];
+        // se il cambio delle password iniziale
+        delete user["cambioPwd"]
+        // se il cambio password è un recupero
+        delete user["recupero"]
+
         user["password"] = CifraPwd(password);
 
         const data = await driver.Replace({ [tipo] : payload["username"] }, user)
-        if(driver.ChkErrore(data)) return res.status(500).send("Errore update password")
+        if(driver.Errore(data, res)) return;
 
         InviaMailPasswordCambiata(user["username"], user["email"])
         .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
@@ -104,7 +113,7 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
         const { email } = req["body"];
         
         const user = await driver.PrendiUno({ email }) as any;
-        if(driver.ChkErrore(user)) return res.status(500).send("Errore interno nel server")
+        if(driver.Errore(user, res)) return;
 
         if(!user)return res.status(400).send("User non esistente")
         delete user["_id"];
@@ -116,11 +125,27 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
         }
 
         const data = await driver.Replace({ email }, { ...user, recupero })
-        if(driver.ChkErrore(data)) return res.status(500).send("Errore interno nel server")
+        if(driver.Errore(data, res)) return;
 
         InviaMailRecupero(email, user["username"], codice)
         .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
         .catch(() => res.status(500).send("Errore nell'invio della mail"))
+    })
+}
+
+const VerificaRecupero = (app: Express, driver: MongoDriver) => {
+    app.get("/api/verifica-recupero", async (req: Request, res: Response) => {
+        const payload = DecifraToken(req.headers["authorization"]!)
+        const { username } = payload;
+
+        const user = await driver.PrendiUno({ username }) as any;
+        if(driver.Errore(user, res)) return;
+
+        if(!user["recupero"])
+        {
+            res.status(405).send("L'Utente non deve cambiare la password");
+        }
+        else res.send({ ris : "ok" })
     })
 }
 
@@ -131,7 +156,7 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
         const { codice } = req["body"]
 
         const user = await driver.PrendiUno({ username }) as any;
-        if(driver.ChkErrore(user)) return res.status(500).send("Errore interno nel server")
+        if(driver.Errore(user, res)) return;
 
         if(!user) return res.status(400).send("Mail non esistente")
 
@@ -143,7 +168,7 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
 
         if((oggi.getTime() - dataRichiesta.getTime()) > 60 * 30 * 1000){
             const info = await driver.Replace({ username }, user)
-            if(driver.ChkErrore(info)) return res.status(500).send("Errore interno nel server")
+            if(driver.Errore(info, res)) return;
             res.status(402).send("Tempo scaduto")
             return;
         }
@@ -157,7 +182,7 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
         delete user["_id"]
 
         const info = await driver.Replace({ username }, user)
-        if(driver.ChkErrore(info)) return res.status(500).send("Errore interno nel server")
+        if(driver.Errore(info, res)) return;
 
         res.send({ "ok" : "Codice corretto" })
     })
@@ -177,4 +202,15 @@ const ControlloTokenMiddleware = (app : Express, driver : MongoDriver) => {
     app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(driver, req, res, next));
 }
 
-export { RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, LoginGoogle, CambiaPassword, RecuperoCredenziali, VerificaCodice }
+export { 
+    RegistraUtente, 
+    LoginUtente, 
+    LogoutUtente, 
+    ControlloToken, 
+    ControlloTokenMiddleware, 
+    LoginGoogle, 
+    CambiaPassword, 
+    RecuperoCredenziali, 
+    VerificaCodice,
+    VerificaRecupero 
+}

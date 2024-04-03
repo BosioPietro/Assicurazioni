@@ -44,6 +44,7 @@ Autenticazione.RecuperoCredenziali(app, driver);
 Autenticazione.VerificaCodice(app, driver);
 Autenticazione.ControlloToken(app, driver);
 Autenticazione.ControlloTokenMiddleware(app, driver);
+Autenticazione.VerificaRecupero(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);
