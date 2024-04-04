@@ -11,6 +11,7 @@ import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-passw
 import { ConfrontaPassword } from 'src/app/utils/Input';
 import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
 import { TooltipComponent } from './tooltip/tooltip.component';
+import { SincronizzazioneService } from '../sincronizzazione.service';
 
 @Component({
   selector: 'app-cambio-password',
@@ -32,17 +33,13 @@ export class CambioPasswordComponent implements OnInit{
     conferma : new FormControl("", [Validators.required])
   });
 
-  constructor(public servizio : CambioPasswordService){}
+  constructor(public servizio : CambioPasswordService, public sinc: SincronizzazioneService){}
 
   router : Router = new Router();
-  giorniMancanti? : number = 1;
 
   async ngOnInit(){
-
-    // await ControllaToken(this.router);
-
-    // const info : any = await ControllaToken(this.router);
-    // this.giorniMancanti = info["giorniMancanti"]
+    const info : any = await ControllaToken(this.router);
+    this.sinc.giorniMancanti = info["giorniMancanti"]
 
     this.form.addValidators(
       ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)

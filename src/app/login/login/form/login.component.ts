@@ -99,9 +99,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   CredenzialiDimenticate(){
-    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
+    // this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
+    // setTimeout(() => {
+    //   this.router.navigateByUrl("/login/recupero-credenziali");
+    // }, 500);
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
     setTimeout(() => {
-      this.router.navigateByUrl("/login/recupero-credenziali");
+      this.router.navigateByUrl("/login/cambio-password");
     }, 500);
   }
 
