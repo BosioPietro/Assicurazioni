@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
-import { DataStorageService } from '../shared/data-storage.service';
+import { DataStorageService } from './shared/data-storage.service';
 import { InfoWindowComponent } from './info-window/info-window.component';
-import { MapService } from '../shared/map.service';
+import { MapService } from './shared/map.service';
 import { NgClass } from '@angular/common';
 
 @Component({
