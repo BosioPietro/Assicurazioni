@@ -24,3 +24,131 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+:root{
+    --sfondo: #e6e6e6;
+    --op1: color-mix(in hsl, #000 25%, transparent);
+    --durata-transizione: .5s;
+    --accento: #245c73
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.flex-row, .flex-col{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.jc-c{
+    justify-content: center;
+}
+
+.al-c{
+    align-items: center;
+}
+
+// input[type="text"],
+// input[type="password"],
+// input[type="number"]{
+//     padding: .5rem 1rem;
+//     border: 0;
+//     border-radius: 1rem;
+//     background-color: #e6e6e6;
+//     // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
+// }
+
+button{
+    --dim: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-block: calc(var(--dim) * 0.75);
+    gap: calc(var(--dim) / 2);
+    width: 100%;
+    border-radius: 100vh;
+    background-color: #F2F2F2;
+    color: #000;
+    font-size: var(--dim);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+    cursor: pointer;
+    caret-color: transparent;
+}
+
+button:disabled{
+    filter: saturate(.5);
+    opacity: .5;
+}
+
+button:not(:disabled):active{
+    transform: scale(.95);
+}
+
+button:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--sfondo));
+}
+
+.btn-accento{
+    color: #F2F2F2;
+    background-color: var(--accento);
+}
+
+.btn-accento:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--accento));
+}
+
+
+.btn-accento:not(:disabled):active{
+    background-color: color-mix(in hsl, var(--accento) 95%, #000 5%);
+}
+.logo{
+    user-select: none;
+    caret-color: transparent;
+}
+
+a{
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--accento);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+a:hover{
+    filter: drop-shadow(0 0 1.5rem var(--accento));
+}
+
+.nascosto{
+    opacity: 0;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px var(--sfondo) inset !important;
+    caret-color: transparent;
+}
+
+input:-webkit-autofill{
+    -webkit-text-fill-color:  #000 !important;
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+.transizione{
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.controlla-width{
+    width: auto !important;
+    position: absolute !important;
+    transform: scaleY(0) !important;
+    opacity: 0 !important;
+}

@@ -1,0 +1,20 @@
+<div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato">
+  @if(icona){
+    <ion-icon [name]="icona" class="icona"/>
+    <hr/>
+  }
+  <div class="flex-row">
+      <label [attr.for]="idInput">{{ errore || testoLabel }}</label>
+      <input 
+        type="text" 
+        placeholder=""
+        [disabled]="disabilitato"
+        [attr.name]="name"
+        [attr.value]="value"
+        [attr.id]="idInput" 
+        (input)="!mockup && Input($event)"
+        (change)="!mockup && Cambiato($event)"
+        (blur)="!mockup && onTouched()"
+      />
+  </div>
+</div>

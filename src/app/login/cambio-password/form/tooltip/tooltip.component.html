@@ -1,0 +1,34 @@
+<div class="tooltip">
+  <h4 [style]="{ color : servizio.Colore() }">
+    {{ servizio.messaggio }}
+  </h4>
+  <div class="wrapper-barre">
+    <span class="cont-barre" [style]="{clipPath: 'polygon(' + servizio.percentuale + '% 0%, 0% 0%, 0% 100%, ' + servizio.percentuale + '% 100%)'}">
+      @for (p of servizio.parametri; track $index) {
+        <div class="barra-livello" 
+        [style]="{ backgroundColor : servizio.Colore() }">
+      </div>
+      }
+    </span>
+    <span class="cont-barre-finte">
+      @for (p of servizio.parametri; track $index) {
+        <div class="barra-livello-finta"></div>
+      }
+    </span>
+  </div>
+  <div class="regole">
+    @for (p of servizio.parametri; track $index) {
+      @if(!p["nascosto"])
+      {
+
+        <div class="voce-regola" [class.giusto]="servizio.stati[$index]">
+          <ion-icon name="ellipse-outline"></ion-icon>
+          <ion-icon name="checkmark-circle"></ion-icon>
+          <p>
+            {{ p["regola"] }}
+          </p>
+        </div>
+      }
+    }
+  </div>
+</div>

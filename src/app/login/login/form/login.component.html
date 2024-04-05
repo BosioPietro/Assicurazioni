@@ -1,0 +1,52 @@
+<form (ngSubmit)="Login()" [formGroup]="form" class="flex-col" #formHtml>
+
+  <img src="assets/google-logo.svg" class="logo"/>
+  <span class="wrapper-transizione flex-col">
+    <span class="flex-col jc-c">
+      <h1>Bentornato!</h1>
+      <div class="piccolo">
+        <span>Non hai ancora un account?&nbsp;</span>
+        <a href="/registrazione">Registrati</a>
+      </div>
+    </span>
+  
+    <div class="flex-row" >
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+      <LoginGoogle (loginWithGoogle)="googleSignin($event)" />
+    </div>
+  
+    <FintoHr testo="Oppure"/>
+  
+    <div class="form-item">
+      <InputText 
+        name="username" 
+        testo-label="E-Mail o Username" 
+        id-input="login-mail" 
+        icona="person" 
+        formControlName="username"
+        [messaggio-errore]="sinc.errori['username']"
+        [class.cambia-form]="transizione.inTransizione"
+        (onInput)="sinc.Aggiorna($event, form.valid); sinc.errori['username'] = ''"
+      />
+    </div>
+    <div class="form-item">
+      <InputPassword 
+        name="password" 
+        testo-label="Password" 
+        id-input="login-password" 
+        icona="lock-closed" 
+        formControlName="password" 
+        [messaggio-errore]="sinc.errori['password']"
+        [class.cambia-form]="transizione.inTransizione"
+        (onInput)="sinc.Aggiorna($event, form.valid); sinc.errori['password'] = ''"
+      />
+    </div>
+    <div class="form-item">
+      <button type="submit" [disabled]="!form.valid" class="btn-accento">Login</button>
+      <a class="piccolo" (click)="CredenzialiDimenticate()">Credenziali dimenticate?</a>
+    </div>
+  </span>
+
+</form>

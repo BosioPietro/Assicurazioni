@@ -1,0 +1,75 @@
+<div class="form flex-col" #formHtml>
+  <img class="logo" src="assets/google-logo.svg"/>
+  <span class="flex-col jc-c invisibile">
+    <h1>Recupero Credenziali</h1>
+    <span class="piccolo flex-row jc-c">
+      @switch (sinc.stato) {
+        @case (0) {
+          {{"Ti invieremo una mail per il recupero dei dati"}}
+        }
+        @case (1) {
+          {{"Ti abbiamo inviato un codice di 6 cifre. Inseriscilo per procedere"}}
+        }
+      }
+    </span>    
+  </span>
+
+  @switch (sinc.stato) {
+    @case (0) {
+      <form class="flex-col" [formGroup]="formInvioMail" (ngSubmit)="InviaMail()">
+        <span class="flex-col jc-c">
+          <h1>Recupero Credenziali</h1>
+          <span class="piccolo flex-row jc-c">
+            Ti invieremo una mail per il recupero dei dati
+          </span>   
+        </span>
+        <div class="form-item">
+          <InputText 
+            icona="mail" 
+            testo-label="E-Mail" 
+            id-input="mail-recupero" 
+            name="mail-recupero" 
+            formControlName="mail-recupero"
+            [messaggio-errore]="sinc.errori['mail']"
+            (onInput)="sinc.Aggiorna($event, formInvioMail.valid); sinc.errori['mail']=''"
+          />
+        </div>
+        
+        <div class="form-item">
+          <button type="submit" [disabled]="!formInvioMail.valid" class="btn-accento">Invia Mail</button>
+          <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
+        </div>
+      </form>
+    }
+    @case (1) {
+      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione">
+        <span class="flex-col jc-c">
+          <h1>Verifica Codice</h1>
+          <span class="piccolo flex-row jc-c">
+            Codice non ricevuto?&nbsp;<a>Invia dinuovo</a>
+          </span>   
+        </span>
+        <div class="form-item">
+          <label>Codice</label>
+          <InputCodice 
+            id="codice-mail" 
+            [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || RimuoviParametri(router.url)) == '/login/recupero-credenziali'"
+            (CodiceCambiato)="ControllaCodice($event); sinc.errori['codice'] = ''" 
+            [messaggio-errore]="sinc.errori['codice']"
+          />
+        </div>
+        <div class="form-item">
+          <button 
+            type="button" 
+            [disabled]="!sinc.codiceCorretto" 
+            class="btn-accento" 
+            (click)="ResetPassword()"
+          >
+          Verifica Codice</button>
+          <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>
+        </div>
+      </form>
+    }
+  }
+  
+</div>

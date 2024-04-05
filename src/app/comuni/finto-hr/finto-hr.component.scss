@@ -1,0 +1,28 @@
+:host{
+    width: 100%;
+}
+
+div{
+    color: var(--op1);
+    text-align: center;
+    position: relative;
+    font-size: .75rem;
+    white-space: nowrap;
+}
+
+div::after, div::before{
+    content: '';
+    height: 1px;
+    background-color: var(--op1);
+    position: absolute;
+    top: calc(50% - .75px);
+    left: 0;
+    width: calc(50% - 4ch);
+    border-radius: 1rem;
+}
+
+div::after{
+    left: initial;
+    right: 0;
+}
+

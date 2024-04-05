@@ -1,6 +1,8 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
+.env
+
 *~
 *.sw[mnpcod]
 .tmp
@@ -11,7 +13,8 @@ $RECYCLE.BIN/
 
 *.log
 log.txt
-
+/avvia
+/.server/node_modules
 
 /.sourcemaps
 /.versions
@@ -66,3 +69,5 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+src/environments/environment.ts
+src/app/environment.ts

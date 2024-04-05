@@ -1,0 +1,13 @@
+<div class="cont flex-col" [class.errore]="errore"></div>
+  <div class="flex-row">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[0].length > 1 ? sinc.caratteriCodice[0].slice(-1) : sinc.caratteriCodice[0]">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[1].length > 1 ? sinc.caratteriCodice[1].slice(-1) : sinc.caratteriCodice[1]">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[2].length > 1 ? sinc.caratteriCodice[2].slice(-1) : sinc.caratteriCodice[2]">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[3].length > 1 ? sinc.caratteriCodice[3].slice(-1) : sinc.caratteriCodice[3]">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[4].length > 1 ? sinc.caratteriCodice[4].slice(-1) : sinc.caratteriCodice[4]">
+    <input type="text" placeholder="#" [value]="sinc.caratteriCodice[5].length > 1 ? sinc.caratteriCodice[5].slice(-1) : sinc.caratteriCodice[5]">
+  <div class="messaggio-errore flex-row">
+    <ion-icon name="alert-circle"></ion-icon>
+    <span>{{ errore }}</span>
+  </div>
+</div>
