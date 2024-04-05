@@ -1,27 +1,33 @@
-#container {
-  text-align: center;
-
+#wrapper{
+  background-color: #f2f2f2;
+  position: relative;
+  width: 100dvw;
+  height: 100dvh;
+}
+#wrapper > span{
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 90%;
+  height: 50%;
+  overflow: hidden;
+  border-radius: 3rem;
+  left: 5%;
+  top: 5%;
+}
+#spanBackground{
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsl(0, 0%, 13%);
+  z-index: -1;
+  transition: opacity 1s, z-index 0.1s;
+}
+.markerCliccato{
+  opacity: 0.6 !important;
+  z-index: 1 !important;
+}
+#mappa{
+  width: 100%;
+  height: 100%;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
