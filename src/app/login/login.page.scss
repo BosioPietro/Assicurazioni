@@ -28,6 +28,10 @@ main{
     display: flex;
     width: var(--max-width);
     z-index: 0;
+
+    &:has(.wrapper-popover[visualizzato]){
+        z-index: 2;
+    }
 }
 
 .flex-row:has(Tooltip){

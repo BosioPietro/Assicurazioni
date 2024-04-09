@@ -1,5 +1,5 @@
-:host{
-    --colore: #2d7b89;
+div{
+    --colore: #000;
     --colore-info: color-mix(in srgb, var(--colore) 30%, transparent 70%);
     display: flex;
     border-radius: .5rem;

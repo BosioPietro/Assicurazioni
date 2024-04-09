@@ -75,7 +75,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       
       if("deveCambiare" in info)
       {
-        this.router.navigate(["/login/cambio-password"])
+        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+        setTimeout(() => {
+          this.router.navigateByUrl("/login/cambio-password");
+        }, 500);
       }
       else this.router.navigate(["/home"]);
     }
@@ -99,13 +102,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   CredenzialiDimenticate(){
-    // this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
-    // setTimeout(() => {
-    //   this.router.navigateByUrl("/login/recupero-credenziali");
-    // }, 500);
-    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
     setTimeout(() => {
-      this.router.navigateByUrl("/login/cambio-password");
+      this.router.navigateByUrl("/login/recupero-credenziali");
     }, 500);
   }
 

@@ -41,7 +41,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
   async ngOnInit(): Promise<void> {
     try
     {
-      // await this.servizio.VerificaRecupero();
+      await this.servizio.VerificaRecupero();
     }
     catch(e)
     {

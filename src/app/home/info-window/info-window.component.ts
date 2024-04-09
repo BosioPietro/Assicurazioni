@@ -3,6 +3,8 @@ import { Component, ViewChild } from '@angular/core';
 import { GoogleMap, GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
 import { MapService } from 'src/app/home/shared/map.service';
 
+
+
 @Component({
   selector: 'app-info-window',
   templateUrl: './info-window.component.html',
@@ -50,7 +52,7 @@ export class InfoWindowComponent{
     };
     
     this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
-    this.directionsRenderer.setMap(this.map);
+    this.directionsRenderer.setMap(this.map!);
     this.mapService.markerCoordsObservable.subscribe((marker:any)=>{
       this.mapService.flagInfoWindow = true;
       this.lat = marker.coords.lat;
@@ -66,7 +68,7 @@ export class InfoWindowComponent{
         travelMode: google.maps.TravelMode.DRIVING
       }
   
-      this.directionsService.route(this.directionOptions, (result, status) => {
+      this.directionsService.route(this.directionOptions, (result, status : google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setDirections(result);
           this.travelDuration = result.routes[0].legs[0].duration?.text;
@@ -75,5 +77,6 @@ export class InfoWindowComponent{
     })
   }
   
-  
 }
+
+declare var google:any;

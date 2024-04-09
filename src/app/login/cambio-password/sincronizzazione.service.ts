@@ -16,8 +16,6 @@ export class SincronizzazioneService {
     public giorniMancanti?: number;
     public valido: boolean = false;
 
-    
-
     public Aggiorna(e: Event, valido: boolean){
       const input = e.target as HTMLInputElement;
       if(!input) return;
@@ -25,18 +23,5 @@ export class SincronizzazioneService {
       const nome = input["name"] as "password" | "conferma" ;
       this.valori[nome] = input.value;
       this.valido = valido;
-      let animazioni = 
-      {
-        apri: {
-          listaUtente: false,
-          aggiungiUtente: false,
-          listaPerizie: false,
-        },
-        chiudi: {
-          listaUtente: false,
-          aggiungiUtente: false,
-          listaPerizie: false,
-        }
-      }
     }
 }

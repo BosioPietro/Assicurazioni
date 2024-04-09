@@ -1,0 +1,15 @@
+<div 
+  class="wrapper-popover"
+  [attr.visualizzato]="visibile"  
+  (mouseenter)="visibile = true" 
+  (mouseleave)="visibile = false"
+>
+  <ion-icon [name]="icona" [style.color]="colore"/>
+</div>
+@if(visibile){
+  <div class="messaggio-popover" [@appari]>
+    <span class="testo">
+      {{ messaggio }}
+    </span>
+  </div>
+}

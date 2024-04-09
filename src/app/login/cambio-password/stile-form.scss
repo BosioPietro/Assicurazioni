@@ -69,11 +69,15 @@ span{
     font-size: .75rem;
 }
 
+.piccolo{
+    white-space: nowrap;
+}
+
+.piccolo span{
+    gap: .5rem;
+}
+
 // no
 .btn-accento{
     margin-bottom: 0;
-}
-
-Info{
-    width: 100%;
 }
