@@ -16,6 +16,8 @@ export class TransizioneService {
   private ultimaRoutePagina?: string;
   private routeAttualePagina?: string;
 
+  public caricamento: boolean = false;
+
   AggiungiForm(form : HTMLElement, route : string){
     this.formFinti[route] = form;
   }
@@ -81,13 +83,10 @@ export class TransizioneService {
 
   MostraOverlay(){
     if(!this.overlay || !this.ultimaRoutePagina || !this.routeAttualePagina) return;
-
-    console.log(this.ultimaRoute)
-    console.log(this.routeAttuale)
-
+    
     const formPrec = this.formFinti[this.ultimaRoutePagina]
     const formAtt = this.formVeri[this.routeAttualePagina]
-
+    
     formPrec.classList.add("mostra")
     this.overlay.classList.add("visibile")
     if(!this.ControllaLogo(formAtt)){
@@ -96,7 +95,7 @@ export class TransizioneService {
       }, 1)
       return;
     }
-    
+
     this.MuoviLogo(formPrec, formAtt);
     this.NascondiFigli(formPrec);
     this.NascondiFigli(formAtt, false)

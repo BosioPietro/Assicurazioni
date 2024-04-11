@@ -49,13 +49,15 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   }
 
   async InviaMail(){
-    // try
-    // {
-      //await this.servizio.InviaMailRecupero(this.formInvioMail.get("mail-recupero")?.value);
-      
+    this.transizione.caricamento = true;
+    try
+    {
+      await this.servizio.InviaMailRecupero(this.formInvioMail.get("mail-recupero")?.value);
+      this.transizione.caricamento = false;  
       this.sinc.TransizioneForm(this.formHtml.nativeElement);
-    // }
-    // catch(e) {this.GestisciErroreMail(e as AxiosError)}
+    }
+    catch(e) {this.GestisciErroreMail(e as AxiosError)}
+    finally{this.transizione.caricamento = false;}
     
   }
 

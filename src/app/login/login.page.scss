@@ -15,7 +15,8 @@
     background-color: var(--sfondo-form);
     border-radius: var(--br);
     overflow: clip;
-    
+    position: relative;
+
     & > *{
         border-radius: var(--br);
     }
@@ -29,7 +30,7 @@ main{
     width: var(--max-width);
     z-index: 0;
 
-    &:has(.wrapper-popover[visualizzato]){
+    &:has(PopOver .messaggio-popover.visibile){
         z-index: 2;
     }
 }
@@ -86,6 +87,14 @@ ion-router-outlet{
 .overlay > *:has(.mostra){
     display: flex block;
     visibility: visible;
+}
+
+LoaderBarra{
+    position: absolute;
+    top: 0;
+    left: var(--br);
+    right: var(--br);
+    z-index: 3;
 }
 
 // :host:has(.overlay.visibile){}

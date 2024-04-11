@@ -14,7 +14,7 @@ export class LoginService {
     return this.server.InviaRichiesta(Metodi.POST, '/api/login', {username, password});
   }
 
-  public LoginGoogle(user : SocialUser) {
-    return this.server.InviaRichiesta(Metodi.POST, '/api/login-google', user);
+  public LoginOAuth(user : SocialUser) {
+    return this.server.InviaRichiesta(Metodi.POST, '/api/login-oauth', user);
   }
 }

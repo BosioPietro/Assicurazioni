@@ -6,20 +6,20 @@ import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './bottone-login-google/login-google.component';
-import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { MicrosoftLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
-
+import { LoginMicrosoftComponent } from './bottone-login-microsoft/login-microsoft.component';
 
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login.component.scss'],
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent, LoginMicrosoftComponent],
   standalone: true,
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
-      this.servizio.LoginGoogle(user)
+      this.servizio.LoginOAuth(user)
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
@@ -65,6 +65,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   googleSignin(googleWrapper: any) {
     googleWrapper.click();
+  }
+
+  MicrosoftSignin(){
+    this.authService.signIn(MicrosoftLoginProvider.PROVIDER_ID)
   }
 
   async Login(){

@@ -42,7 +42,7 @@
       </form>
     }
     @case (1) {
-      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione">
+      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione" (ngSubmit)="ResetPassword()">
         <span class="flex-col jc-c">
           <h1>Verifica Codice</h1>
           <span class="piccolo flex-row jc-c">
@@ -60,10 +60,9 @@
         </div>
         <div class="form-item">
           <button 
-            type="button" 
+            type="submit" 
             [disabled]="!sinc.codiceCorretto" 
             class="btn-accento" 
-            (click)="ResetPassword()"
           >
           Verifica Codice</button>
           <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>

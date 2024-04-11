@@ -31,6 +31,7 @@
     "@ionic/angular": "^7.5.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
+    "angular-oauth2-oidc": "^17.0.2",
     "axios": "^1.6.7",
     "bcryptjs": "^2.4.3",
     "chroma-js": "^2.4.2",

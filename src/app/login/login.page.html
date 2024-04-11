@@ -1,4 +1,7 @@
 <div class="flex-row">
+  @if (transizione.caricamento) {
+    <LoaderBarra/>
+  }
   <main #main>
     <ion-router-outlet [animated]="false"></ion-router-outlet>
     <div class="overlay" #overlay>

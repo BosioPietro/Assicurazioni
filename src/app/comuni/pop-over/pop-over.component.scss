@@ -3,16 +3,19 @@
     font-size: inherit;
     position: relative;
     z-index: 1000;
+    height: 1em;
+    width: 1em;
 }
 
 .wrapper-popover{
+    transform: scale(7.5);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 ion-icon{
-    transform: scale(1.5);
+    transform: scale(.2);
     cursor: pointer;
 }
 
@@ -33,6 +36,7 @@ h4, .testo{
     width: var(--larg);
     left: calc(50% - var(--larg) / 2);
     opacity: 0;
+    pointer-events: none;
     transition: opacity .5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
@@ -53,6 +57,6 @@ h4, .testo{
     z-index: -1;
 }
 
-:host:hover .messaggio-popover{
+.wrapper-popover:has(ion-icon:hover) + .messaggio-popover{
     opacity: 1;
 }

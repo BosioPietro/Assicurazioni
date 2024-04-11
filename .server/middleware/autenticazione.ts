@@ -12,13 +12,14 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
-        let data = await driver.PrendiUno({ username })
-        if(driver.Errore(data, res)) return;
-        if(data) return res.status(400).send("Username già esistente")
+        const [userUtente, userEmail] = await Promise.all([
+            driver.PrendiUno({ username }), 
+            driver.PrendiUno({ email })
+        ])
+        if(driver.Errore(userUtente, res) || driver.Errore(userEmail, res)) return;
 
-        data = await driver.PrendiUno({ email })
-        if(driver.Errore(data, res)) return;
-        if(data) return res.status(400).send("Email già registrata")
+        if(userUtente) return res.status(400).send("Username già esistente")
+        if(userEmail) return res.status(400).send("Email già registrata")
     
         const password = GeneraPassword()
         const d = new Date();
@@ -60,13 +61,8 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
     });   
 }
 
-const LoginGoogle = async (app : Express, driver : MongoDriver) => {
-    app.post("/api/login-google", async (req : Request, res : Response) => {
-        if(!req.headers["authorization"])
-        {
-            res.status(403).send("Token non fornito");
-            return;
-        }
+const LoginOAuth = async (app : Express, driver : MongoDriver) => {
+    app.post("/api/login-oauth", async (req : Request, res : Response) => {
         const { email } = req["body"];
         
         const regex = new RegExp(`^${email}$`, "i");
@@ -87,6 +83,8 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
         const { password } = req["body"];
         const payload = DecifraToken(req.headers["authorization"]!);
         const tipo = payload["username"].includes("@") ? "email" : "username"
+
+        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const user : any = await driver.PrendiUno({ [tipo] : payload["username"] })
         if(driver.Errore(user, res)) return;
@@ -111,6 +109,8 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
 const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
     app.post("/api/recupero-credenziali", async (req: Request, res: Response) => {
         const { email } = req["body"];
+
+        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
         
         const user = await driver.PrendiUno({ email }) as any;
         if(driver.Errore(user, res)) return;
@@ -137,6 +137,8 @@ const VerificaRecupero = (app: Express, driver: MongoDriver) => {
     app.get("/api/verifica-recupero", async (req: Request, res: Response) => {
         const payload = DecifraToken(req.headers["authorization"]!)
         const { username } = payload;
+
+        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ username }) as any;
         if(driver.Errore(user, res)) return;
@@ -208,7 +210,7 @@ export {
     LogoutUtente, 
     ControlloToken, 
     ControlloTokenMiddleware, 
-    LoginGoogle, 
+    LoginOAuth, 
     CambiaPassword, 
     RecuperoCredenziali, 
     VerificaCodice,

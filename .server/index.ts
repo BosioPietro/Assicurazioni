@@ -37,7 +37,7 @@ Cors.MiddlewareCors(app);
 // gestione autenticazione
 Autenticazione.RegistraUtente(app, driver);
 Autenticazione.LoginUtente(app, driver);
-Autenticazione.LoginGoogle(app, driver);
+Autenticazione.LoginOAuth(app, driver);
 Autenticazione.LogoutUtente(app);
 Autenticazione.CambiaPassword(app, driver);
 Autenticazione.RecuperoCredenziali(app, driver);
