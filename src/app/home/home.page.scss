@@ -1,7 +1,15 @@
+:host{
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
 #wrapper{
   background-color: #f2f2f2;
   position: relative;
-  width: 100dvw;
+  width: 80dvw;
   height: 100dvh;
 }
 #wrapper > span{

@@ -1,0 +1,19 @@
+:host{
+    background-color: white;
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#wrapperAside{
+    width: 90%;
+    height: 80%;
+    border-radius: 1rem;
+    border: solid 3px #f2f2f2;
+    padding: 10% 3% 10% 3%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

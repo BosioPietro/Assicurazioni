@@ -66,7 +66,7 @@ export class InfoWindowComponent{
         travelMode: google.maps.TravelMode.DRIVING
       }
   
-      this.directionsService.route(this.directionOptions, (result, status) => {
+      this.directionsService.route(this.directionOptions, (result, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setDirections(result);
           this.travelDuration = result.routes[0].legs[0].duration?.text;
