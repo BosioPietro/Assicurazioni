@@ -1,6 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Notifica } from 'src/app/utils/TipiSpeciali';
 import { IonIcon } from "@ionic/angular/standalone";
+import { NotificheService } from '../notifiche.service';
 
 @Component({
   selector: 'Notifica',
@@ -9,10 +10,21 @@ import { IonIcon } from "@ionic/angular/standalone";
   imports: [IonIcon],
   standalone: true
 })
-export class NotificaComponent {
+export class NotificaComponent implements AfterViewChecked{
 
   @Input("info")
   info!: Notifica;
+
+  @ViewChild("wrapper")
+  wrapper!: ElementRef<HTMLElement>;
+
+  constructor(private notifica: NotificheService){}
+
+  ngAfterViewChecked(): void {
+    setTimeout(() => {
+      this.wrapper.nativeElement.classList.add("chiudi")
+    }, this.notifica.TEMPO_NOTIFICA);
+  }
 
   PrendiIcona(){
     if(this.info.icona) return this.info.icona;
