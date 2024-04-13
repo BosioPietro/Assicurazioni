@@ -5,6 +5,7 @@ import { InfoWindowComponent } from './info-window/info-window.component';
 import { MapService } from './shared/map.service';
 import { NgClass } from '@angular/common';
 import { AsideComponent } from '../aside/aside.component';
+import { FiltroComponent } from './filtro/filtro.component';
 
 // declare var google:any;
 
@@ -13,7 +14,7 @@ import { AsideComponent } from '../aside/aside.component';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, InfoWindowComponent, NgClass, AsideComponent],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, InfoWindowComponent, NgClass, AsideComponent, FiltroComponent],
 })
 export class HomePage {
   @ViewChild('mapElement') mapElement: any;

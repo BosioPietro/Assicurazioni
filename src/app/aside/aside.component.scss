@@ -1,14 +1,15 @@
 :host{
-    background-color: white;
-    width: 20%;
-    height: 100%;
+    background-color: transparent;
+    width: 15dvw;
+    height: 90dvh;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 #wrapperAside{
+    background-color: white;
     width: 90%;
-    height: 80%;
+    height: 100%;
     border-radius: 1rem;
     border: solid 3px #f2f2f2;
     padding: 10% 3% 10% 3%;
@@ -16,4 +17,5 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin-right: 2rem;
 }
