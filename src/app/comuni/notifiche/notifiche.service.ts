@@ -6,18 +6,21 @@ import { Notifica } from '../../utils/TipiSpeciali';
 })
 export class NotificheService {
   public notifiche: Notifica[] = []
-  public TEMPO_NOTIFICA: number = 5000;
-
-  RimuoviNotifica(){
-    this.notifiche.pop()
-    console.log(this.notifiche)
-  }
+  public TEMPO_NOTIFICA: number = 2000;
 
   NuovaNotifica(n: Notifica){
     this.notifiche.push(n)
+
     setTimeout(() => {
-        // this.RimuoviNotifica()
+        n.terminata = true
     }, this.TEMPO_NOTIFICA + 1);
+
+    setTimeout(() => {
+        if(this.notifiche.every(n => n.terminata))
+        {
+          this.notifiche = []
+        } 
+    }, (this.TEMPO_NOTIFICA + 1) * 2);
   }
 
   

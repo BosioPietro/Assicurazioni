@@ -9,6 +9,7 @@ import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-passw
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { Router } from '@angular/router';
 import { AxiosError } from 'axios';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -25,6 +26,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     public servizio: CambioPasswordService, 
     public sinc: SincronizzazioneService,
     public router: Router,
+    private notifiche: NotificheService
   ){}
 
   @ViewChild("formHtml")
@@ -71,8 +73,10 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     }
     catch(e)
     {
-      const err = e as AxiosError;
-      alert(err.response?.data || err.message)
+      this.notifiche.NuovaNotifica({
+        "tipo": "errore",
+        "titolo": "Qualcosa è andato storto"
+      })
     }
   }
 

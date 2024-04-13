@@ -14,6 +14,8 @@ import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/inpu
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { LoginMicrosoftComponent } from './bottone-login-microsoft/login-microsoft.component';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { Notifica } from 'src/app/utils/TipiSpeciali';
 
 @Component({
   selector: 'form-login',
@@ -29,7 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private authService: SocialAuthService, 
     public transizione : TransizioneService, 
     private router : Router,
-    public sinc: SincronizzazioneService
+    public sinc: SincronizzazioneService,
+    public notifiche: NotificheService
   ) {}
 
   private activatedRoute = inject(ActivatedRoute);
@@ -92,18 +95,25 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   private GestisciErrore(err : AxiosError){
     switch(err.response?.status)
     {
-      case 500: 
-        return alert("Errore interno del server");
       case 400:
-        this.sinc.errori["username"] = "Username non esistente"
-        break;
+        return this.notifiche.NuovaNotifica({
+          "tipo" : "errore",
+          "titolo" : "Login Fallito",
+          "descrizione": "Username non esistente"
+        })
       case 401:
-        this.sinc.errori["password"] = "Password errata";
-        break;
+        return this.notifiche.NuovaNotifica({
+          "tipo" : "errore",
+          "titolo" : "Login Fallito",
+          "descrizione": "Password errata"
+        })
       default:
-        return alert(`Errore: ${err.response?.data} (${err.response?.status})`);
+        return this.notifiche.NuovaNotifica({
+          "tipo" : "errore",
+          "titolo" : "Qualcosa è andato storto"
+        })
     }
-  }
+  } 
 
   CredenzialiDimenticate(){
     this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");

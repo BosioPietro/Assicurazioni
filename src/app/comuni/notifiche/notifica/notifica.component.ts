@@ -39,4 +39,17 @@ export class NotificaComponent implements AfterViewChecked{
     }
   }
 
+  PrendiColore(){
+    if(this.info.icona) return this.info.icona;
+
+    switch(this.info.tipo){
+      case "info":
+        return "#4285f4";
+      case "warning":
+        return "#d1ca4b";
+      case "errore":
+        return "#de493e";
+    }
+  }
+
 }

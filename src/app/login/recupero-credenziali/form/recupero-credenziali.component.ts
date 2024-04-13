@@ -9,6 +9,7 @@ import { RegexInput } from 'src/app/utils/Input';
 import { RimuoviParametri } from 'src/app/utils/funzioni';
 import { AxiosError } from 'axios';
 import { RecuperoCredenzialiService } from './recupero-credenziali.service';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 
 @Component({
   selector: 'form-recupero-credenziali',
@@ -23,7 +24,8 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
     public transizione: TransizioneService, 
     public sinc: SincronizzazioneService,
     private servizio: RecuperoCredenzialiService, 
-    public router: Router
+    public router: Router,
+    private notifiche: NotificheService
   ){}
 
   @ViewChild("formHtml")
@@ -80,23 +82,44 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   }
 
   private GestisciErroreCodice(err : AxiosError){
-    const { status, data } = err.response!;
+    const { status } = err.response!;
 
+    
     if(status == 403)
     {
       this.sinc.errori["codice"] = "Codice incoretto"
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Convalida Fallita",
+        descrizione: "Il codice inserito non è corretto"
+      })
     }
-    else alert(data)
+    else{
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Qualcosa è andato storto"
+      })
+    }
   }
 
   private GestisciErroreMail(err : AxiosError){
-    const { status, data } = err.response!;
+    const { status } = err.response!;
 
     if(status == 400)
     {
-      this.sinc.errori["mail"] = "Mail non registrata"
+      this.sinc.errori["mail"] = "Mail non registrata";
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Convalida Fallita",
+        descrizione: "Mail non registrata"
+      })
     }
-    else alert(data)
+    else{
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Qualcosa è andato storto"
+      })
+    }
   }
 
 

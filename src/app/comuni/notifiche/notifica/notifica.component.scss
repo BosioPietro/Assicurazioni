@@ -4,11 +4,10 @@
 }
 
 .cont-notifica{
-    --colore: #4285f4;
     --sfondo: color-mix(in srgb, var(--colore) 10%, #FFF 90%);
     background-color: var(--sfondo);
     padding: 1rem;
-    border-radius: .25rem;
+    border-radius: .33rem;
     color: var(--colore);
     gap: .5rem;
     border: 2px solid var(--colore);
@@ -24,8 +23,21 @@ ion-icon{
     max-height: 5rem;
 }
 
+.titolo-notifica{
+    font-weight: bold;
+}
+
+.testo-notifica{
+    font-size: .8em;
+}
+
 .wrapper-notifica.chiudi{
     margin-block: 0;
     max-height: 0;
     opacity: 0;
+}
+
+.cont-notifica{
+    border: 0;
+    border-left: 4px solid var(--colore);
 }

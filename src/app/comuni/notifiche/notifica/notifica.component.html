@@ -1,5 +1,5 @@
 <div class="wrapper-notifica" #wrapper>
-    <div class="cont-notifica flex-row al-c">
+    <div class="cont-notifica flex-row al-c" [style]="{'--colore' : PrendiColore()}">
         <ion-icon [name]="PrendiIcona()"/>
         <div class="flex-col">
             <span class="titolo-notifica">{{ info.titolo }}</span>
