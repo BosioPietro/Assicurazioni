@@ -10,6 +10,7 @@ import { ResetPasswordFinto } from './reset-password/mockup/reset-password-form-
 import { PlatformLocation } from '@angular/common'
 import { CambioPasswordFinto } from './cambio-password/mockup/cambio-password.component';
 import { BarraLoaderComponent } from '../comuni/barra-loader/barra-loader.component';
+import { VerificaFintoComponent } from './verifica/mockup/verifica-mockup.component';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { BarraLoaderComponent } from '../comuni/barra-loader/barra-loader.compon
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RecuperoCredenzialiFinto, LoginFinto, ResetPasswordFinto, CambioPasswordFinto, BarraLoaderComponent]
+  imports: [IonicModule, CommonModule, FormsModule, RecuperoCredenzialiFinto, LoginFinto, ResetPasswordFinto, CambioPasswordFinto, BarraLoaderComponent, VerificaFintoComponent]
 })
 export class LoginPage implements OnInit, AfterViewInit {
 

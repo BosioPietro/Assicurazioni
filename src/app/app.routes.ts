@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login/reset-password',
+    redirectTo: 'login',
     pathMatch: 'full',
   },  
   {
@@ -29,6 +29,10 @@ export const routes: Routes = [
       {
         path: "reset-password",
         loadComponent: () => import("./login/reset-password/form/form-reset-password.component").then((m) => m.ResetPasswordComponent)
+      },
+      {
+        path: "verifica",
+        loadComponent: () => import("./login/verifica/form/verifica.component").then((m) => m.VerificaComponent)
       }
     ]
   },

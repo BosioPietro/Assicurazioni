@@ -77,7 +77,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   async Login(){
     try
     {
+      this.transizione.caricamento = true;
       let info = await this.servizio.Login(this.form.value["username"], this.form.value["password"]);
+      this.transizione.caricamento = false;
+
       info = info["data"];
       
       if("deveCambiare" in info)
@@ -93,20 +96,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private GestisciErrore(err : AxiosError){
+    this.transizione.caricamento = false;
     switch(err.response?.status)
     {
       case 400:
-        return this.notifiche.NuovaNotifica({
-          "tipo" : "errore",
-          "titolo" : "Login Fallito",
-          "descrizione": "Username non esistente"
-        })
+        this.sinc.errori["username"] = "Username non esistente"
+        break;
       case 401:
-        return this.notifiche.NuovaNotifica({
-          "tipo" : "errore",
-          "titolo" : "Login Fallito",
-          "descrizione": "Password errata"
-        })
+        this.sinc.errori["password"] = "Password errata"
+        break;
       default:
         return this.notifiche.NuovaNotifica({
           "tipo" : "errore",
@@ -116,9 +114,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   } 
 
   CredenzialiDimenticate(){
-    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
     setTimeout(() => {
-      this.router.navigateByUrl("/login/recupero-credenziali");
+      this.router.navigateByUrl("/login/verifica");
     }, 500);
   }
 

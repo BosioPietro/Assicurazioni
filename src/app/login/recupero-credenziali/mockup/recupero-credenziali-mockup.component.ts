@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { SincronizzazioneService } from '../sincronizzazione.service';
-import { InputCodiceFintoComponent } from './input-codice-mockup/input-codice-mockup.component';
+import { InputCodiceComponent } from 'src/app/comuni/elementi-form/input-codice/input-codice.component';
 import { Router } from '@angular/router';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { RimuoviParametri } from 'src/app/utils/funzioni';
@@ -12,7 +12,7 @@ import { RimuoviParametri } from 'src/app/utils/funzioni';
   templateUrl: './recupero-credenziali-mockup.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss', './recupero-credenziali-mockup.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, InputCodiceFintoComponent, FormsModule, InputTextComponent]
+  imports: [ReactiveFormsModule, FormsModule, InputTextComponent, InputCodiceComponent]
 })
 export class RecuperoCredenzialiFinto implements AfterViewInit{
 

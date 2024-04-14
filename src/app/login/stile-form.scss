@@ -12,6 +12,12 @@ form, .form{
     gap: var(--gap);
 }
 
+form.misura{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
 h1{
     font-weight: bold;
     font-size: 2rem;

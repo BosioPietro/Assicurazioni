@@ -14,6 +14,7 @@ import { TransizioneService } from '../../servizio-transizione.service';
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { CambioPasswordService } from './cambio-password.service';
 import { TooltipComponent } from './tooltip/tooltip.component';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 
 @Component({
     selector: 'app-cambio-password',
@@ -35,7 +36,12 @@ export class CambioPasswordComponent implements OnInit{
     conferma : new FormControl("", [Validators.required])
   });
 
-  constructor(public servizio : CambioPasswordService, public sinc: SincronizzazioneService, public transizione: TransizioneService){}
+  constructor(
+    public servizio : CambioPasswordService, 
+    public sinc: SincronizzazioneService, 
+    public transizione: TransizioneService,
+    public notifiche: NotificheService
+  ){}
 
   router : Router = new Router();
 
@@ -58,19 +64,29 @@ export class CambioPasswordComponent implements OnInit{
     setTimeout(() => this.servizio.Controlla(this.form.controls["password"].value), 50)
   }
 
-  Controlla($event : Event){
-    const input = $event.target as HTMLInputElement;
+  Controlla(event : Event){
+    const input = event.target as HTMLInputElement;
     this.servizio.Controlla(input.value)
   }
 
   async Cambia(){
     if(!this.form.valid) return;
 
+    this.transizione.caricamento = true;
+
     try
     {
       await this.servizio.Cambia(this.form.controls["password"].value);
+      this.transizione.caricamento = false;  
       this.router.navigate(["/home"]);
     }
-    catch(e){ alert("errore") }
+    catch(e)
+    { 
+      this.transizione.caricamento = false; 
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Qualcosa è andato storto"
+      })
+    }
   }
 }

@@ -48,7 +48,8 @@
     </span>
     <div class="form-item">
       <label>Codice</label>
-      <InputCodiceFinto  
+      <InputCodice  
+        [mockup]="true"
         [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || RimuoviParametri(router.url)) == '/login/recupero-credenziali'"
         [messaggio-errore]="sinc.errori['codice']"
       />

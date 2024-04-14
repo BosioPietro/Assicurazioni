@@ -76,7 +76,7 @@ export class CambioPasswordService{
   }
 
   Simboli(s : string){
-    return /\$|#|\\|!|"|£|%|&|\/|\(|\)|=|\?|\^|\|/.test(s)
+    return /\$|#|\\|@|!|"|£|%|&|\/|\(|\)|=|\?|\^|\|/.test(s)
   }
 
   Colore(){

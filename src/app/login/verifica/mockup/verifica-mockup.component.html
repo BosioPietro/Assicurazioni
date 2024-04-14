@@ -1,0 +1,30 @@
+<form class="flex-col" #form>
+  <img src="assets/google-logo.svg" class="logo"/>
+  <span class="wrapper-transizione flex-col">
+    <span class="flex-col jc-c">
+      <h1>Verica identità</h1>
+      <div class="piccolo">
+        <span class="flex-col jc-c al-c">
+          <span>Inserisci il codice che hai ricevuto per SMS</span>
+          <span>Codice non ricevuto?&nbsp;<a>Invia dinuovo</a></span>
+        </span>
+      </div>
+    </span>
+  </span>
+  <div class="form-item">
+    <label>Codice</label>
+    <InputCodice 
+      id="codice-mail" 
+      [messaggio-errore]="sinc.errori['codice']"
+    />
+  </div>
+  <div class="form-item">
+    <button 
+      type="submit" 
+      [disabled]="!sinc.codiceCorretto" 
+      class="btn-accento" 
+    >
+    Verifica Codice</button>
+    <a class="piccolo">Torna al login</a>
+  </div>
+</form>

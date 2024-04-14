@@ -1,3 +1,7 @@
 :host:not(.ion-page-invisible){
     position: relative !important;
 }
+
+.piccolo{
+    display: flex;
+}

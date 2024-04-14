@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { Router } from '@angular/router';
-import { InputCodiceComponent } from './input-codice/input-codice.component';
+import { InputCodiceComponent } from '../../../comuni/elementi-form/input-codice/input-codice.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { RegexInput } from 'src/app/utils/Input';
@@ -50,13 +50,22 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
       }, 500);
   }
 
-  async InviaMail(){
+  async InviaMail(notifica: boolean = false, transizione: boolean = true){
     this.transizione.caricamento = true;
     try
     {
       await this.servizio.InviaMailRecupero(this.formInvioMail.get("mail-recupero")?.value);
       this.transizione.caricamento = false;  
-      this.sinc.TransizioneForm(this.formHtml.nativeElement);
+      if(transizione){
+        this.sinc.TransizioneForm(this.formHtml.nativeElement);
+      }
+
+      if(notifica){
+        this.notifiche.NuovaNotifica({
+          tipo: "info",
+          titolo: "Codice Inviato",
+        })
+      }
     }
     catch(e) {this.GestisciErroreMail(e as AxiosError)}
     finally{this.transizione.caricamento = false;}
@@ -84,22 +93,26 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   private GestisciErroreCodice(err : AxiosError){
     const { status } = err.response!;
 
-    
     if(status == 403)
     {
       this.sinc.errori["codice"] = "Codice incoretto"
+      return;
+    }
+
+    if(status == 402)
+    {
       this.notifiche.NuovaNotifica({
         tipo: "errore",
-        titolo: "Convalida Fallita",
-        descrizione: "Il codice inserito non è corretto"
-      })
+        titolo: "Codice scaduto",
+        descrizione: "Sono passati più di 30 minuti dalla richiesta del codice"
+      }) 
+      return;
     }
-    else{
-      this.notifiche.NuovaNotifica({
-        tipo: "errore",
-        titolo: "Qualcosa è andato storto"
-      })
-    }
+    
+    this.notifiche.NuovaNotifica({
+      tipo: "errore",
+      titolo: "Qualcosa è andato storto"
+    })
   }
 
   private GestisciErroreMail(err : AxiosError){
@@ -108,19 +121,12 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
     if(status == 400)
     {
       this.sinc.errori["mail"] = "Mail non registrata";
-      this.notifiche.NuovaNotifica({
-        tipo: "errore",
-        titolo: "Convalida Fallita",
-        descrizione: "Mail non registrata"
-      })
+      return;
     }
-    else{
-      this.notifiche.NuovaNotifica({
-        tipo: "errore",
-        titolo: "Qualcosa è andato storto"
-      })
-    }
+    
+    this.notifiche.NuovaNotifica({
+      tipo: "errore",
+      titolo: "Qualcosa è andato storto"
+    })
   }
-
-
 }

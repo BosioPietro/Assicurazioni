@@ -1,12 +1,12 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { SincronizzazioneService } from '../../sincronizzazione.service';
+import { SincronizzazioneService } from '../../../login/recupero-credenziali/sincronizzazione.service';
 import { FormsModule } from '@angular/forms';
 import { IonIcon } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'InputCodice',
   templateUrl: './input-codice.component.html',
-  styleUrls: ['../../stile-input-codice.scss'],
+  styleUrls: ['./input-codice.component.scss'],
   imports: [FormsModule, IonIcon],
   standalone: true
 })
@@ -16,6 +16,9 @@ export class InputCodiceComponent{
 
   @Input("messaggio-errore")
   errore?: string;
+
+  @Input("mockup")
+  mockup: boolean = false;
 
   @Output()
   CodiceCambiato = new EventEmitter<[boolean, string]>()

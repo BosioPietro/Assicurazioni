@@ -92,9 +92,13 @@ export class TransizioneService {
     if(!this.ControllaLogo(formAtt)){
       setTimeout(() => {
         this.MostraOverlay();
-      }, 1)
+      }, 0)
       return;
     }
+
+    console.log(formAtt)
+    console.log(formPrec)
+    
 
     this.MuoviLogo(formPrec, formAtt);
     this.NascondiFigli(formPrec);
@@ -151,9 +155,11 @@ export class TransizioneService {
   MuoviLogo(prec: HTMLElement, att: HTMLElement){
     const logoPrec = prec.querySelector(".logo")! as HTMLElement
     const logoAtt = att.querySelector(".logo")! as HTMLElement
-
+    
+    att.classList.add("misura")
     const [xPrec, yPrec] = this.CalcolaCoordinate(logoPrec)
     const [xAtt, yAtt] = this.CalcolaCoordinate(logoAtt)
+    att.classList.remove("misura")
 
     const yDiff = yAtt - yPrec;
 

@@ -8,13 +8,14 @@ import { TransizioneService } from '../../servizio-transizione.service';
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
+import { LoginMicrosoftFinto } from './bottone-login-microsoft-mockup/login-microsoft-mockup.component';
 
 @Component({
   selector: 'LoginFinto',
   templateUrl: './login-mockup.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login-mockup.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleFinto, FintoHrComponent, InputTextComponent, InputPasswordComponent],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleFinto, FintoHrComponent, InputTextComponent, InputPasswordComponent, LoginMicrosoftFinto],
 })
 export class LoginFinto implements AfterViewInit{
 
