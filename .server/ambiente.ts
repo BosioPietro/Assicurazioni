@@ -11,7 +11,9 @@ const env = {
     MAILUSER : process.env.MAIL_USER!,
     MAILPWD : process.env.MAIL_PWD!,
     EMAIL : process.env.EMAIL!,
-    OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!
+    OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!,
+    VONAGE_API_KEY: process.env.VONAGE_API_KEY!, 
+    VONAGE_API_SECRET: process.env.VONAGE_API_SECRET!,
 }
 
 export default env;
