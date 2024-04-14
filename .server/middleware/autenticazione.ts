@@ -55,15 +55,26 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const tipo = utente.includes("@") ? "email" : "username";
-        const user = await driver.PrendiUno({ [tipo] : utente }, { password : 1, cambioPwd : 1, username: 1 })
+        const user = await driver.PrendiUno({ [tipo] : utente }, { password : 1, cambioPwd : 1, username: 1, "2FA": 1 })
     
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Username non esistente") 
     
         if(ConfrontaPwd(password, user["password"]))
         {
-            const token = CreaToken({username: user["username"], _id : user["_id"].toString()})
-            RispondiToken(res, token, { "ok" : "Login Effettuato", "deveCambiare" : user["cambioPwd"]})
+            const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+            if(user["admin"] || user["2FA"]){
+                dataToken["2FA"] = false;   
+            }
+
+            const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
+            if(user["admin"] || user["2FA"])
+            {
+                risposta["2FA"] = false;   
+            }
+
+            const token = CreaToken(dataToken)
+            RispondiToken(res, token, risposta)
         }
         else return res.status(401).send("Password errata");
     });   
@@ -81,7 +92,19 @@ const LoginOAuth = async (app : Express, driver : MongoDriver) => {
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Utente non autorizzato");
 
-        RispondiToken(res, CreaToken(user), { "ok" : "Login effettuato" });
+        const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+        if(user["admin"] || user["2FA"]){
+            dataToken["2FA"] = false;   
+        }
+
+        const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
+        if(user["admin"] || user["2FA"])
+        {
+            risposta["2FA"] = false;   
+        }
+
+        const token = CreaToken(dataToken)
+        RispondiToken(res, token, risposta)
     });
 }
 
@@ -109,8 +132,8 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
         if(driver.Errore(data, res)) return;
 
         InviaMailPasswordCambiata(user["username"], user["email"])
-        .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
-        .catch(() => res.status(500).send("Errore nell'invio della mail"))
+        .then(() => RispondiToken(res, CreaToken(payload), { "ok" : "Password Cambiata" }))
+        .catch(() => RispondiToken(res, CreaToken(payload), `Errore nell'invio della mail`, 500))
     })
 }
 
@@ -122,8 +145,14 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
         
         const user = await driver.PrendiUno({ email }) as any;
         if(driver.Errore(user, res)) return;
+        
+        
+        const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+        if(user["admin"] || user["2FA"]){
+            dataToken["2FA"] = false;   
+        }
 
-        if(!user)return res.status(400).send("User non esistente")
+        if(!user) return RispondiToken(res, CreaToken(dataToken), `User non esistente`, 400)
         delete user["_id"];
 
         const codice = GeneraCodice();
@@ -138,8 +167,8 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
         if(driver.Errore(data, res)) return;
 
         InviaMailRecupero(email, user["username"], codice)
-        .then(() => RispondiToken(res, CreaToken(user), { "ok" : "Password Cambiata" }))
-        .catch(() => res.status(500).send("Errore nell'invio della mail"))
+        .then(() => RispondiToken(res, CreaToken(dataToken), { "ok" : "Password Cambiata" }))
+        .catch(() => RispondiToken(res, CreaToken(dataToken), `Errore nell'invio della mail`, 500))
     })
 }
 
@@ -155,9 +184,9 @@ const VerificaRecupero = (app: Express, driver: MongoDriver) => {
 
         if(!user["recupero"])
         {
-            res.status(405).send("L'Utente non deve cambiare la password");
+            RispondiToken(res, CreaToken(payload), `L'utente non deve cambiare la password`, 400)
         }
-        else RispondiToken(res, CreaToken(user), { ris : "ok"})
+        else RispondiToken(res, CreaToken(payload), { ris : "ok"})
     })
 }
 
@@ -170,9 +199,9 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
         const user = await driver.PrendiUno({ username }) as any;
         if(driver.Errore(user, res)) return;
 
-        if(!user) return res.status(400).send("Mail non esistente")
+        if(!user) return RispondiToken(res, CreaToken(payload), `Utente non esistente`, 400)
 
-        if(!user["recupero"])return res.status(401).send("Recupero non richiesto");
+        if(!user["recupero"]) return RispondiToken(res, CreaToken(payload), `Recupero non richiesto`, 400)
 
         const { recupero } = user;
         const oggi = new Date();
@@ -184,16 +213,16 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
             
             const info = await driver.Replace({ username }, user)
             if(driver.Errore(info, res)) return;
-            res.status(402).send("Tempo scaduto")
+            RispondiToken(res, CreaToken(payload), `Tempo scaduto`, 400)
             return;
         }
 
         if(codice !== recupero["codice"]){
-            res.status(403).send("Codice errato")
+            RispondiToken(res, CreaToken(payload), `Codice errato`, 400)
             return;
         }
 
-        RispondiToken(res, CreaToken(user), { ris : "ok"})
+        RispondiToken(res, CreaToken(payload), { ris : "ok"})
     })
 }
 
@@ -205,56 +234,61 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
         const user = await driver.PrendiUno({ username }) as any;
         if(driver.Errore(user, res)) return;
 
-        if(!user) return res.status(400).send("Utente non esistente")
+        if(!user) return RispondiToken(res, CreaToken(payload), `Utente non esistente`, 400)
         
         if(!user["admin"] && !user["2FA"]){
-            res.status(400).send("La verifica telefonica è disabilitata per questo utente")
+            RispondiToken(res, CreaToken(payload), `La verifica telefonica è disabilitata per questo utente`, 401)
             return;
         }
 
         if(user["telefono"]){
-            res.status(401).send("Numero di telefono non fornito")
+            RispondiToken(res, CreaToken(payload), `Numero di telefono non fornito`, 401)
             return;
         }
 
-        const ris: any = await vonage.verify.start({
-            number: "393318233661",
-            brand: "Rilievi e Perizie"
-          })
-        .catch(err => res.status(500).send(`Errore interno ${err.message || err.toString()}`))
-        if(!ris) return;
+        // const ris: any = await vonage.sms.send({
+        //     from: "Vonage APIs",
+        //     to: "393318233661",
+        //     text: 'A text message sent using the Vonage SMS API',
+        // })
+        // .catch(err => RispondiToken(res, CreaToken(payload), `Errore interno ${err.message || err.toString()}`, 500))
+        // if(!ris) return;
 
-        user["idVerificaTelefonica"] = ris.request_id;
+        user["Codice2FA"] = 111111;
         delete user["_id"]
 
         const data = await driver.Replace({ username }, user)
         if(driver.Errore(data, res)) return;
 
-        RispondiToken(res, CreaToken(user), { ris : "ok"})
+        RispondiToken(res, CreaToken(payload), { ris : "ok"})
     })
 }
 
 const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
     app.post("/api/verifica-codice-telefono", async (req: Request, res: Response) => {
+        console.log("ciao1")
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
         const { codice } = req["body"];
 
+        console.log("ciao")
+
         const user = await driver.PrendiUno({ username }) as any;
         if(driver.Errore(user, res)) return;
 
-        if(!user) return res.status(400).send("Utente non esistente")
+        if(!user) return RispondiToken(res, CreaToken(payload), "Utente non esiste", 400);
 
-        if(!user["idVerificaTelefonica"]){
-            res.status(400).send("L'utente non ha richiesto nessun codice")
+        if(!user["Codice2FA"]){
+            RispondiToken(res, CreaToken(payload), "Utente non ha richiesto la verifica", 400);
             return;
         }
 
-        vonage.verify.check(user["idVerificaTelefonica"], codice)
-        .then(resp => console.log(resp))
-        .catch(err => console.error(err));
-
-
+        if(user["Codice2FA"] == codice)
+        {
+            payload["2FA"] = true;
+            RispondiToken(res, CreaToken(payload), { ris : "ok"})
+        }
+        else RispondiToken(res, CreaToken(payload), "Codice errato", 401);
     })
 }
 
@@ -283,5 +317,7 @@ export {
     CambiaPassword, 
     RecuperoCredenziali, 
     VerificaCodice,
-    VerificaRecupero 
+    VerificaRecupero,
+    InviaCodiceTelefono,
+    VerificaCodiceTelefono
 }

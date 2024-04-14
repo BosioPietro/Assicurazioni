@@ -15,10 +15,10 @@ const OggettoVuoto = (o : object) : boolean => !Object.keys(o).length;
 
 type TipoServer  = _http.Server<typeof _http.IncomingMessage, typeof _http.ServerResponse> 
 
-const RispondiToken = (res : Response, token : string, messaggio : object) => {
+const RispondiToken = (res : Response, token : string, messaggio : object | string, codice: number = 200) => {
     res.setHeader("authorization", token);
     res.setHeader("access-control-expose-headers", "authorization");
-    res.send(messaggio);
+    res.status(codice).send(messaggio);
 }
 
 export { TipoServer, ReadFileAsync, OggettoVuoto, RispondiToken };

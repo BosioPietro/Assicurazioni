@@ -1,4 +1,4 @@
-<form class="flex-col" (ngSubmit)="VerificaCodice()" #form>
+<form class="flex-col" #form>
   <img src="assets/google-logo.svg" class="logo"/>
   <span class="wrapper-transizione flex-col">
     <span class="flex-col jc-c">
@@ -20,9 +20,10 @@
     />
   </div>
   <div class="form-item">
-    <button 
-      type="submit" 
+    <button
+      (click)="VerificaCodice()" 
       [disabled]="!sinc.codiceCorretto" 
+      type="button" 
       class="btn-accento" 
     >
     Verifica Codice</button>

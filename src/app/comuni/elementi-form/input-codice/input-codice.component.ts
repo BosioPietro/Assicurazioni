@@ -77,6 +77,7 @@ export class InputCodiceComponent{
     
     if(!this.ControllaCarattere(attuale.value)){
       attuale.value = "";
+      this.ControllaValore();
       return;
     }
 

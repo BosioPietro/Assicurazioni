@@ -12,12 +12,12 @@ import { ReadFileAsync } from "./strumenti.js";
 // APERTURA SERVER
 const app : Express = express();
 
-const [cert, key] = await Promise.all([
+const [cert, key, driver] = await Promise.all([
     ReadFileAsync("./keys/certificate.crt"),
-    ReadFileAsync("./keys/private_key.pem")
+    ReadFileAsync("./keys/private_key.pem"),
+    MongoDriver.CreaDatabase(env["STR_CONN"], env["DB_NAME"], "utenti")
 ]);
 
-const driver = await MongoDriver.CreaDatabase(env["STR_CONN"], env["DB_NAME"], "utenti");
 const server = https.createServer({key, cert}, app);
 
 server.listen(env["PORTA"], () => console.log("Server Avviato"));
@@ -45,6 +45,8 @@ Autenticazione.VerificaCodice(app, driver);
 Autenticazione.ControlloToken(app, driver);
 Autenticazione.ControlloTokenMiddleware(app, driver);
 Autenticazione.VerificaRecupero(app, driver);
+Autenticazione.InviaCodiceTelefono(app, driver);
+Autenticazione.VerificaCodiceTelefono(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);

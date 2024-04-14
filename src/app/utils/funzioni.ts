@@ -42,19 +42,35 @@ const ControllaToken = async (r : Router) : Promise<any> => {
         case "login/cambio-password":
             if(!info["deveCambiare"])
             {
-                r.navigate(["/home"]);
+                r.navigate(["/login"]);
             }
             info["giorniMancanti"] = GiorniMancanti(info["dataCreazione"]);
         break;
+        case "login/verifica":
+            if(!("2FA" in info))
+            {
+                r.navigate(["/login"]);
+            }
+            break;
         default:
-            DeveCambiare(info, r);
+            if(!DeveCambiare(info, r))
+            {
+                Loggato2Fattori(info, r);   
+            }
         break
     }
 
     return info;
 } 
 
-const DeveCambiare = (info: any, r: Router) => {
+const Loggato2Fattori = (info: Record<string, any>, r: Router) => {
+    if("2FA" in info && !info["2FA"])
+    {
+        r.navigate(["/login/verifica"])   
+    }
+}
+
+const DeveCambiare = (info: Record<string, any>, r: Router) => {
     const deveCambiare = info["deveCambiare"]
     if(!deveCambiare)return;
 
@@ -62,7 +78,9 @@ const DeveCambiare = (info: any, r: Router) => {
     if(giorniRimanenti <= 0)
     {
         r.navigate(["/login/cambio-password"])
+        return true;
     }
+    return false;
 }
 
 

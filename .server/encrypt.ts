@@ -9,20 +9,24 @@ const CifraPwd = (password: string): string => bcrypt.hashSync(password, 10);
 
 const ConfrontaPwd = (password: string, hash: string) : boolean => bcrypt.compareSync(password, hash);
 
-const CreaToken = (utente : {username : string, _id? : string, iat? : number}) : string => {
+const CreaToken = (utente : {username : string, _id? : string, iat? : number, "2FA"?: boolean}) : string => {
     const secondi = Math.floor(new Date().getTime() / 1000);
     const durata = env["DURATA_TOKEN"];
     
-    const payload = {
+    let payload: Record<string, any> = {
         iat : utente["iat"] || secondi,
         exp : secondi + durata,
         username : utente["username"],
-        _id : utente["_id"]
+        _id : utente["_id"],
+    }
+
+    if(utente["2FA"] != undefined)
+    {
+        payload["2FA"] = utente["2FA"];   
     }
     
     return jwt.sign(payload, env["ENCRYPTION_KEY"]);
 }
-
 
 const ControllaToken = (driver : MongoDriver, req : Request, res : Response, next? : NextFunction) => {
     if(!req.headers["authorization"]) return res.status(403).send("Token non fornito");
@@ -45,11 +49,7 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
             const utente = await driver.PrendiUno({ [tipo] : payload["username"] }, { cambioPwd : 1, dataCreazione : 1 })
             if(!driver.Errore(utente))
             {
-                res.send({ 
-                    "ok" : "Token valido",
-                    "deveCambiare" : !!utente["cambioPwd"],
-                    "dataCreazione" : utente["dataCreazione"]
-                })
+                res.send(payload)
             }
             else res.status(500).send("Errore durante la convalida dell'utente")
         }
@@ -57,7 +57,7 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
     })
 }
 
-type Token = {iat: number, exp: number, username: string, id? : string}
+type Token = { username : string, _id? : string, iat? : number, "2FA"?: boolean }
 const DecifraToken = (token : string) => jwt.decode(token) as Token;
 
 const GeneraPassword = () : string => {

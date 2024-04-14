@@ -90,7 +90,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           this.router.navigateByUrl("/login/cambio-password");
         }, 500);
       }
-      else this.router.navigate(["/home"]);
+      else if("2FA" in info && !info["2FA"])
+      {
+        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
+        setTimeout(() => {
+          this.router.navigateByUrl("/login/verifica");
+        }, 500);
+      }
+      else this.router.navigate(["/home"])
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }
@@ -114,9 +121,9 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   } 
 
   CredenzialiDimenticate(){
-    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
     setTimeout(() => {
-      this.router.navigateByUrl("/login/verifica");
+      this.router.navigateByUrl("/login/recupero-credenziali");
     }, 500);
   }
 

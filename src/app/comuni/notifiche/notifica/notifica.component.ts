@@ -31,11 +31,11 @@ export class NotificaComponent implements AfterViewChecked{
 
     switch(this.info.tipo){
       case "info":
-        return "information-circle-outline";
+        return "information-circle";
       case "warning":
-        return "warning-outline";
+        return "warning";
       case "errore":
-        return "close-circle-outline";
+        return "close-circle";
     }
   }
 

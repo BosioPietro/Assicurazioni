@@ -4,6 +4,9 @@ import { SincronizzazioneService } from '../sincronizzazione.service';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { Router } from '@angular/router';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { ControllaToken } from 'src/app/utils/funzioni';
+import { VerificaService } from '../verifica.service';
+import { AxiosError } from 'axios';
 
 @Component({
   selector: 'app-verifica',
@@ -12,7 +15,7 @@ import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
   imports: [InputCodiceComponent],
   standalone: true
 })
-export class VerificaComponent implements AfterViewInit {
+export class VerificaComponent implements AfterViewInit, OnInit {
 
   @ViewChild("form")
   formHtml!:ElementRef<HTMLElement>;
@@ -21,31 +24,69 @@ export class VerificaComponent implements AfterViewInit {
     public sinc: SincronizzazioneService, 
     private transizione: TransizioneService,
     private router: Router,
-    private notifiche: NotificheService
+    private notifiche: NotificheService,
+    private server: VerificaService
   ) { }
+
+  ngOnInit(): void {
+    ControllaToken(this.router);
+  }
 
   ngAfterViewInit(): void {
     this.transizione.formVeri["/login/verifica"] = this.formHtml.nativeElement;
+    this.InviaCodice(false)
   }
 
-  VerificaCodice(){
-
-  }
-
-  InviaCodice(){
+  async VerificaCodice(){
     try
     {
       this.transizione.caricamento = true;
-
+      await this.server.VerificaCodice(this.sinc.valori["codice"])
       this.transizione.caricamento = false;
-      this.notifiche.NuovaNotifica({
-        tipo: "info",
-        titolo: "Codice Inviato"
-      })
     }
     catch(e){
       this.transizione.caricamento = false;
+      this.GestisciErrore(e as AxiosError)
+    }
+  }
 
+  GestisciErrore(e: AxiosError){
+    const { status } = e.response!;
+
+    if(status == 401)
+    {
+      this.sinc.errori["codice"] = "Codice errato"
+      return; 
+    }
+
+    this.notifiche.NuovaNotifica({
+      tipo: "errore",
+      titolo: "Errore",
+      descrizione: "Qualcosa è andato storto"
+    })
+  }
+
+  async InviaCodice(notifica: boolean = true){
+    try
+    {
+      this.transizione.caricamento = true;
+      await this.server.InviaCodice()
+      this.transizione.caricamento = false;
+
+      if(notifica){
+        this.notifiche.NuovaNotifica({
+          tipo: "info",
+          titolo: "Codice Inviato"
+        })
+      }
+    }
+    catch(e){
+      this.transizione.caricamento = false;
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Errore",
+        descrizione: "Qualcosa è andato storto"
+      })
     }
   }
 
