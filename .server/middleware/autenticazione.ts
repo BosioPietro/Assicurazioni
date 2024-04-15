@@ -6,13 +6,9 @@ import { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero } 
 import { RispondiToken } from "../strumenti.js";
 import { DataInStringa, StringaInData } from "../funzioni.js";
 import env from "../ambiente.js"
-import { Vonage } from "@vonage/server-sdk";
-import { Auth } from "@vonage/auth";
+import Twilio from "twilio";
 
-const vonage = new Vonage(new Auth({
-    apiKey: env.VONAGE_API_KEY,
-    apiSecret: env.VONAGE_API_SECRET,
-}));
+const smsClient = Twilio(env.TWILIO_API_SID, env.TWILIO_API_SECRET)
 
 const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
@@ -62,7 +58,7 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
     
         if(ConfrontaPwd(password, user["password"]))
         {
-            const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+            const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
             if(user["admin"] || user["2FA"]){
                 dataToken["2FA"] = false;   
             }
@@ -87,12 +83,12 @@ const LoginOAuth = async (app : Express, driver : MongoDriver) => {
         const regex = new RegExp(`^${email}$`, "i");
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
-        const user = await driver.PrendiUno({ email : regex }) as any;
+        const user = await driver.PrendiUno({ email : regex });
 
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Utente non autorizzato");
 
-        const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+        const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
         if(user["admin"] || user["2FA"]){
             dataToken["2FA"] = false;   
         }
@@ -143,11 +139,11 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
 
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
         
-        const user = await driver.PrendiUno({ email }) as any;
+        const user = await driver.PrendiUno({ email });
         if(driver.Errore(user, res)) return;
         
         
-        const dataToken = { username: user["username"], _id : user["_id"].toString() } as any
+        const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
         if(user["admin"] || user["2FA"]){
             dataToken["2FA"] = false;   
         }
@@ -179,7 +175,7 @@ const VerificaRecupero = (app: Express, driver: MongoDriver) => {
 
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
-        const user = await driver.PrendiUno({ username }) as any;
+        const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
 
         if(!user["recupero"])
@@ -196,7 +192,7 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
         const { username } = payload;
         const { codice } = req["body"]
 
-        const user = await driver.PrendiUno({ username }) as any;
+        const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
 
         if(!user) return RispondiToken(res, CreaToken(payload), `Utente non esistente`, 400)
@@ -231,7 +227,7 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
 
-        const user = await driver.PrendiUno({ username }) as any;
+        const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
 
         if(!user) return RispondiToken(res, CreaToken(payload), `Utente non esistente`, 400)
@@ -246,6 +242,8 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
             return;
         }
 
+        const id = await smsClient.verify.v2.services(env.TWILIO_API_KEY).verifications
+        .create({to: '+393318233661', channel: 'sms'})
         // const ris: any = await vonage.sms.send({
         //     from: "Vonage APIs",
         //     to: "393318233661",
@@ -254,7 +252,7 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
         // .catch(err => RispondiToken(res, CreaToken(payload), `Errore interno ${err.message || err.toString()}`, 500))
         // if(!ris) return;
 
-        user["Codice2FA"] = 111111;
+        user["Codice2FA"] = id["sid"];
         delete user["_id"]
 
         const data = await driver.Replace({ username }, user)
@@ -273,7 +271,7 @@ const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
 
         console.log("ciao")
 
-        const user = await driver.PrendiUno({ username }) as any;
+        const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
 
         if(!user) return RispondiToken(res, CreaToken(payload), "Utente non esiste", 400);

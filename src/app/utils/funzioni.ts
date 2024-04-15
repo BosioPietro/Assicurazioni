@@ -1,7 +1,6 @@
 import { Router } from "@angular/router";
 import { GestoreServerService } from "../server/gestore-server.service"
 import { Metodi } from "./TipiSpeciali";
-import moment from "moment";
 
 const server = new GestoreServerService();
 
@@ -16,11 +15,39 @@ const UrlPagina = () : string => {
 
 const GiorniMancanti = (creazione : string) => {
     const GIORNI_CAMBIO_PWD = 7;
-    const oggi = moment().startOf("day");
-    const scadenza = moment(creazione, "DD-MM-YYYY").startOf("day").add(GIORNI_CAMBIO_PWD, "days")
+    const oggi = new Date();
+    oggi.setHours(0, 0, 0, 0)
 
-    return scadenza.diff(oggi, "days")
+    const scadenza = AggiungiGiorni(PrendiData(creazione), GIORNI_CAMBIO_PWD)
+
+    return SottraiGiorni(scadenza, oggi)
 }
+
+const AggiungiGiorni = (data: Date, giorni: number) => {
+    const nuova = new Date(data.getTime());
+    const giorno = data.getDate();
+
+    nuova.setDate(giorno + giorni);
+  
+    return nuova;
+}
+
+const SottraiGiorni = (data1: Date, data2: Date) => {
+    const inizio = new Date(data1);
+    const fine = new Date(data2);
+  
+    const differenzaTempo = fine.getTime() - inizio.getTime();  
+    const differenzaGiorni = Math.floor(differenzaTempo / (1000 * 60 * 60 * 24));
+  
+    return differenzaGiorni;
+}
+  
+
+const PrendiData = (dateString: string) => {
+    const [giorno, mese, anno] = dateString.split("-");
+    return new Date(+anno, +mese - 1, +giorno, 0, 0, 0, 0);
+}
+  
 
 
 const RimuoviParametri = (route: string) => {

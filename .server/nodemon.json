@@ -1,7 +1,0 @@
-{
-    "watch": ["./"],
-    "ext": "ts",
-    "execMap": {
-      "ts": "node --no-warnings --loader  ts-node/esm"
-    }
-  }

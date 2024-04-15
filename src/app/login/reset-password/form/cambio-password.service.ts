@@ -1,7 +1,7 @@
-import { Injectable, OnInit } from '@angular/core';
-import chroma from 'chroma-js';
+import { Injectable } from '@angular/core';
 import { GestoreServerService } from 'src/app/server/gestore-server.service';
 import { Metodi } from 'src/app/utils/TipiSpeciali';
+import tinycolor from 'tinycolor2';
 
 type Parametro = {
   regola : string,
@@ -89,10 +89,21 @@ export class CambioPasswordService{
     else return "#000"
   }
 
-  getGradientColors(colore1 : string, colore2 : string, steps : number) {
-    const colorScale = chroma.scale([colore1, colore2]).mode('hsl');
-    const c = colorScale.colors(steps);
-    return [colore1, ...c.slice(1, -1), colore2]
+  getGradientColors(color1: string, color2: string, steps: number) {
+    const colors = [];
+    const tinyColor1 = tinycolor(color1);
+    const tinyColor2 = tinycolor(color2);
+  
+    colors.push(tinyColor1.toHexString());
+    colors.push(tinyColor2.toHexString());
+  
+    for (let i = 1; i < steps - 1; i++) {
+      const ratio = i / (steps - 1);
+      const intermediateColor = tinycolor.mix(tinyColor2, tinyColor1, ratio).toHexString();
+      colors.push(intermediateColor);
+    }
+  
+    return colors;
   }
 
   VerificaRecupero(){

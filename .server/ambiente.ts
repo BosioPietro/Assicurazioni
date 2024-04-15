@@ -12,8 +12,9 @@ const env = {
     MAILPWD : process.env.MAIL_PWD!,
     EMAIL : process.env.EMAIL!,
     OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!,
-    VONAGE_API_KEY: process.env.VONAGE_API_KEY!, 
-    VONAGE_API_SECRET: process.env.VONAGE_API_SECRET!,
+    TWILIO_API_KEY: process.env.TWILIO_API_KEY!, 
+    TWILIO_API_SECRET: process.env.TWILIO_API_SECRET!,
+    TWILIO_API_SID: process.env.TWILIO_API_SID!,
 }
 
 export default env;
