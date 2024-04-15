@@ -11,7 +11,9 @@ import { AsideComponentComponent } from './aside-component/aside-component.compo
 export class AsideComponent  implements OnInit {
 
   constructor() { }
-  elencoVoci:any[] = ["Voce1","Voce2","Voce3","Voce4","Voce5","Voce6","Voce7","Voce8","Voce9","Voce10",]
+  elencoVoci:any[] = ["Home","Mappa","Users","Documenti","Calendario","Chat","Sicurezza","Statistiche","Orari"]
+  elencoIcons:any[] = ["home-outline","map-outline","people-outline","document-text-outline","calendar-outline","chatbox-ellipses-outline","key-outline","stats-chart-outline","time-outline"]
+  elencoNotifications:any[] = [0,0,0,0,0,4,0,0,0]
   ngOnInit() {}
 
 }

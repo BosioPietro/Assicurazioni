@@ -1,5 +1,11 @@
+<div id="wrapperHead">
+  <div>
+    <img src="../../assets/icon/logoSito.jpg">
+    <span>Rilievi e Perizie</span>
+  </div>
+</div>
 <div id="wrapperAside">
   @for (voce of elencoVoci; track $index) {
-    <app-aside-component [voce]="voce"></app-aside-component>
+    <app-aside-component [voce]="voce" [icon]="elencoIcons[$index]" [notification]="elencoNotifications[$index]"></app-aside-component>
   }
 </div>

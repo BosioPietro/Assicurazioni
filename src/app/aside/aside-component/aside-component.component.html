@@ -1,6 +1,7 @@
 <div class="wrapperVoce">
   <span>
-    <ion-icon name="home-outline"></ion-icon>
+    <ion-icon name="{{icon}}"></ion-icon>
   </span>
   <span>{{voce}}</span>
+  <span *ngIf="notification > 0">{{notification}}</span>
 </div>
