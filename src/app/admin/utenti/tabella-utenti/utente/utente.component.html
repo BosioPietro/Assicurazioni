@@ -1,0 +1,24 @@
+<p-checkbox [binary]="true" />
+<span class="flex-row">
+  <img />
+  <div class="flex-col">
+    <p>{{utente.cognome}} {{ utente.nome }}</p>
+    <span class="handle">{{utente.handle}}</span>
+  </div>
+</span>
+<span>
+  <div class="ruolo" [attr.ruolo]="utente.ruolo">
+    {{utente.ruolo}}
+  </div>
+</span>
+<span>{{utente.nPerizie}}</span>
+<span>{{utente.assuntoIl}}</span>
+<span>
+  @if (utente.stato.toLowerCase() == 'attivo') {
+    <ion-icon name="checkmark-circle"></ion-icon>
+  }
+  @else {
+    <ion-icon name="close-circle"></ion-icon>
+  }
+  <span>{{utente.stato}}</span>
+</span>

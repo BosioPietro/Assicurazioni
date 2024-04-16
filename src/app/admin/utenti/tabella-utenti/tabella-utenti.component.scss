@@ -1,0 +1,60 @@
+:host{
+    display: flex;
+    flex-direction: column;
+}
+
+header{
+    display: grid;
+    grid-template-columns: auto repeat(5, 1fr);
+    background-color: #EEE;
+    padding: .5rem .5rem .5rem .75rem;
+    border-left: .25rem solid #EEE;
+    gap: 1rem;
+    border-radius: .5rem .5rem 0 0;
+
+    & > *:not(p-checkbox){
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    .th{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        user-select: none;
+        cursor: pointer;
+    }
+}
+
+input{
+    background-color: #FFF;
+}
+
+.body-tabella{
+    flex-grow: 1;
+    position: relative;
+    overflow-y: scroll;
+    border-left: .25rem solid #EEE;
+    border-bottom: .25rem solid #EEE;
+    border-radius: 0 0 .5rem .5rem;
+}
+
+.wrapper-utenti{
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+::-webkit-scrollbar {
+    width: .25rem;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    padding-block: 2rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #AAA;
+    border-radius: 100vh;
+}

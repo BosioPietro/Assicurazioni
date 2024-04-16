@@ -110,6 +110,11 @@ const DeveCambiare = (info: Record<string, any>, r: Router) => {
     return false;
 }
 
+const RemInPx = (val: string) => {
+    const rem = parseFloat(val);
+    const px = rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    return px;
+}
 
 
-export { ControllaToken, RimuoviParametri }
+export { ControllaToken, RimuoviParametri, RemInPx }

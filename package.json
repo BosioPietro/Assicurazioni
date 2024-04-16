@@ -33,6 +33,7 @@
     "angular-oauth2-oidc": "^17.0.2",
     "axios": "^1.6.7",
     "ionicons": "^7.2.1",
+    "primeng": "^17.13.0",
     "rxjs": "~7.8.0",
     "tinycolor2": "^1.6.0",
     "tslib": "^2.3.0",

@@ -1,0 +1,66 @@
+:host{
+    display: grid;
+    grid-template-columns: auto repeat(5, 1fr);
+    gap: 1rem;
+    
+    & > *:not(p-checkbox){
+        flex-grow: 1;
+        text-align: left;
+    }
+    padding: .5rem .75rem;
+}
+
+span{
+    display: flex;
+    align-items: center;
+}
+
+p, .handle{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flex-col{
+    overflow: hidden;
+}
+
+.flex-row{
+    gap: 1rem;
+}
+
+.handle{
+    color: #AAA;
+    font-size: .75rem;
+}
+
+img{
+    height: 2rem;
+    aspect-ratio: 1;
+    border-radius: 100vh;
+    background-color: #AAA;
+    caret-color: transparent;
+}
+
+.ruolo{
+    border-radius: .25rem;
+    padding: .25rem;
+    background-color: var(--accento);
+    color: #FFF;
+}
+
+.ruolo[ruolo="Dipendente"]{
+    background-color: #999;
+}
+
+ion-icon{
+    margin-right: .25rem;
+}
+
+ion-icon[name="close-circle"]{
+    color: #eb4e4e
+}
+
+ion-icon[name="checkmark-circle"]{
+    color: #72db80;
+}

@@ -1,0 +1,14 @@
+
+<div class="cont flex-row" #cont>
+  @for (opz of opzioni; track $index) {
+    <button >{{opz.nome}}</button>
+  }
+  <div class="overlay flex-row">
+    @for (opz of opzioni; track $index) {
+      <button (click)="CambiaValore(opz.val, $event)">{{opz.nome}}</button>
+    } 
+  </div>
+  <div class="cella" #cella>
+
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<header #header>
+  <p-checkbox [binary]="true"/>
+  <span class="th" (click)="Filtra(0, 'cognome')">
+    <span>Nome</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(1, 'ruolo')">
+    <span>Ruolo</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(2, 'nPerizie')">
+    <span>Perizie</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(3, 'assuntoIl')">
+    <span>Creazione</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(4, 'stato')">
+    <span>Stato</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+</header>
+<div class="body-tabella">
+  <div class="wrapper-utenti">
+      @for (u of tabella.utenti; track $index) {
+        <Utente [utente]="u"/>
+      }
+  </div>
+</div>
