@@ -63,6 +63,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 #wrapperFiltriGenere > div:nth-child(2){
     display: flex;

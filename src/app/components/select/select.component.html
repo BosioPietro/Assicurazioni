@@ -1,11 +1,9 @@
-<div id="wrapperText">
-  <div>Scegli</div>
-  <div>></div>
+<div id="wrapperText" (click)="openSelect()" [ngClass]="{openSelect: flagOpen}">
+  <div>Tutti</div>
+  <div><ion-icon name="chevron-forward-outline"></ion-icon></div>
 </div>
-<div id="wrapperContent">
-  <span>Scelta1</span>
-  <span>Scelta2</span>
-  <span>Scelta3</span>
-  <span>Scelta4</span>
-  <span>Scelta5</span>
+<div id="wrapperContent" [ngClass]="{openContent: flagOpen}">
+  @for (operatore of elencoOperatori; track $index) {
+    <span (click)="optionCliccata(operatore)">{{operatore}}</span>
+  }
 </div>
