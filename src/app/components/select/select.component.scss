@@ -1,0 +1,26 @@
+:host{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-color: red;
+}
+#wrapperText{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: green;
+}
+#wrapperContent{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: purple;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+}
