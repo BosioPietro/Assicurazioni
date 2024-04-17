@@ -28,4 +28,19 @@ export class UtentiPage {
     {nome: "Dipendenti", val: "Dipendente"}
   ]
 
+  EsportaCSV(){
+    const file = this.tabella.tutti.reduce((acc, curr) => {
+      return `${acc}${Object.values(curr).join(",")}\n`;
+    }, "data:text/csv;charset=utf-8,");
+
+    const link = Object.assign(document.createElement("a"), {
+      href: encodeURI(file),
+      download: "utenti.csv"
+    });
+    
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  }
+
 }
