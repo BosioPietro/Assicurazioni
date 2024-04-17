@@ -1,0 +1,91 @@
+:host{
+    --grigio: #EEE;
+    display: grid;
+    grid-template-columns: auto repeat(5, 1fr);
+    gap: 1rem;
+    align-items: center;
+    
+    & > *:not(p-checkbox){
+        text-align: left;
+    }
+    padding: .5rem .75rem;
+}
+
+span{
+    display: flex;
+    align-items: center;
+}
+
+.flex-col{
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.flex-row{
+    gap: 1rem;
+}
+
+.handle.grigio{
+    color: var(--grigio);
+    height: .75rem;
+    margin-top: .25rem;
+    width: 8ch;
+}
+
+.img.grigio{
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100vh;
+    caret-color: transparent;
+}
+
+.perizie{
+    width: 2ch;
+}
+
+.ruolo.grigio{
+    height: 1.5rem;
+    width: 8ch;
+}
+
+.cerchio{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100vh;
+    margin-right: .25rem;
+    background-color: var(--grigio);
+}
+
+.grigio{
+    border-radius: .25rem;
+    padding: .25rem;
+    height: 1rem;
+    width: 12ch;
+    background-color: var(--grigio);
+    color: #FFF;
+    position: relative;
+    overflow: hidden;
+}
+
+.grigio::before{
+    content: ' ';
+    position: absolute;
+    z-index: 1;
+    transform: translateY(-50%) rotateZ(.1turn);
+    top: 1rem;
+    height: 4rem;
+    width: 1rem;
+    background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+    left: -200%;
+    animation: caricamento 1s infinite linear;
+    filter: blur(1rem);
+}
+
+@keyframes caricamento{
+    0%{
+        left: -200%;
+    }
+    100%{
+        left: 200%;
+    }
+}

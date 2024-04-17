@@ -169,12 +169,17 @@ main{
                 height: 4rem;
             }
 
-            & > .flex-row{
+            .flex-row{
+                gap: .5rem;
                 justify-content: space-between;
             }
 
             TabellaUtenti{
                 flex-grow: 1;
+            }
+
+            .btn-aggiungi{
+                padding: .5rem;
             }
         }
     }

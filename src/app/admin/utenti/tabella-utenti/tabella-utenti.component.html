@@ -1,5 +1,5 @@
 <header #header>
-  <p-checkbox [binary]="true"/>
+  <p-checkbox [binary]="true" [disabled]="!tabella.utenti.length"/>
   <span class="th" (click)="Filtra(0, 'cognome')">
     <span>Nome</span>
     <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
@@ -23,8 +23,16 @@
 </header>
 <div class="body-tabella">
   <div class="wrapper-utenti">
-      @for (u of tabella.utenti; track $index) {
-        <Utente [utente]="u"/>
-      }
+    @if(!tabella.utenti.length)
+    {
+      @for (u of '111111111111111'.split(''); track $index) {
+        <UtentePlaceholder />
+      } 
+    }
+    @else {
+       @for (u of tabella.utenti; track $index) {
+          <Utente [utente]="u"/>
+       }
+    }
   </div>
 </div>
