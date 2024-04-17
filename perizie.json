@@ -11,8 +11,8 @@
         "ora": "10:30",
         "descrizione": "Valutazione dei danni strutturali in un edificio residenziale.",
         "immagini": ["https://example.com/danni_strutturali_1.jpg", "https://example.com/danni_strutturali_2.jpg"],
-        "utente": "Franco",
-        "colore": "blu"
+        "utente": {"nome": "Franco", "genere": "M"},
+        "colore": "blue"
     },
     {
         "città": "Fossano",
@@ -26,8 +26,8 @@
         "ora": "14:15",
         "descrizione": "Perizia tecnica su un incidente stradale.",
         "immagini": ["https://example.com/incidente_stradale_1.jpg", "https://example.com/incidente_stradale_2.jpg"],
-        "utente": "Giovanni",
-        "colore": "rosso"
+        "utente": {"nome": "Giovanna", "genere": "F"},
+        "colore": "red"
     },
     {
         "città": "Scarnafigi",
@@ -41,8 +41,8 @@
         "ora": "9:30",
         "descrizione": "Valutazione della conformità normativa di un impianto industriale.",
         "immagini": ["https://example.com/conformita_normativa_1.jpg", "https://example.com/conformita_normativa_2.jpg"],
-        "utente": "Piero",
-        "colore": "verde"
+        "utente": {"nome": "Piero", "genere": "M"},
+        "colore": "green"
     },
     {
         "città": "Saluzzo",
@@ -56,8 +56,8 @@
         "ora": "8:15",
         "descrizione": "Perizia di valutazione immobiliare per scopi fiscali.",
         "immagini": ["https://example.com/valutazione_immobiliare_1.jpg", "https://example.com/valutazione_immobiliare_2.jpg"],
-        "utente": "Guglielmo",
-        "colore": "arancione"
+        "utente": {"nome": "Guglielmo", "genere": "M"},
+        "colore": "orange"
     },
     {
         "città": "Saluzzo",
@@ -71,8 +71,8 @@
         "ora": "17:22",
         "descrizione": "Perizia su danni causati da eventi atmosferici.",
         "immagini": ["https://example.com/danni_eventi_atmosferici_1.jpg", "https://example.com/danni_eventi_atmosferici_2.jpg"],
-        "utente": "Giovanni",
-        "colore": "rosso"
+        "utente": {"nome": "Giovanna", "genere": "F"},
+        "colore": "red"
     },
     {
         "città": "Fossano",
@@ -86,8 +86,8 @@
         "ora": "9:45",
         "descrizione": "Perizia di valutazione danni in un'area industriale.",
         "immagini": ["https://example.com/danni_industriali_1.jpg", "https://example.com/danni_industriali_2.jpg"],
-        "utente": "Franco",
-        "colore": "blu"
+        "utente": {"nome": "Franco", "genere": "M"},
+        "colore": "blue"
     },
     {
         "città": "Savigliano",
@@ -101,8 +101,8 @@
         "ora": "10:20",
         "descrizione": "Perizia tecnica per un incidente in un cantiere edile.",
         "immagini": ["https://example.com/incidente_cantiere_1.jpg", "https://example.com/incidente_cantiere_2.jpg"],
-        "utente": "Giovanni",
-        "colore": "rosso"
+        "utente": {"nome": "Giovanna", "genere": "F"},
+        "colore": "red"
     },
     {
         "città": "San Salvatore",
@@ -116,7 +116,7 @@
         "ora": "11:20",
         "descrizione": "Perizia su danni strutturali causati da terremoto.",
         "immagini": ["https://example.com/danni_terremoto_1.jpg", "https://example.com/danni_terremoto_2.jpg"],
-        "utente": "Piero",
-        "colore": "verde"
+        "utente": {"nome": "Piero", "genere": "M"},
+        "colore": "green"
     }
 ]

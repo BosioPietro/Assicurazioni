@@ -1,6 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {IonIcon} from "@ionic/angular/standalone";
+import { MapService } from 'src/app/home/shared/map.service';
+import { UtilityService } from 'src/app/home/shared/utility.service';
 
 @Component({
   selector: 'app-select',
@@ -11,8 +13,7 @@ import {IonIcon} from "@ionic/angular/standalone";
 })
 export class SelectComponent  implements OnInit {
 
-  constructor() { }
-  elencoOperatori:any [] = ["Franco", "Giovanni", "Guglielmo", "Piero"];
+  constructor(public mapService:MapService, public utilityService:UtilityService) { }
   flagOpen: boolean = false;
   ngOnInit() {}
 
@@ -21,5 +22,8 @@ export class SelectComponent  implements OnInit {
   }
   optionCliccata(operatore:any){
     this.flagOpen = false;
+    this.mapService.selectedOperators.push(operatore);
+    this.utilityService.elencoOperatori.splice(this.utilityService.elencoOperatori.indexOf(operatore), 1);
+    this.mapService.creaMappa();
   }
 }

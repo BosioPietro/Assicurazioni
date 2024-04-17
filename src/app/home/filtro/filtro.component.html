@@ -6,13 +6,18 @@
   <div id="wrapperFiltriGenere">
     <div><small>Gender</small></div>
     <div>
-      <span class="inputVoice"><input type="radio" name="gndChk">All</span>
-      <span class="inputVoice"><input type="radio" name="gndChk">M</span>
-      <span class="inputVoice"><input type="radio" name="gndChk">F</span>
+      @for (gender of elencoGenders; track $index){
+        <span class="inputVoice"><app-radio-button [label]="gender"></app-radio-button></span>
+      }
     </div>
   </div>
   <div><small>Name</small></div>
   <div id="wrapperFiltriOperatore">
-    <div id="wrapperSelect"><app-select #selectOperatori></app-select></div>
+    <app-select #selectOperatori></app-select>
+  </div>
+  <div id="wrapperOperatoriSelezionati">
+    @for (operatore of mapService.selectedOperators; track $index){
+      <app-selection [selection]="operatore" (selectionRemoved)="onSelectionRemoved($event)"></app-selection>
+    }
   </div>
 </div>

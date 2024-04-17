@@ -1,0 +1,35 @@
+:host{
+    width: fit-content;
+    height: fit-content;
+    background-color: hsl(0, 0%, 20%);
+    color: white;
+    padding: 0.2rem;
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+    position: relative;
+    cursor: pointer;
+    font-weight: bold;
+}
+:host > span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    gap: 0.1rem;
+}
+:host > ion-icon{
+    font-size: 1.3rem;
+    color: white;
+}
+:host > span > span:nth-child(2){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.2s, color 0.2s;
+}
+:host:hover > span > span:nth-child(2){
+    color: red;
+    transform: rotateZ(180deg);
+}
