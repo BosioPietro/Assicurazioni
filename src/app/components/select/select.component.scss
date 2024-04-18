@@ -1,9 +1,9 @@
 :host{
     width: 30%;
     height: 100%;
-    position: absolute;
     border-radius: 0.5rem;
     margin: 0px auto;
+    position: relative;
 }
 #wrapperText{
     width: 100%;
@@ -45,11 +45,14 @@
     flex-direction: column;
     background-color: white;
     transition: height 0.5s;
+    box-shadow: 0px 0px 10px 3px lightgray;
+    border-radius: 1rem;
 }
 .openContent{
     height: 300% !important;
     width: 100%;
-    overflow: visible !important;
+    overflow-y: scroll !important;
+    overflow-x: visible !important;
     background-color: white;
 }
 
@@ -89,21 +92,19 @@
     color: black;
 }
 
-// .openContent{
-//     animation-name: openContent;
-//     animation-duration: 1s;
-//     animation-fill-mode: forwards;
-//     animation-timing-function: linear;
-// }
-// @keyframes openContent{
-//     0%{
-//         width: 100%;
-//         height: 0px;
-//     }
-//     100%{
-//         width: 100%;
-//         height: 300%;
-//         overflow: visible;
-//         background-color: #f2f2f2 !important;
-//     }
-// }
+#wrapperContent::-webkit-scrollbar {
+    display: none;
+}
+  
+#wrapperContent::-webkit-scrollbar-track {
+    background: white;
+}
+  
+#wrapperContent::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 0.3rem;
+}
+  
+#wrapperContent::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

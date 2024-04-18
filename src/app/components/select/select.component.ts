@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {IonIcon} from "@ionic/angular/standalone";
 import { MapService } from 'src/app/home/shared/map.service';
 import { UtilityService } from 'src/app/home/shared/utility.service';
@@ -12,18 +12,23 @@ import { UtilityService } from 'src/app/home/shared/utility.service';
   standalone: true
 })
 export class SelectComponent  implements OnInit {
-
+  @Input() options:any;
+  @Input() label:any;
+  @Output() optionClicked = new EventEmitter<any>();
+  
+  title:any;
   constructor(public mapService:MapService, public utilityService:UtilityService) { }
   flagOpen: boolean = false;
-  ngOnInit() {}
+  ngOnInit() {
+    this.title = this.label;
+  }
 
   openSelect(){
     this.flagOpen = !this.flagOpen;
   }
-  optionCliccata(operatore:any){
+  optionCliccata(option:any){
     this.flagOpen = false;
-    this.mapService.selectedOperators.push(operatore);
-    this.utilityService.elencoOperatori.splice(this.utilityService.elencoOperatori.indexOf(operatore), 1);
-    this.mapService.creaMappa();
+    this.title = option;
+    this.optionClicked.emit(option);
   }
 }

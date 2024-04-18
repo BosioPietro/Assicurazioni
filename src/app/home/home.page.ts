@@ -29,11 +29,7 @@ export class HomePage {
       this.mapService.creaMappa();
   }
   ngOnInit(){
-    // this.dataStorage.inviaRichiesta("get", "/Perizie")?.subscribe((res)=>{
-    //   console.log("OK")
-    //   console.log(res);
-    //   this.markerList = res;
-    // })
+    
     
   }
 //   onMarkerClick(event: google.maps.MapMouseEvent, marker: any){

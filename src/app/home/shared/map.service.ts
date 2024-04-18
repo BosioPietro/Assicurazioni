@@ -21,7 +21,7 @@ export class MapService {
       marker.setMap(null);
     });
     this.markerList.forEach(marker => {
-      if((this.selectedOperators.includes(marker.utente.nome) && (marker.utente.genere == this.utilityService.flagRadioClicked || this.utilityService.flagRadioClicked == "All")) || this.selectedOperators.length == 0 || (this.utilityService.flagRadioClicked == "All" && this.selectedOperators.length == 0) || (this.utilityService.flagRadioClicked == marker.utente.genere && this.selectedOperators.length == 0)){
+      if((this.utilityService.flagRadioClicked == marker.utente.genere && this.selectedOperators.length == 0) || (this.utilityService.flagRadioClicked == "All" && (this.selectedOperators.includes(marker.utente.nome) || this.selectedOperators.length == 0)) || (this.selectedOperators.includes(marker.utente.nome) && (marker.utente.genere == this.utilityService.flagRadioClicked || this.utilityService.flagRadioClicked == "All"))){
         this.newMarker = new google.maps.Marker({
           position: marker.coords,
           map: this.map,
