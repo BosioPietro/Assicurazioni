@@ -65,27 +65,20 @@ const GeneraPassword = () : string => {
     const numeri = "0123456789";
     const speciali = "!@#$%^&*()_+";
 
-    const caratteri = alfabeto + alfabeto.toLowerCase() + numeri + speciali;
-    let pwd = "";
-    for(let i = 0; i < 14; i++)
-    {
-        pwd += caratteri.charAt(Math.floor(Math.random() * caratteri.length));
-    }
-
-    return pwd;
+    const c = alfabeto + alfabeto.toLowerCase() + numeri + speciali;
+    const Carattere = () => c.charAt(Math.floor(Math.random() * c.length))
+    
+    return new Array(14).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
 const GeneraCodice = () => {
     const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numeri = "0123456789";
-    const caratteri = alfabeto + numeri;
+    const c = alfabeto + numeri;
 
-    let codice = "";
-    for(let i = 0; i < 6; ++i){
-        codice += caratteri.charAt(Math.floor(Math.random() * caratteri.length))
-    }
+    const Carattere = () => c.charAt(Math.floor(Math.random() * c.length))
 
-    return codice;
+    return new Array(6).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken }
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken, Token }
