@@ -1,16 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { CheckboxModule } from 'primeng/checkbox';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { UtenteComponent } from './utente/utente.component';
 import { TabellaService } from '../tabella.service';
 import { IonIcon } from '@ionic/angular/standalone';
 import { UtentePlaceholderComponent } from './utente-placeholder/utente-placeholder.component';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'TabellaUtenti',
   templateUrl: './tabella-utenti.component.html',
   styleUrls: ['./tabella-utenti.component.scss'],
-  imports: [CheckboxModule, UtenteComponent, IonIcon, UtentePlaceholderComponent],
+  imports: [CheckboxModule, UtenteComponent, IonIcon, UtentePlaceholderComponent, FormsModule],
   standalone: true
 })
 export class TabellaUtentiComponent implements OnInit{
@@ -18,13 +19,14 @@ export class TabellaUtentiComponent implements OnInit{
   @ViewChild("header")
   header!: ElementRef<HTMLElement>;
 
-  indici = [0, 0, 0, 0, 0]
+  indici = [0, 0, 0, 0, 0];
 
   constructor(public tabella: TabellaService, public notifiche: NotificheService) { }
 
   async ngOnInit(): Promise<void> {
     const utenti = await this.tabella.PrendiUtenti().catch(() => ( {data: []} ));
 
+    this.tabella.inCaricamento = false;
     this.tabella.tutti = this.tabella.utenti = utenti["data"];
 
     if(this.tabella.utenti.length)return;
@@ -47,5 +49,13 @@ export class TabellaUtentiComponent implements OnInit{
     this.tabella.Ordina(this.indici[i] == 0, campo as any);
   }
 
+  SelezionaTutti(e: CheckboxChangeEvent){
+    const { checked } = e;
 
+    if(checked)
+    {
+     this.tabella.SelezionaTutti()
+    }
+    else this.tabella.selezionati = [];
+  }
 }

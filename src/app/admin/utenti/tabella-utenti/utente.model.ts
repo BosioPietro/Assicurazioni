@@ -1,7 +1,7 @@
 type Utente = {
     nome: string,
     cognome: string,
-    handle: string,
+    username: string,
     pfp: string,
     ruolo: "Admin" | "Dipendente",
     nPerizie: number,

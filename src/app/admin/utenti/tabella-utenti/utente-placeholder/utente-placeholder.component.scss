@@ -11,6 +11,8 @@
     padding: .5rem .75rem;
 }
 
+
+
 span{
     display: flex;
     align-items: center;
@@ -25,7 +27,11 @@ span{
     gap: 1rem;
 }
 
-.handle.grigio{
+.username::before{
+    content: '@';
+}
+
+.username.grigio{
     color: var(--grigio);
     height: .75rem;
     margin-top: .25rem;

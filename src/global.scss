@@ -11,6 +11,8 @@
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
+@import "primeicons/primeicons.css";
+
 
 /* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
@@ -32,7 +34,8 @@
     --accento: #245c73
 }
 
-*{
+
+*:not(.p-menu-overlay, .p-menu-overlay *){
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -69,14 +72,14 @@
     caret-color: transparent;
 }
 
-a{
+a:not(.p-menu-overlay, .p-menu-overlay *){
     cursor: pointer;
     text-decoration: underline;
     color: var(--accento);
     transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-a:hover{
+a:not(p-menu, p-menu *):hover{
     filter: drop-shadow(0 0 1.5rem var(--accento));
 }
 

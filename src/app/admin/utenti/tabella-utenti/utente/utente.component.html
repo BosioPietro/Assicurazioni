@@ -1,9 +1,14 @@
-<p-checkbox [binary]="true" />
+<p-checkbox [binary]="true" (onChange)="Seleziona($event)" [ngModel]="tabella.selezionati.includes(utente)"/>
 <span class="flex-row">
-  <img />
+  @if(utente.pfp){
+    <div class="img" [style.background-image]="'url(' + utente.pfp + ')'"></div>
+  }
+  @else {
+    <ImmagineProfileDefault [nome]="utente.cognome"/>
+  }
   <div class="flex-col">
     <p>{{utente.cognome}} {{ utente.nome }}</p>
-    <span class="handle">{{utente.handle}}</span>
+    <span class="username">{{utente.username}}</span>
   </div>
 </span>
 <span>

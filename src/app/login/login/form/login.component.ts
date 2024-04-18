@@ -15,13 +15,13 @@ import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-passw
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { LoginMicrosoftComponent } from './bottone-login-microsoft/login-microsoft.component';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
-import { Notifica } from 'src/app/utils/TipiSpeciali';
+import { BottoneLoginAppleComponent } from './bottone-login-apple/bottone-login-apple.component';
 
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login.component.scss'],
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent, LoginMicrosoftComponent],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent, LoginMicrosoftComponent, BottoneLoginAppleComponent],
   standalone: true,
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -125,6 +125,21 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       this.router.navigateByUrl("/login/recupero-credenziali");
     }, 500);
+  }
+
+  AppleSignin(){
+    const CLIENT_ID = "com.myapp.bundle.backend"
+    const REDIRECT_API_URL = "https://bosio.zip/api/login-oauth"
+    window.open(
+        `https://appleid.apple.com/auth/authorize? +
+            client_id=${CLIENT_ID}& +
+            redirect_uri=${encodeURIComponent(REDIRECT_API_URL)}& +
+            response_type=code id_token& +
+            scope=name email& +
+            response_mode=form_post`,
+        '_blank',
+        "width=400,height=500,menubar=no,location=no,status=no"
+    );
   }
 
 }

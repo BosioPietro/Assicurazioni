@@ -1,7 +1,29 @@
 :host{
     display: flex;
     flex-direction: column;
+
+    &::ng-deep{
+
+        .p-checkbox .p-checkbox-box.p-highlight{
+            border-color: var(--accento) !important;
+            background: var(--accento) !important;
+        }
+
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover,
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus{
+            border-color: var(--accento) !important;
+        }
+
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus{
+            box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--accento) 40%, transparent 60%) !important;
+        }
+    }
 }
+
+
+
+
+
 
 header{
     display: grid;
@@ -43,6 +65,25 @@ input{
     position: absolute;
     left: 0;
     right: 0;
+
+    &:has(.no-utenti){
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        .no-utenti{
+            color: var(--accento);
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        p{
+            color: #AAA;
+            font-size: 1rem;
+        }
+    }
 }
 
 ::-webkit-scrollbar {

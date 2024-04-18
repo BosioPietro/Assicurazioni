@@ -10,12 +10,18 @@
     padding: .5rem .75rem;
 }
 
+
+
 span{
     display: flex;
     align-items: center;
 }
 
-p, .handle{
+.username::before{
+    content: '@';
+}
+
+p, .username{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -29,12 +35,12 @@ p, .handle{
     gap: 1rem;
 }
 
-.handle{
+.username{
     color: #AAA;
     font-size: .75rem;
 }
 
-img{
+img, ImmagineProfileDefault{
     height: 2rem;
     aspect-ratio: 1;
     border-radius: 100vh;

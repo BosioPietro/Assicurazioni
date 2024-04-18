@@ -6,7 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
 import { ErroreComponent } from 'src/app/comuni/errore/errore.component';
-import { InfoComponent } from 'src/app/comuni/info/info.component';
 import { ConfrontaPassword, RegexInput } from 'src/app/utils/Input';
 import { ControllaToken } from 'src/app/utils/funzioni';
 import { PopOverComponent } from "../../../comuni/pop-over/pop-over.component";
@@ -22,7 +21,7 @@ import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
     styleUrls: ['../../stile-form.scss', '../stile-form.scss'],
     animations: [animazione],
     standalone: true,
-    imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, InfoComponent, ErroreComponent, InputPasswordComponent, PopOverComponent]
+    imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, TooltipComponent, ErroreComponent, InputPasswordComponent, PopOverComponent]
 })
 export class CambioPasswordComponent implements OnInit{
 

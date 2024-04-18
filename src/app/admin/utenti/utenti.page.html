@@ -55,13 +55,18 @@
       <hr/>
       <h1>Dipendenti</h1>
       <div class="flex-row">
-        <BottoniOpzione (onChange)="CambiaMod($event)" [opzioni]="opzioniDipendenti"/>
-        <span class="flex-row">
-          <button class="accento btn-aggiungi">
-            <ion-icon name="add" />
-          </button>
-          <BarraRicerca (onCerca)="tabella.nome = $event"/>
-        </span>
+        <div class="flex-row">
+          <BottoniOpzione (onChange)="CambiaMod($event)" [opzioni]="opzioniDipendenti"/>
+          @if (tabella.selezionati.length) {
+            <div class="wrapper-menu flex-row jc-c">
+                <p-menu #menu [model]="tabella.opzioniMenu" [popup]="true" appendTo="body"></p-menu>
+                <button type="button" (click)="menu.toggle($event)" class="flex-row al-c" [@appari]>
+                  <ion-icon name="ellipsis-horizontal"></ion-icon>
+                </button>
+            </div>
+          }
+        </div>
+        <BarraRicerca (onCerca)="tabella.nome = $event"/>
       </div>
       <TabellaUtenti />
     </div>
@@ -69,3 +74,4 @@
   <div class="padding"></div>
 </main>
 <footer></footer>
+<p-confirmDialog></p-confirmDialog>

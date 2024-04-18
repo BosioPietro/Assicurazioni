@@ -3,7 +3,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
-import { InfoComponent } from 'src/app/comuni/info/info.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { PopOverComponent } from 'src/app/comuni/pop-over/pop-over.component';
@@ -12,7 +11,7 @@ import { PopOverComponent } from 'src/app/comuni/pop-over/pop-over.component';
   selector: 'CambioPasswordFinto',
   templateUrl: './cambio-password.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss'],
-  imports: [IonicModule, CommonModule, InfoComponent, InputPasswordComponent, PopOverComponent],
+  imports: [IonicModule, CommonModule, InputPasswordComponent, PopOverComponent],
   animations: [animazione],
   standalone: true,
 })

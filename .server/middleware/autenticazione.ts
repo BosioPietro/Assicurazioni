@@ -51,7 +51,7 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
 
         const tipo = utente.includes("@") ? "email" : "username";
-        const user = await driver.PrendiUno({ [tipo] : utente }, { password : 1, cambioPwd : 1, username: 1, "2FA": 1 })
+        const user = await driver.PrendiUno({ [tipo] : utente })
     
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Username non esistente") 
@@ -59,12 +59,12 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
         if(ConfrontaPwd(password, user["password"]))
         {
             const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
-            if(user["admin"] || user["2FA"]){
+            if(user["ruolo"] == "Admin" || user["2FA"]){
                 dataToken["2FA"] = false;   
             }
 
             const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
-            if(user["admin"] || user["2FA"])
+            if(user["ruolo"] == "Admin" || user["2FA"])
             {
                 risposta["2FA"] = false;   
             }
@@ -88,12 +88,12 @@ const LoginOAuth = async (app : Express, driver : MongoDriver) => {
         if(!user) return res.status(400).send("Utente non autorizzato");
 
         const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
-        if(user["admin"] || user["2FA"]){
+        if(user["ruolo"] == "Admin" || user["2FA"]){
             dataToken["2FA"] = false;   
         }
 
         const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
-        if(user["admin"] || user["2FA"])
+        if(user["ruolo"] == "Admin" || user["2FA"])
         {
             risposta["2FA"] = false;   
         }
@@ -142,7 +142,7 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
         
         
         const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
-        if(user["admin"] || user["2FA"]){
+        if(user["ruolo"] == "Admin" || user["2FA"]){
             dataToken["2FA"] = false;   
         }
 
@@ -154,8 +154,6 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
             data: DataInStringa(new Date()),
             codice
         }
-
-        console.log(codice)
 
         const data = await driver.Replace({ email }, { ...user, recupero })
         if(driver.Errore(data, res)) return;
@@ -230,7 +228,7 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
 
         if(!user) return RispondiToken(res, payload, `Utente non esistente`, 400)
         
-        if(!user["admin"] && !user["2FA"]){
+        if(user["ruolo"] != "Admin" && !user["2FA"]){
             RispondiToken(res, payload, `La verifica telefonica è disabilitata per questo utente`, 401)
             return;
         }

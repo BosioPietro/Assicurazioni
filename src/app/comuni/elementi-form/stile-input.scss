@@ -7,12 +7,11 @@
 
     display: flex;
     align-items: center;
-}
-
-:host{
     user-select: none;
     caret-color: transparent;
 }
+
+
 
 .cont{
     padding: var(--padding) calc(var(--padding) * 1.5);
