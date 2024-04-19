@@ -32,12 +32,6 @@
     --accento: #245c73
 }
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .flex-row, .flex-col{
     display: flex;
 }
@@ -53,16 +47,21 @@
 .al-c{
     align-items: center;
 }
+*:not(p-calendar)::ng-deep{
+    
+margin: 0;
+padding: 0;
+box-sizing: border-box;
 
-// input[type="text"],
-// input[type="password"],
-// input[type="number"]{
-//     padding: .5rem 1rem;
-//     border: 0;
-//     border-radius: 1rem;
-//     background-color: #e6e6e6;
-//     // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
-// }
+input[type="text"],
+input[type="password"],
+input[type="number"]{
+    padding: .5rem 1rem;
+    border: 0;
+    border-radius: 1rem;
+    background-color: #e6e6e6;
+    // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
+}
 
 button{
     --dim: 1rem;
@@ -151,4 +150,5 @@ input:-webkit-autofill{
     position: absolute !important;
     transform: scaleY(0) !important;
     opacity: 0 !important;
+}
 }

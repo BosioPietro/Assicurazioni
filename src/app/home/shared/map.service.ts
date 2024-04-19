@@ -6,6 +6,7 @@ import { UtilityService } from './utility.service';
 })
 export class MapService {
   markerCoordsObservable = new Subject<any>();
+  pickedDates!:Date[];
   flagInfoWindow:boolean = false;
   selectedOperators:any []= [];
   markers: google.maps.Marker[] = [];
@@ -16,41 +17,6 @@ export class MapService {
   mapRecipient:any;
   center: google.maps.LatLngLiteral = { lat: 44.55577411467918, lng: 7.735974391878129 }
   zoom:number = 13
-  creaMappa(){
-    this.markers.forEach(marker => {
-      marker.setMap(null);
-    });
-    this.markerList.forEach(marker => {
-      if((this.utilityService.flagRadioClicked == marker.utente.genere && this.selectedOperators.length == 0) || (this.utilityService.flagRadioClicked == "All" && (this.selectedOperators.includes(marker.utente.nome) || this.selectedOperators.length == 0)) || (this.selectedOperators.includes(marker.utente.nome) && (marker.utente.genere == this.utilityService.flagRadioClicked || this.utilityService.flagRadioClicked == "All"))){
-        this.newMarker = new google.maps.Marker({
-          position: marker.coords,
-          map: this.map,
-          icon: {
-            path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-            fillColor: marker.colore,
-            fillOpacity: 1,
-            strokeColor: 'black',
-            strokeWeight: 2,
-            scale: 1
-          }
-        });
-        this.markers.push(this.newMarker)
-      }
-    });
-    this.newMarker.addListener('click', ()=>{
-      // this.mapService.flagInfoWindow = true;
-      // this.mapService.markerCoordsObservable.next(marker);
-  })
-  }
-  mapOptions = {
-    zoomControl: false,
-    mapTypeControl: false,
-    scaleControl: false,
-    streetViewControl: false,
-    fullscreenControl: false,
-    center: this.center,
-    zoom: this.zoom
-  };
   markerList = [
     {
         "città": "Fossano",
@@ -59,7 +25,9 @@ export class MapService {
             "giorno": "Lunedì",
             "mese": "Giugno",
             "anno": 2020,
-            "date": "01/06/2020"
+            "date": "01/06/2020",
+            "nGiorno": 1,
+            "nMese": 6
         },
         "ora": "10:30",
         "descrizione": "Valutazione dei danni strutturali in un edificio residenziale.",
@@ -74,7 +42,9 @@ export class MapService {
             "giorno": "Giovedì",
             "mese": "Febbraio",
             "anno": 2022,
-            "date": "13/02/2022"
+            "date": "13/02/2022",
+            "nGiorno": 13,
+            "nMese": 2
         },
         "ora": "14:15",
         "descrizione": "Perizia tecnica su un incidente stradale.",
@@ -89,7 +59,9 @@ export class MapService {
             "giorno": "Mercoledì",
             "mese": "Aprile",
             "anno": 2023,
-            "date": "21/05/2023"
+            "date": "21/05/2023",
+            "nGiorno": 21,
+            "nMese": 5
         },
         "ora": "9:30",
         "descrizione": "Valutazione della conformità normativa di un impianto industriale.",
@@ -104,7 +76,9 @@ export class MapService {
             "giorno": "Domenica",
             "mese": "Ottobre",
             "anno": 2024,
-            "date": "28/10/2024"
+            "date": "28/10/2024",
+            "nGiorno": 28,
+            "nMese": 10
         },
         "ora": "8:15",
         "descrizione": "Perizia di valutazione immobiliare per scopi fiscali.",
@@ -119,7 +93,9 @@ export class MapService {
             "giorno": "Domenica",
             "mese": "Dicembre",
             "anno": 2022,
-            "date": "22/09/2022"
+            "date": "22/09/2022",
+            "nGiorno": 22,
+            "nMese": 9
         },
         "ora": "17:22",
         "descrizione": "Perizia su danni causati da eventi atmosferici.",
@@ -134,7 +110,9 @@ export class MapService {
             "giorno": "Lunedì",
             "mese": "Novembre",
             "anno": 2023,
-            "date": "13/02/2022"
+            "date": "13/02/2022",
+            "nGiorno": 13,
+            "nMese": 2
         },
         "ora": "9:45",
         "descrizione": "Perizia di valutazione danni in un'area industriale.",
@@ -149,7 +127,9 @@ export class MapService {
             "giorno": "Venerdì",
             "mese": "Agosto",
             "anno": 2023,
-            "date": "15/08/2023"
+            "date": "15/08/2023",
+            "nGiorno": 15,
+            "nMese": 8
         },
         "ora": "10:20",
         "descrizione": "Perizia tecnica per un incidente in un cantiere edile.",
@@ -164,7 +144,9 @@ export class MapService {
             "giorno": "Sabato",
             "mese": "Venerdì",
             "anno": 2024,
-            "date": "11/02/2024"
+            "date": "11/02/2024",
+            "nGiorno": 11,
+            "nMese": 2
         },
         "ora": "11:20",
         "descrizione": "Perizia su danni strutturali causati da terremoto.",
@@ -173,4 +155,56 @@ export class MapService {
         "colore": "green"
     }
 ]
+
+
+  filteredMarkers:any[] = this.markerList;
+  
+  filterMarkers(){
+    this.filteredMarkers = this.markerList;
+    this.filteredMarkers = this.markerList.filter(marker =>{
+      return ((marker.utente.genere == this.utilityService.flagRadioClicked && this.utilityService.flagRadioClicked != "All") || this.utilityService.flagRadioClicked == "All");
+    })
+    this.filteredMarkers = this.filteredMarkers.filter(marker =>{
+      return ((this.selectedOperators.includes(marker.utente.nome) && this.selectedOperators.length != 0) || this.selectedOperators.length == 0);
+    })
+    this.filteredMarkers = this.filteredMarkers.filter(marker =>{
+      return ((this.pickedDates[0] == ))
+    })
+  }
+
+  creaMappa(){
+    this.markers.forEach(marker => {
+      marker.setMap(null);
+    });
+    this.filterMarkers();
+    this.filteredMarkers.forEach(marker => {
+      this.newMarker = new google.maps.Marker({
+        position: marker.coords,
+        map: this.map,
+        icon: {
+          path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+          fillColor: marker.colore,
+          fillOpacity: 1,
+          strokeColor: 'black',
+          strokeWeight: 2,
+          scale: 1
+        }
+      });
+      this.markers.push(this.newMarker)
+    });
+    // this.newMarker.addListener('click', ()=>{
+      // this.mapService.flagInfoWindow = true;
+      // this.mapService.markerCoordsObservable.next(marker);
+  // })
+  }
+  mapOptions = {
+    zoomControl: false,
+    mapTypeControl: false,
+    scaleControl: false,
+    streetViewControl: false,
+    fullscreenControl: false,
+    center: this.center,
+    zoom: this.zoom
+  };
+  
 }

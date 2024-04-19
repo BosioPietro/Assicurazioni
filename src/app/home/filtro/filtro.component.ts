@@ -7,21 +7,33 @@ import { MapService } from '../shared/map.service';
 import { UtilityService } from '../shared/utility.service';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'app-filtro',
   templateUrl: './filtro.component.html',
   styleUrls: ['./filtro.component.scss'],
-  imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, NgStyle, FormsModule],
+  imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, NgStyle, FormsModule, CalendarModule],
   standalone: true
 })
 export class FiltroComponent  implements OnInit {
+  rangeDates!:Date[];
   month = "Gennaio";
   day = "01";
   year = "2024";
   constructor(public mapService:MapService, public utilityService:UtilityService) { }
   elencoGenders:any [] = ["All","M", "F"];
   ngOnInit() {}
+
+  datePicked(){
+    this.mapService.pickedDates = this.rangeDates;
+    if(this.rangeDates.length == 2){
+      
+    }else{
+
+    }
+  }
+
   onSelectionRemoved(selection:any){
     this.mapService.selectedOperators.splice(this.mapService.selectedOperators.indexOf(selection), 1);
     this.utilityService.elencoOperatori.push(selection);
