@@ -6,6 +6,7 @@ import { IonIcon } from '@ionic/angular/standalone';
 import { UtentePlaceholderComponent } from './utente-placeholder/utente-placeholder.component';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import { FormsModule } from '@angular/forms';
+import Utente from './utente.model';
 
 @Component({
   selector: 'TabellaUtenti',
@@ -24,12 +25,8 @@ export class TabellaUtentiComponent implements OnInit{
   constructor(public tabella: TabellaService, public notifiche: NotificheService) { }
 
   async ngOnInit(): Promise<void> {
-    const utenti = await this.tabella.PrendiUtenti().catch(() => ( {data: []} ));
-
-    this.tabella.inCaricamento = false;
-    this.tabella.tutti = this.tabella.utenti = utenti["data"];
-
-    if(this.tabella.utenti.length)return;
+    if(await this.tabella.Carica())return;
+    
     this.notifiche.NuovaNotifica({
       titolo: "Qualcosa è andato storto",
       descrizione: "Non è stato possibile recuperare gli utenti dal server",
@@ -57,5 +54,9 @@ export class TabellaUtentiComponent implements OnInit{
      this.tabella.SelezionaTutti()
     }
     else this.tabella.selezionati = [];
+  }
+
+  ModificaUtente(u: Utente){
+    // console.log(u);
   }
 }

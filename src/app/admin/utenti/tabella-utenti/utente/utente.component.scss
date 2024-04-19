@@ -1,16 +1,24 @@
-:host{
+:host > span{
     display: grid;
     grid-template-columns: auto repeat(5, 1fr);
     gap: 1rem;
+    padding: .5rem .75rem;
+    cursor: pointer;
+    transition: background-color .33s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    & > *{
+        caret-color: transparent;
+    }
     
     & > *:not(p-checkbox){
         flex-grow: 1;
         text-align: left;
     }
-    padding: .5rem .75rem;
+
+    &:hover{
+        background-color: #EEE;
+    }
 }
-
-
 
 span{
     display: flex;

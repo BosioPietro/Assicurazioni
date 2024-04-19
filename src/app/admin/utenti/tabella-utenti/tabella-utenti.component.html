@@ -41,7 +41,7 @@
     }
     @else {
        @for (u of tabella.utenti; track $index) {
-          <Utente [utente]="u"/>
+          <Utente [utente]="u" (click)="ModificaUtente(u)"/>
        }
     }
   </div>

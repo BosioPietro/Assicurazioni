@@ -4,7 +4,6 @@ import { MongoDriver } from "@bosio/mongodriver";
 const PrendiUtenti = (app: Express, driver: MongoDriver) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
         const filtri = req.query || {};
-        console.log("filtri")
 
         if(driver.Collezione != "utenti"){
             await driver.SettaCollezione("utenti");
@@ -20,4 +19,19 @@ const PrendiUtenti = (app: Express, driver: MongoDriver) => {
     })
 }
 
-export { PrendiUtenti };
+const EliminaUtenti = (app: Express, driver: MongoDriver) => {
+    app.delete("/api/utenti", async (req: Request, res: Response) => {
+        const { utenti } = req.body;
+
+        if(driver.Collezione != "utenti"){
+            await driver.SettaCollezione("utenti");
+        }
+
+        const eliminati = await driver.Elimina({ username : { $in : utenti } });
+        if(driver.Errore(eliminati, res)) return;
+
+        res.send(eliminati);
+    })
+}
+
+export { PrendiUtenti, EliminaUtenti };

@@ -1,11 +1,3 @@
-
-*{
-    color: #000;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 :host{
     --padding: 2rem;
     display: flex;
@@ -204,4 +196,90 @@ footer{
     height: var(--padding);
     background-color: #FFF;
     border-radius: 0 0 1.5rem 1.5rem;
+}
+
+dialog{
+    border: 0;
+    border-radius: 1rem;
+    padding: 2rem;
+    animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &.chiudi{
+        animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        &::backdrop{
+            animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+    }
+
+    .flex-col{
+        gap: 1rem;
+    }
+
+    span{
+        text-align: center;
+    }
+
+    .flex-row{
+        margin-top: 1rem;
+        gap: .5rem;
+        width: 100%;
+
+        button{
+            caret-color: transparent;
+        }
+    }
+
+    .elimina{
+        color: #FFF;
+        background-color: #eb4e4e;
+        border-color: transparent;
+    }
+
+    p{
+        font-size: .8rem;
+        color: #AAA;
+        text-align: center;
+    }
+
+    ion-icon{
+        --colore: #eb4e4e;
+        font-size: 3rem;
+        color: var(--colore);
+        position: relative;
+        contain: initial;
+    }
+
+    ion-icon::before{
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 100vh;
+        background: radial-gradient(circle, transparent 40%, var(--colore) 41%);
+        opacity: .3;
+        scale: 1.25;
+    }
+
+    ion-icon::after{
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 100vh;
+        background: radial-gradient(circle, transparent 40%, var(--colore) 41%);
+        opacity: .1;
+        scale: 1.4;
+    }
+
+    &::backdrop{
+        background-color: rgba(0, 0, 0, .33);
+    } 
+}
+
+@keyframes appari{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes scompari{
+    from{ opacity: 1; }
+    to{ opacity: 0; }
 }

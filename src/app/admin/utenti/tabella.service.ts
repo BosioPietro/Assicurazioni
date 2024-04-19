@@ -14,13 +14,6 @@ export class TabellaService {
   tutti: Utente[] = [];
   selezionati: Utente[] = [];
 
-  public opzioniMenu = [
-    {
-        label: 'Elimina',
-        icon: 'pi pi-fw pi-trash'
-    },
-  ];
-
   public selezionatiTutti: boolean = false;
 
   public inCaricamento: boolean = true;
@@ -82,42 +75,51 @@ export class TabellaService {
 
   SelezionaUtente(u: Utente){
     this.selezionati.push(u);
-    this.CambiaOpzioni()
   }
 
   DeselezionaUtente(u: Utente){
     this.selezionati = this.selezionati.filter(utente => utente !== u);
-    this.CambiaOpzioni()
   }
 
   SelezionaTutti(){
     this.selezionati = this.utenti;
-    this.CambiaOpzioni()
   }
 
-  CambiaOpzioni(){
-    if(this.selezionati.length > 1)
-    {
-      this.opzioniMenu = [
-        {
-          label: 'Elimina',
-          icon: 'pi pi-fw pi-trash'
-        },
-        {
-          label: 'Crea Gruppo',
-          icon: 'pi pi-fw pi-users'
-        }]
-      return;
-    }
-  
-    this.opzioniMenu = [
-      {
-        label: 'Elimina',
-        icon: 'pi pi-fw pi-trash'
-      },
-      {
-        label: 'Crea Chat',
-        icon: 'pi pi-fw pi-comment'
-      }]
+  async Carica(){
+    return new Promise<boolean>(async (resolve) => {
+
+      this.inCaricamento = true;
+      this.tutti = this.utenti = this.selezionati = [];
+      
+      let fallimento = false;
+      const utenti = await this.PrendiUtenti().catch(() => {
+        resolve(false);
+        fallimento = true;
+      }) as { data: Utente[] };
+
+      if(fallimento)return;
+      
+      this.inCaricamento = false;
+      this.tutti = this.utenti = utenti["data"]
+      
+      this.FiltraTipo();
+      this.FiltraNome();
+      this.Ordina(this.ordineCrescente, this.campoOrdinamento);
+      resolve(true);
+    });
   }
+
+  async EliminaUtenti(){
+    return new Promise<boolean>((resolve, reject) => {
+      const utenti = this.selezionati.map(u => u["username"]);
+      this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti })
+      .then(() => resolve(true))
+      .catch(() => resolve(false));
+    });
+  }
+
+  ModificaUtente(u: Utente){
+    console.log(u)
+  }
+
 }

@@ -35,10 +35,36 @@
 }
 
 
-*:not(.p-menu-overlay, .p-menu-overlay *){
+*:not(.p-menu-overlay, .p-menu-overlay *, p-menu, p-menu *, dialog){
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    a:not(.p-menuitem-link){
+        cursor: pointer;
+        text-decoration: underline;
+        color: var(--accento);
+        transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus, 
+    input:-webkit-autofill:active{
+        -webkit-box-shadow: 0 0 0 30px var(--sfondo) inset !important;
+        caret-color: transparent;
+    }
+
+    input:-webkit-autofill{
+        -webkit-text-fill-color:  #000 !important;
+        font-size: inherit;
+        font-weight: inherit;
+    }
+
+    a:hover{
+        filter: drop-shadow(0 0 1.5rem var(--accento));
+    }    
+
 }
 
 .flex-row, .flex-col{
@@ -57,48 +83,13 @@
     align-items: center;
 }
 
-// input[type="text"],
-// input[type="password"],
-// input[type="number"]{
-//     padding: .5rem 1rem;
-//     border: 0;
-//     border-radius: 1rem;
-//     background-color: #e6e6e6;
-//     // outline: 1px solid color-mix(in srgb, #e6e6e6 50%, #000 50%);
-// }
-
 .logo{
     user-select: none;
     caret-color: transparent;
 }
 
-a:not(.p-menu-overlay, .p-menu-overlay *){
-    cursor: pointer;
-    text-decoration: underline;
-    color: var(--accento);
-    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-a:not(p-menu, p-menu *):hover{
-    filter: drop-shadow(0 0 1.5rem var(--accento));
-}
-
 .nascosto{
     opacity: 0;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px var(--sfondo) inset !important;
-    caret-color: transparent;
-}
-
-input:-webkit-autofill{
-    -webkit-text-fill-color:  #000 !important;
-    font-size: inherit;
-    font-weight: inherit;
 }
 
 .transizione{

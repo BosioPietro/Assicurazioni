@@ -51,6 +51,7 @@ Autenticazione.VerificaCodiceTelefono(app, driver);
 
 // gestione servizi
 Servizi.PrendiUtenti(app, driver);
+Servizi.EliminaUtenti(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);

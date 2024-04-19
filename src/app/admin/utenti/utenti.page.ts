@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
@@ -8,7 +8,9 @@ import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.componen
 import { TabellaService } from './tabella.service';
 import { MenuModule } from 'primeng/menu';
 import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MenuItem } from 'primeng/api';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+
 
 
 @Component({
@@ -17,11 +19,14 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   styleUrls: ['./utenti.page.scss'],
   animations: [animazione],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule, ConfirmDialogModule],
+  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule],
 })
-export class UtentiPage {
+export class UtentiPage{
 
-  constructor(public tabella: TabellaService) { }
+  @ViewChild("modale")
+  modale!: ElementRef<HTMLDialogElement>;
+
+  constructor(public tabella: TabellaService, private notifiche: NotificheService) { }
 
   CambiaMod(s: string){
     this.tabella.tipo = s;
@@ -46,6 +51,58 @@ export class UtentiPage {
     document.body.appendChild(link);
     link.click();
     link.remove();
+  }
+
+  opzioneElimina: MenuItem = {
+    label: 'Elimina',
+    icon: 'pi pi-fw pi-trash',
+    command: () => this.ConfermaElimina()
+  }
+
+  opzioneCreaGruppo: MenuItem  = {
+    label: 'Crea Gruppo',
+    icon: 'pi pi-fw pi-users'
+  }
+
+  opzioneCreaChat: MenuItem  = {
+    label: 'Crea Chat',
+    icon: 'pi pi-fw pi-comment'
+  }
+
+  ConfermaElimina(){
+    this.modale.nativeElement.showModal();
+  }
+
+  ChiudiModale(){
+    const modale = this.modale.nativeElement;
+
+    modale.classList.add("chiudi");
+    setTimeout(() => {
+      modale.close()
+      modale.classList.remove("chiudi");
+    }, 301);
+  }
+
+  async EliminaUtenti(){
+    this.ChiudiModale();
+    
+    if(!(await this.tabella.EliminaUtenti()))
+    {
+      this.notifiche.NuovaNotifica({
+        titolo: "Qualcosa è andato storto",
+        descrizione: "Non è stato effettuare l'operazione richiesta",
+        tipo: "errore"
+      })
+      return;
+    }
+
+    if(await this.tabella.Carica())return;
+
+    this.notifiche.NuovaNotifica({
+      titolo: "Qualcosa è andato storto",
+      descrizione: "Non è stato possibile recuperare gli utenti dal server",
+      tipo: "errore"
+    })
   }
 
 }

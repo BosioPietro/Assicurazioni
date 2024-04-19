@@ -59,7 +59,11 @@
           <BottoniOpzione (onChange)="CambiaMod($event)" [opzioni]="opzioniDipendenti"/>
           @if (tabella.selezionati.length) {
             <div class="wrapper-menu flex-row jc-c">
-                <p-menu #menu [model]="tabella.opzioniMenu" [popup]="true" appendTo="body"></p-menu>
+                <p-menu #menu 
+                  [model]="[opzioneElimina, tabella.selezionati.length == 1 ? opzioneCreaChat : opzioneCreaGruppo]" 
+                  [popup]="true" 
+                  appendTo="body">
+                </p-menu>
                 <button type="button" (click)="menu.toggle($event)" class="flex-row al-c" [@appari]>
                   <ion-icon name="ellipsis-horizontal"></ion-icon>
                 </button>
@@ -74,4 +78,20 @@
   <div class="padding"></div>
 </main>
 <footer></footer>
-<p-confirmDialog></p-confirmDialog>
+
+<dialog #modale>
+  <div class="flex-col al-c jc-c">
+    <ion-icon name="alert-circle"></ion-icon>
+    <span>
+      <h1>Elimina Utent{{ tabella.selezionati.length > 1 ? 'i' : 'e' }}</h1>
+      <p>
+        Stai per eliminare {{tabella.selezionati.length > 1 ? tabella.selezionati.length : 'un'  }} utent{{ tabella.selezionati.length > 1 ? 'i' : 'e' }},<br>
+        questa azione è irreversibile.
+      </p>
+    </span>
+    <div class="flex-row jc-c">
+      <button (click)="EliminaUtenti()" class="elimina">Elimina</button>
+      <button (click)="ChiudiModale()">Annulla</button>
+    </div>
+  </div>
+</dialog>
