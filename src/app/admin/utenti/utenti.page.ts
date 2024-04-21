@@ -10,6 +10,8 @@ import { MenuModule } from 'primeng/menu';
 import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
 import { MenuItem } from 'primeng/api';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/immagine-profilo-default.component';
+import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 
 
 
@@ -19,12 +21,15 @@ import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
   styleUrls: ['./utenti.page.scss'],
   animations: [animazione],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule],
+  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule, ImmagineProfiloDefault, InputTextComponent],
 })
 export class UtentiPage{
 
-  @ViewChild("modale")
-  modale!: ElementRef<HTMLDialogElement>;
+  @ViewChild("modaleElimina")
+  modaleElimina!: ElementRef<HTMLDialogElement>;
+
+  @ViewChild("modaleUtente")
+  modaleUtente!: ElementRef<HTMLDialogElement>;
 
   constructor(public tabella: TabellaService, private notifiche: NotificheService) { }
 
@@ -70,21 +75,21 @@ export class UtentiPage{
   }
 
   ConfermaElimina(){
-    this.modale.nativeElement.showModal();
+    this.modaleElimina.nativeElement.showModal();
   }
 
-  ChiudiModale(){
-    const modale = this.modale.nativeElement;
+  ChiudiModale(modale: HTMLDialogElement){
 
     modale.classList.add("chiudi");
     setTimeout(() => {
       modale.close()
       modale.classList.remove("chiudi");
+      this.tabella.utenteVisualizzato = undefined;
     }, 301);
   }
 
   async EliminaUtenti(){
-    this.ChiudiModale();
+    this.ChiudiModale(this.modaleElimina.nativeElement);
     
     if(!(await this.tabella.EliminaUtenti()))
     {
@@ -103,6 +108,10 @@ export class UtentiPage{
       descrizione: "Non è stato possibile recuperare gli utenti dal server",
       tipo: "errore"
     })
+  }
+
+  MostraPannelloUtente(){
+    this.modaleUtente.nativeElement.showModal();
   }
 
 }

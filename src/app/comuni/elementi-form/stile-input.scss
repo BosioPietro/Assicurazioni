@@ -4,6 +4,7 @@
     --colore-normale: #d1d5db;
     --colore-testo: #4b5563;
     --font-size: 1rem;
+    --br: 100vh;
 
     display: flex;
     align-items: center;
@@ -16,7 +17,7 @@
 .cont{
     padding: var(--padding) calc(var(--padding) * 1.5);
     border: 1px solid var(--colore-normale);
-    border-radius: 100vw;
+    border-radius: var(--br);
     background-color: #FFF;
     outline: 3px solid;
     outline-color: transparent;

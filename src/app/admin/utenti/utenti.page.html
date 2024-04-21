@@ -72,14 +72,14 @@
         </div>
         <BarraRicerca (onCerca)="tabella.nome = $event"/>
       </div>
-      <TabellaUtenti />
+      <TabellaUtenti (utenteSelezionato)="MostraPannelloUtente()"/>
     </div>
   </div>
   <div class="padding"></div>
 </main>
 <footer></footer>
 
-<dialog #modale>
+<dialog #modaleElimina  id="dialogoElimina">
   <div class="flex-col al-c jc-c">
     <ion-icon name="alert-circle"></ion-icon>
     <span>
@@ -91,7 +91,76 @@
     </span>
     <div class="flex-row jc-c">
       <button (click)="EliminaUtenti()" class="elimina">Elimina</button>
-      <button (click)="ChiudiModale()">Annulla</button>
+      <button (click)="ChiudiModale(modaleElimina)">Annulla</button>
     </div>
   </div>
 </dialog>
+
+@if(tabella.utenteVisualizzato){
+  <dialog #modaleUtente id="dialogoModifica" class="flex-row">
+    <div class="nav-dialogo flex-col">
+      <button class="opzione selezionata flex-row">
+        <ion-icon name="person-circle"></ion-icon>
+        <span>Informazioni Personali</span>
+      </button>
+      <button class="opzione flex-row">
+        <ion-icon name="file-tray-full"></ion-icon>
+        <span>Perizie</span>
+      </button>
+    </div>
+    <div class="pagina-dialogo">
+      <h1>Modifica utente</h1>
+      <div class="wrapper flex-col">
+        <div class="flex-row">
+          @if (tabella.utenteVisualizzato.pfp) {
+            <img [src]="tabella.utenteVisualizzato.pfp" class="immagine-utente">
+          }
+          @else {
+            <ImmagineProfileDefault [nome]="tabella.utenteVisualizzato.cognome" class="immagine-utente"/>
+          }
+          <div class="flex-col cambia-immagine jc-c">
+            <button>
+              {{ tabella.utenteVisualizzato.pfp ? 'Modifica immagine' : 'Aggiungi immagine' }}
+            </button>
+            <p>
+              È consigliato utilizzare un'immagine quadrata di almeno 200x200 pixel.<br>
+              I formati supportati sono JPG e PNG.
+            </p>
+          </div>
+        </div>
+        <hr/>
+        <div class="info-utente">
+          <div class="flex-row header-info">
+            <h3>Informazioni personali</h3>
+            <button>
+              <i class="pi pi-pencil"></i>
+              <span>Modifica</span>
+            </button>
+          </div>
+          <div class="cont-utente">
+            <InputText icona="person" testo-label="Nome" [mockup]="true"/>
+            <InputText icona="person" testo-label="Cognome" />
+            <InputText icona="at" testo-label="Username" />
+            <InputText icona="mail" testo-label="E-Mail" />
+            <InputText icona="lock-closed" testo-label="2FA Abilitato" />
+          </div>
+        </div>
+        <div class="info-utente">
+          <div class="flex-row header-info">
+            <h3>Informazioni lavoro</h3>
+            <button>
+              <i class="pi pi-pencil"></i>
+              <span>Modifica</span>
+            </button>
+          </div>
+          <div class="cont-utente">
+            <InputText icona="briefcase" testo-label="Ruolo" />
+            <InputText icona="calendar" testo-label="Assunto Il" />
+            <InputText icona="accessibility" testo-label="Attivo" />
+            <InputText icona="file-tray-full" testo-label="Perizie attive" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+}

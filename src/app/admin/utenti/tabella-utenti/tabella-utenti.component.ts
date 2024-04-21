@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { UtenteComponent } from './utente/utente.component';
 import { TabellaService } from '../tabella.service';
@@ -19,6 +19,9 @@ export class TabellaUtentiComponent implements OnInit{
 
   @ViewChild("header")
   header!: ElementRef<HTMLElement>;
+
+  @Output()
+  utenteSelezionato = new EventEmitter<void>();
 
   indici = [0, 0, 0, 0, 0];
 
@@ -57,6 +60,7 @@ export class TabellaUtentiComponent implements OnInit{
   }
 
   ModificaUtente(u: Utente){
-    // console.log(u);
+    this.tabella.utenteVisualizzato = u;
+    setTimeout(() => this.utenteSelezionato.emit());
   }
 }

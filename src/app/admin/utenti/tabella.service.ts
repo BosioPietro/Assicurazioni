@@ -19,6 +19,8 @@ export class TabellaService {
   public inCaricamento: boolean = true;
   public utentiNonTrovati: boolean = false;
 
+  public utenteVisualizzato?: Utente;
+
   private tipoDipendente: string = "Dipendente";
   private nomeDipendente: string = "";
   private ordineCrescente: boolean = true;
@@ -96,12 +98,12 @@ export class TabellaService {
         resolve(false);
         fallimento = true;
       }) as { data: Utente[] };
-
+      
       if(fallimento)return;
       
       this.inCaricamento = false;
       this.tutti = this.utenti = utenti["data"]
-      
+
       this.FiltraTipo();
       this.FiltraNome();
       this.Ordina(this.ordineCrescente, this.campoOrdinamento);
