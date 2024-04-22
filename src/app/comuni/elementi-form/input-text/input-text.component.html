@@ -1,4 +1,4 @@
-<div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato">
+<div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato" [class.mockup]="mockup">
   @if(icona){
     <ion-icon [name]="icona" class="icona"/>
     <hr/>
@@ -8,7 +8,7 @@
       <input 
         type="text" 
         placeholder=""
-        [disabled]="disabilitato"
+        [disabled]="disabilitato || mockup"
         [attr.name]="name"
         [attr.value]="value"
         [attr.id]="idInput" 

@@ -20,6 +20,7 @@ export class TabellaService {
   public utentiNonTrovati: boolean = false;
 
   public utenteVisualizzato?: Utente;
+  public utenteModificato?: Utente;
 
   private tipoDipendente: string = "Dipendente";
   private nomeDipendente: string = "";
@@ -102,7 +103,16 @@ export class TabellaService {
       if(fallimento)return;
       
       this.inCaricamento = false;
-      this.tutti = this.utenti = utenti["data"]
+      this.tutti = this.utenti = utenti["data"].map((u: Record<string, any>) => {
+        if(!("2FA" in u))
+        {
+          u["2FA"] = false; 
+        }
+        
+        u["telefono"] = u["telefono"] || "";
+
+        return u as Utente;
+      })
 
       this.FiltraTipo();
       this.FiltraNome();

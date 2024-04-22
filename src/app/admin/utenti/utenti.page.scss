@@ -289,9 +289,25 @@ dialog{
 
 #dialogoModifica{
     padding: 0;
-    width: calc(100% - 4rem);
-    height: calc(100dvh - 4rem);
+    // width: calc(100% - 8rem);
+    height: calc(100dvh - 8rem);
     background-color: #f5f6f8;
+
+    .row-bottoni{
+        gap: 1rem;
+
+        ion-icon{
+            font-size: 1rem;
+        }
+
+        button{
+            user-select: none;
+        }
+    }
+
+    &::backdrop{
+        background-color: rgba(0, 0, 0, .5);
+    }
 
     h1{
         font-size: 2rem;
@@ -368,6 +384,10 @@ dialog{
                 padding: 1rem;
                 border-radius: 1rem;
                 border: 1px solid #CCC;
+
+                &.sopra{
+                    z-index: 2;
+                }
             }
     
             .cont-utente{
@@ -375,24 +395,23 @@ dialog{
                 flex-flow: row wrap;
                 gap: 1rem;
                 
-                InputText::ng-deep{
+                InputText::ng-deep, Dropdown::ng-deep{
                     --colore-testo: #000;
                     --colore-normale: #CCC;
                     --br: .5rem;
-                    min-width: 40%;
+                    min-width: 49%;
                     flex-grow: 1;
                 }
             }
         }
     }
-
-   
     
     ImmagineProfileDefault{
         aspect-ratio: 1;
         border-radius: 100vh;
         background-color: #AAA;
         caret-color: transparent;
+        overflow: hidden;
     }
     
     .immagine-utente{

@@ -1,0 +1,24 @@
+<div class="cont flex-row" (click)="Toggle()" [class.mockup]="mockup || disabilitato" [class.disabilitato]="disabilitato">
+  @if(icona){
+    <ion-icon [name]="icona"/>
+    <hr/>
+  }
+  <div class="flex-row">
+    <label [attr.for]="idInput" [class.haValore]="!!opzioneSelezionata">{{ testoLabel }}</label>
+    <div class="valore">{{  opzioneSelezionata?.testo }}</div>
+    <div class="abbassa">
+      <ion-icon name="chevron-down" class="icona"></ion-icon>
+    </div>
+  </div>
+  <div class="opzioni" [class.aperto]="aperto">
+    <div class="cont-opzioni flex-col">
+      @for (opzione of opzioni; track $index) {
+        <div class="opzione" (click)="Seleziona($event)" [class.selezionata]="opzione == opzioneSelezionata">
+          <input type="hidden" [value]="opzione.valore"/>
+          <span>{{ opzione.testo }}</span>
+          <ion-icon name="checkmark"/>
+        </div>
+      }
+    </div>
+  </div>
+</div>

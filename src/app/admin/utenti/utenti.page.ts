@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { BottoniOpzioneComponent } from 'src/app/comuni/elementi-form/opzioni/opzioni.component';
 import { BarraRicercaComponent } from 'src/app/comuni/elementi-form/barra-ricerca/barra-ricerca.component';
@@ -12,6 +12,9 @@ import { MenuItem } from 'primeng/api';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/immagine-profilo-default.component';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
+import { DropdownComponent } from 'src/app/comuni/elementi-form/dropdown/dropdown.component';
+import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
+import { RegexInput } from 'src/app/utils/Input';
 
 
 
@@ -20,8 +23,8 @@ import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/inpu
   templateUrl: './utenti.page.html',
   styleUrls: ['./utenti.page.scss'],
   animations: [animazione],
+  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule, ImmagineProfiloDefault, InputTextComponent, DropdownComponent, ReactiveFormsModule],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, TabellaUtentiComponent, MenuModule, ImmagineProfiloDefault, InputTextComponent],
 })
 export class UtentiPage{
 
@@ -32,6 +35,34 @@ export class UtentiPage{
   modaleUtente!: ElementRef<HTMLDialogElement>;
 
   constructor(public tabella: TabellaService, private notifiche: NotificheService) { }
+
+  opzioniSiNo: Opzione[] = [
+    { testo: "Sì", valore: "true" },
+    { testo: "No", valore: "false" }
+  ]
+
+  opzioniRuolo: Opzione[] = [
+    { testo: "Dipendente", valore: "dipendente"},
+    { testo: "Admin", valore: "admin"}
+  ]
+
+  formInfoPersonali: FormGroup = new FormGroup({
+    'nome' : new FormControl('', [Validators.required]),
+    'cognome' : new FormControl('', [Validators.required]),
+    'username' : new FormControl('', [Validators.pattern(RegexInput["username"])]),
+    'telefono' : new FormControl('', [Validators.pattern(RegexInput["telefono"])]),
+    'email' : new FormControl('', [Validators.pattern(RegexInput["mail"])]),
+    '2FA' : new FormControl('')
+  })
+
+  formInfoLavoro: FormGroup = new FormGroup({
+    'ruolo': new FormControl('', Validators.required),
+    'attivo': new FormControl('', Validators.required),
+    'assuntoIl': new FormControl('', Validators.required),
+  })
+
+  modificaInfoPersonali: boolean = false;
+  modificaInfoLavoro: boolean = false;
 
   CambiaMod(s: string){
     this.tabella.tipo = s;
@@ -111,7 +142,30 @@ export class UtentiPage{
   }
 
   MostraPannelloUtente(){
-    this.modaleUtente.nativeElement.showModal();
+    this.tabella.utenteModificato = this.tabella.utenteVisualizzato;
+
+    this.formInfoPersonali.controls["nome"].setValue(this.tabella.utenteVisualizzato?.nome)
+    this.formInfoPersonali.controls["cognome"].setValue(this.tabella.utenteVisualizzato?.cognome)
+    this.formInfoPersonali.controls["username"].setValue(this.tabella.utenteVisualizzato?.username)
+    this.formInfoPersonali.controls["email"].setValue(this.tabella.utenteVisualizzato?.email)
+    this.formInfoPersonali.controls["telefono"].setValue(this.tabella.utenteVisualizzato?.telefono)
+    this.formInfoPersonali.controls["2FA"].setValue(this.tabella.utenteVisualizzato!["2FA"])
+
+    this.formInfoLavoro.controls["ruolo"].setValue(this.tabella.utenteVisualizzato?.ruolo)
+    this.formInfoLavoro.controls["attivo"].setValue(this.tabella.utenteVisualizzato?.stato == "Attivo")
+    this.formInfoLavoro.controls["assuntoIl"].setValue(this.tabella.utenteVisualizzato?.assuntoIl)
+
+    setTimeout(() => this.modaleUtente.nativeElement.showModal());
   }
 
+  ResettaInfoPersonali(){
+    this.formInfoPersonali.controls["nome"].setValue(this.tabella.utenteVisualizzato?.nome)
+    this.formInfoPersonali.controls["cognome"].setValue(this.tabella.utenteVisualizzato?.cognome)
+    this.formInfoPersonali.controls["username"].setValue(this.tabella.utenteVisualizzato?.username)
+    this.formInfoPersonali.controls["email"].setValue(this.tabella.utenteVisualizzato?.email)
+    this.formInfoPersonali.controls["telefono"].setValue(this.tabella.utenteVisualizzato?.telefono)
+    this.formInfoPersonali.controls["2FA"].setValue(this.tabella.utenteVisualizzato!["2FA"])
+
+    this.modificaInfoPersonali = false;
+  }
 }

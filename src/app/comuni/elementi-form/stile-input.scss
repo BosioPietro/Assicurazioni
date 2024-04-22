@@ -12,7 +12,10 @@
     caret-color: transparent;
 }
 
-
+.mockup{
+    pointer-events: none;
+    caret-color: transparent;
+}
 
 .cont{
     padding: var(--padding) calc(var(--padding) * 1.5);
@@ -72,21 +75,27 @@ ion-icon{
     transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-input:focus-visible{
-    outline: none;
-    border: 0;
-}
-
-:host:hover,
-:host:has(input:focus-visible){
-    border-color: var(--accento);
-   
-    ion-icon:not(.disabilitato){
-        color: var(--accento);
+.cont:not(.mockup){
+    input:focus-visible{
+        outline: none;
+        border: 0;
     }
-
-    hr:not(.disabilitato){
-        border-color: var(--accento);        
+    
+    :host:hover,
+    :host:has(input:focus-visible){
+        border-color: var(--accento);
+       
+        ion-icon:not(.disabilitato){
+            color: var(--accento);
+        }
+    
+        hr:not(.disabilitato){
+            border-color: var(--accento);        
+        }
+    }
+    
+    :host(:has(input:focus-visible)){
+        outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
     }
 }
 
@@ -99,14 +108,12 @@ input:focus-visible{
         padding-inline: calc(var(--padding) / 2);
     }
 }
-
-:host(:has(input:focus-visible)){
-    outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
-}
+    
 
 .disabilitato{
     --colore-testo: #4b5563;
     --colore-normale: #d1d5db;
+
     &, label{
         pointer-events: none;
         opacity: .5;
