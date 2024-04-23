@@ -38,7 +38,7 @@ html{
     font-size: 18px;
 }
 
-*:not(.p-menu-overlay, .p-menu-overlay *, p-menu, p-menu *, dialog){
+*:not(.p-menu-overlay, .p-menu-overlay *, p-menu, p-menu *, dialog, p-calendar, p-calendar *){
     margin: 0;
     padding: 0;
     box-sizing: border-box;

@@ -81,4 +81,20 @@ const GeneraCodice = () => {
     return new Array(6).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken, Token }
+const ControllaAdmin = async (u: Token, driver: MongoDriver, res: Response) : Promise<boolean | null> => {
+    if(driver.Collezione != "utenti"){
+        await driver.SettaCollezione("utenti");
+    }
+
+    const admin = await driver.PrendiUno({ username: u.username });
+    if(driver.Errore(admin, res)) return false;
+
+    if(admin.ruolo.toLowerCase() == "admin"){
+        res.status(401).send("Non hai i permessi per effettuare questa operazione");
+        return false;
+    }
+
+    return true;
+}
+
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken, Token, ControllaAdmin }

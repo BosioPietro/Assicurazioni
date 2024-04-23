@@ -63,9 +63,10 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     this.transizione.formVeri["/login/reset-password"] = this.formHtml.nativeElement;
   }
 
-  CambiaPassword(){
+  async CambiaPassword(){
     try
     {  
+      await this.servizio.CambiaPassword(this.form.controls["password"].value);
       this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login");
       setTimeout(() => {
         this.router.navigateByUrl("/login");

@@ -43,8 +43,8 @@ Autenticazione.LogoutUtente(app);
 Autenticazione.CambiaPassword(app, driver);
 Autenticazione.RecuperoCredenziali(app, driver);
 Autenticazione.VerificaCodice(app, driver);
-// Autenticazione.ControlloToken(app, driver);
-// Autenticazione.ControlloTokenMiddleware(app, driver);
+Autenticazione.ControlloToken(app, driver);
+Autenticazione.ControlloTokenMiddleware(app, driver);
 Autenticazione.VerificaRecupero(app, driver);
 Autenticazione.InviaCodiceTelefono(app, driver);
 Autenticazione.VerificaCodiceTelefono(app, driver);
@@ -52,6 +52,7 @@ Autenticazione.VerificaCodiceTelefono(app, driver);
 // gestione servizi
 Servizi.PrendiUtenti(app, driver);
 Servizi.EliminaUtenti(app, driver);
+Servizi.AggiornaUtente(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);

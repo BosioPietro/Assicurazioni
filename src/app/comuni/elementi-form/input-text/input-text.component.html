@@ -10,11 +10,13 @@
         placeholder=""
         [disabled]="disabilitato || mockup"
         [attr.name]="name"
-        [attr.value]="value"
+        [(attr.value)]="value"
         [attr.id]="idInput" 
         (input)="!mockup && Input($event)"
         (change)="!mockup && Cambiato($event)"
         (blur)="!mockup && onTouched()"
+        (keyup)="onKeyDown.emit($event)"
+        #inputText
       />
   </div>
 </div>

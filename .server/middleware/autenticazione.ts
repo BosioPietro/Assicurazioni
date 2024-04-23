@@ -238,8 +238,8 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
             return;
         }
 
-        const id = await smsClient.verify.v2.services(env.TWILIO_API_KEY).verifications
-        .create({to: '+393318233661', channel: 'sms'})
+        //const id = await smsClient.verify.v2.services(env.TWILIO_API_KEY).verifications
+        //.create({to: '+393318233661', channel: 'sms'})
         // const ris: any = await vonage.sms.send({
         //     from: "Vonage APIs",
         //     to: "393318233661",
@@ -248,7 +248,7 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
         // .catch(err => RispondiToken(res, CreaToken(payload), `Errore interno ${err.message || err.toString()}`, 500))
         // if(!ris) return;
 
-        user["Codice2FA"] = id["sid"];
+        user["Codice2FA"] = 111111;
         delete user["_id"]
 
         const data = await driver.Replace({ username }, user)
@@ -260,7 +260,6 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
 
 const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
     app.post("/api/verifica-codice-telefono", async (req: Request, res: Response) => {
-        console.log("ciao1")
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
         const { codice } = req["body"];

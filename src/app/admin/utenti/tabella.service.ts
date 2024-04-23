@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import Utente from './tabella-utenti/utente.model';
 import { GestoreServerService } from 'src/app/server/gestore-server.service';
 import { Metodi } from 'src/app/utils/TipiSpeciali';
+import { AxiosError } from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -122,11 +123,11 @@ export class TabellaService {
   }
 
   async EliminaUtenti(){
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean | string | undefined>((resolve, reject) => {
       const utenti = this.selezionati.map(u => u["username"]);
       this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti })
       .then(() => resolve(true))
-      .catch(() => resolve(false));
+      .catch((res: AxiosError) => resolve(res.response?.statusText ?? false));
     });
   }
 

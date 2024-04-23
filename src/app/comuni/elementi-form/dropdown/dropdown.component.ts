@@ -34,6 +34,7 @@ export class DropdownComponent{
 
   public opzioneSelezionata?: Opzione;
   public aperto: boolean = false;
+  public sopra: boolean = false;
   public value: any;
 
   constructor(
@@ -49,9 +50,9 @@ export class DropdownComponent{
    */
   writeValue(value: any): void {
     if(value == undefined || value == null) return;
-
+  
     this.opzioneSelezionata = this.opzioni.find((o) => o.valore == value.toString())
-
+    this.value = this.opzioneSelezionata?.valore;
   }
 
   /**
@@ -85,11 +86,16 @@ export class DropdownComponent{
   ClickFuori(event: MouseEvent) {
     if (!this.select.nativeElement.contains(event.target)) {
       this.aperto = false;
+      setTimeout(() => this.sopra = false, 300);
     }
   }
 
   Toggle(){
     this.aperto = !this.aperto;
+    if(!this.aperto){
+      setTimeout(() => this.sopra = false, 300);
+    }
+    else this.sopra = true;
   }
 
   Seleziona(e: Event){
@@ -100,10 +106,13 @@ export class DropdownComponent{
     {
       opzione.classList.remove("selezionata")
       this.opzioneSelezionata = undefined;
+      this.value = undefined;
       return;
     }
     else opzione.classList.add("selezionata") 
     
     this.opzioneSelezionata = this.opzioni.find((o) => o.valore == input.value);
+    this.value = this.opzioneSelezionata?.valore;
+    this.onChange();
   }
 }

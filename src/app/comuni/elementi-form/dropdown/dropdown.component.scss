@@ -10,10 +10,14 @@
     align-items: stretch;
     user-select: none;
     caret-color: transparent;
-}
 
-.mockup{
-    pointer-events: none;
+    &:has(.mockup){
+        cursor: not-allowed;
+    }
+
+    &:has(.sopra){
+        z-index: 5;
+    }
 }
 
 .disabilitato{
@@ -31,6 +35,7 @@
     outline-color: transparent;
     position: relative;
     cursor: pointer;
+    transition: all .33s cubic-bezier(0.22, 0.61, 0.36, 1);
 
     .icona{
         transition: transform .33s linear;
@@ -38,7 +43,11 @@
 
     &.mockup{
         pointer-events: none;
-        cursor: default;
+        caret-color: transparent;
+    
+        *{
+            caret-color: transparent;
+        }
     }
 }
 
@@ -152,7 +161,13 @@ label.haValore{
 }
 
 .cont:has(.opzioni.aperto){
+    outline-color: color-mix(in srgb, var(--accento) 50%, transparent 50%);
+
     .icona{
         transform: rotate(180deg);
     }
+}
+
+ion-icon{
+    transition: color .33s cubic-bezier(0.22, 0.61, 0.36, 1);
 }

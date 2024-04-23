@@ -10,11 +10,19 @@
     align-items: center;
     user-select: none;
     caret-color: transparent;
+
+    &:has(.cont.mockup){
+        cursor: not-allowed;
+    }
 }
 
 .mockup{
     pointer-events: none;
     caret-color: transparent;
+
+    *{
+        caret-color: transparent;
+    }
 }
 
 .cont{
@@ -24,6 +32,7 @@
     background-color: #FFF;
     outline: 3px solid;
     outline-color: transparent;
+    transition: all .33s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .flex-row{
@@ -43,11 +52,11 @@ hr{
 input{
     width: 100%;
     background-color: transparent;
-    outline-color: transparent;
     border: 0;
     caret-color: var(--colore-testo);
     color: var(--colore-testo);
     font-size: var(--font-size);
+    outline: 0px solid transparent !important;
 }
 
 label{

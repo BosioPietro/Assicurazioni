@@ -84,6 +84,7 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
 
       this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/reset-password");
       setTimeout(() => {
+        this.sinc.stato = 0;
         this.router.navigateByUrl("/login/reset-password");
       }, 500);
     }
