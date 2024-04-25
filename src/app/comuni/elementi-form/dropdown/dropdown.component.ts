@@ -67,7 +67,7 @@ export class DropdownComponent{
    */
   registerOnChange(fn: any): void {
     // Store the provided function as an internal method.
-    this.onChange = fn;
+    this.onValueChange = fn;
   }
 
   /**
@@ -78,7 +78,7 @@ export class DropdownComponent{
     this.onTouched = fn;
   }
 
-  private onChange() {}
+  public onValueChange(value?: string) {}
   private onTouched() {}
 
 
@@ -113,6 +113,7 @@ export class DropdownComponent{
     
     this.opzioneSelezionata = this.opzioni.find((o) => o.valore == input.value);
     this.value = this.opzioneSelezionata?.valore;
-    this.onChange();
+
+    this.onValueChange(this.value);
   }
 }

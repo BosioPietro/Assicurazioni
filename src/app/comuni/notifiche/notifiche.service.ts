@@ -6,9 +6,10 @@ import { Notifica } from '../../utils/TipiSpeciali';
 })
 export class NotificheService {
   public notifiche: Notifica[] = []
-  public TEMPO_NOTIFICA: number = 2000;
+  public TEMPO_NOTIFICA: number = 5000;
 
   NuovaNotifica(n: Notifica){
+
     this.notifiche.push(n)
 
     setTimeout(() => {
@@ -22,6 +23,4 @@ export class NotificheService {
         } 
     }, (this.TEMPO_NOTIFICA + 1) * 2);
   }
-
-  
 }

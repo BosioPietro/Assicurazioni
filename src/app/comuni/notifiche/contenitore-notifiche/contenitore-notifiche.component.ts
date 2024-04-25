@@ -11,7 +11,7 @@ import { animazione } from '../../animazioni/appari-disappari';
   animations: [animazione],
   standalone: true
 })
-export class ContenitoreNotificheComponent {
+export class ContenitoreNotificheComponent{
 
   constructor(public notifiche: NotificheService) { }
 

@@ -89,8 +89,8 @@ const ControllaAdmin = async (u: Token, driver: MongoDriver, res: Response) : Pr
     const admin = await driver.PrendiUno({ username: u.username });
     if(driver.Errore(admin, res)) return false;
 
-    if(admin.ruolo.toLowerCase() == "admin"){
-        res.status(401).send("Non hai i permessi per effettuare questa operazione");
+    if(admin.ruolo.toLowerCase() != "admin"){
+        res.status(405).send("Non hai i permessi per effettuare questa operazione");
         return false;
     }
 

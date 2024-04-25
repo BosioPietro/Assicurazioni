@@ -1,0 +1,147 @@
+dialog{
+    border: 0;
+    border-radius: 1rem;
+    padding: 2rem;
+    animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &.chiudi{
+        animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        &::backdrop{
+            animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+    }
+
+    .btn-chiudi{
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        outline-color: transparent;
+    }
+        
+    &::backdrop{
+        background-color: rgba(0, 0, 0, .33);
+    } 
+}
+
+button{
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        font-size: 1.5rem;
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+}
+
+.flex-col{
+    gap: 1rem;
+}
+
+span{
+    text-align: center;
+}
+
+.flex-row{
+    margin-top: 1rem;
+    gap: .5rem;
+    width: 100%;
+
+    button{
+        caret-color: transparent;
+    }
+}
+
+.elimina{
+    color: #FFF;
+    background-color: #eb4e4e;
+    border-color: transparent;
+}
+
+p{
+    font-size: .8rem;
+    color: #AAA;
+    text-align: center;
+}
+
+ion-icon{
+    --colore: #eb4e4e;
+    font-size: 3rem;
+    color: var(--colore);
+    position: relative;
+    contain: initial;
+}
+
+ion-icon::before{
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100vh;
+    background: radial-gradient(circle, transparent 40%, var(--colore) 41%);
+    opacity: .3;
+    scale: 1.25;
+}
+
+ion-icon::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 100vh;
+    background: radial-gradient(circle, transparent 40%, var(--colore) 41%);
+    opacity: .1;
+    scale: 1.4;
+}
+
+@keyframes appari{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes scompari{
+    from{ opacity: 1; }
+    to{ opacity: 0; }
+}
+
+button:not(.caricamento) {
+    i {
+        display: none;
+    }
+}
+
+.caricamento {
+    position: relative;
+
+    ion-icon,
+    span {
+        visibility: hidden;
+    }
+
+    i {
+        position: absolute;
+        left: 50%;
+        translate: -50% 0;
+    }
+
+}

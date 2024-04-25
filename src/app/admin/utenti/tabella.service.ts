@@ -122,10 +122,10 @@ export class TabellaService {
     });
   }
 
-  async EliminaUtenti(){
+  async EliminaUtenti(utenti: Utente[]){
     return new Promise<boolean | string | undefined>((resolve, reject) => {
-      const utenti = this.selezionati.map(u => u["username"]);
-      this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti })
+      const username = utenti.map(u => u["username"]);
+      this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti : username })
       .then(() => resolve(true))
       .catch((res: AxiosError) => resolve(res.response?.statusText ?? false));
     });

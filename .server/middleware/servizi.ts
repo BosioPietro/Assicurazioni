@@ -39,7 +39,7 @@ const EliminaUtenti = (app: Express, driver: MongoDriver) => {
 }
 
 const AggiornaUtente = (app: Express, driver: MongoDriver) => {
-    app.post("/api/aggiornaUtente", async (req: Request, res: Response) => {
+    app.patch("/api/aggiorna-utente", async (req: Request, res: Response) => {
         const utente = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
