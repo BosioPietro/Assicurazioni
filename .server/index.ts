@@ -31,6 +31,7 @@ Richieste.LoggingRichieste(app);
 Richieste.MiddlewareJson(app);
 Richieste.MiddlewareBodyParser(app);
 Richieste.MiddlewareLogParametri(app);
+Richieste.MiddlewareFormData(app);
 
 // gestione cors
 Cors.MiddlewareCors(app);
@@ -43,6 +44,7 @@ Autenticazione.LogoutUtente(app);
 Autenticazione.CambiaPassword(app, driver);
 Autenticazione.RecuperoCredenziali(app, driver);
 Autenticazione.VerificaCodice(app, driver);
+Autenticazione.ControllaUsername(app, driver);
 Autenticazione.ControlloToken(app, driver);
 Autenticazione.ControlloTokenMiddleware(app, driver);
 Autenticazione.VerificaRecupero(app, driver);
@@ -53,6 +55,12 @@ Autenticazione.VerificaCodiceTelefono(app, driver);
 Servizi.PrendiUtenti(app, driver);
 Servizi.EliminaUtenti(app, driver);
 Servizi.AggiornaUtente(app, driver);
+Servizi.CaricaImmagineProfilo(app, driver);
+Servizi.ResetImmagineProfilo(app, driver);
+Servizi.AggiungiUtente(app, driver);
+Servizi.PrendiPerizia(app, driver);
+Servizi.PrendiOperatore(app, driver);
+Servizi.EliminaPerizia(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);
