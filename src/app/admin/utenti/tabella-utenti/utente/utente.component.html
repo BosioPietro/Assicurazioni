@@ -1,5 +1,10 @@
 <span>
-  <p-checkbox [binary]="true" (onChange)="Seleziona($event)" [ngModel]="tabella.selezionati.includes(utente)"/>
+  <p-checkbox 
+    [binary]="true" 
+    [ngModel]="tabella.selezionati.includes(utente)"
+    (onChange)="Seleziona($event)" 
+    (click)="Stop($event)"
+  />
   <span class="flex-row" >
     @if(utente.pfp){
       <div class="img" [style.background-image]="'url(' + utente.pfp + ')'"></div>
@@ -20,12 +25,12 @@
   <span>{{utente.nPerizie}}</span>
   <span>{{utente.assuntoIl}}</span>
   <span>
-    @if (utente.stato.toLowerCase() == 'attivo') {
+    @if (utente.attivo) {
       <ion-icon name="checkmark-circle"></ion-icon>
     }
     @else {
       <ion-icon name="close-circle"></ion-icon>
     }
-    <span>{{utente.stato}}</span>
+    <span>{{utente.attivo ? 'Attivo' : 'Non Attivo'}}</span>
   </span>
 </span>

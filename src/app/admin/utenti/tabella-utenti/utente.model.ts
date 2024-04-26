@@ -5,7 +5,6 @@ type Utente = {
     pfp: string,
     ruolo: "Admin" | "Dipendente",
     nPerizie: number,
-    stato: "Attivo" | "Non attivo",
     assuntoIl: string,
     email: string,
     "2FA": boolean,

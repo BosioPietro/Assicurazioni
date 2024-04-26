@@ -1,0 +1,170 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex-grow: 1;
+}
+
+button{
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: 100vh;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        font-size: 1rem;
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+}
+
+
+.cont-immagini{
+    position: relative;
+    flex-grow: 1;
+    overflow-x: hidden;
+
+    .immagini{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+    }
+
+    .img{
+        position: relative;
+        height: 100%;
+        background-image: var(--img);
+        background-size: cover;
+        width: max(30rem, 30vw);
+        border-radius: .5rem;
+        margin-right: 1rem;
+        z-index: 1;
+        transition: height var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+        overflow: clip;
+
+        &::before{
+            content: attr(commento);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-image: linear-gradient(1turn, #000, transparent);
+            padding: 1rem;
+            color: #FFF;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0;
+            transition: .33s  cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        &:not(.selezionata){
+            height: 90%;
+        }
+
+        &.selezionata:hover::before{
+            opacity: 1;
+        }
+
+        &.immagine-transizione{
+            position: absolute;
+            left: 0;
+            height: 100%;
+            z-index: 0;
+            animation: scompari var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        &.riduci{
+            opacity: 0;
+            animation: riduci var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        &.allarga{
+            animation: allarga var(--tempo-transizione) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        &.scompari{
+            opacity: 0;
+        }
+
+        &.no-transizione{
+            transition: none !important;
+        }
+    }
+}
+
+@keyframes scompari{
+    from{opacity: 1;}
+    to{opacity: 0;}
+}
+
+@keyframes riduci{
+    to{
+        margin: 0;
+        width: 0;
+    }
+}
+
+@keyframes allarga {
+    from{
+        margin-right: 0;
+        width: 0;
+        height: 90%;
+    }
+    to{
+        margin-right: 1rem;
+        height: 100%;
+        width: max(30rem, 30vw);
+    }
+    
+}
+
+.cont-controlli{
+    justify-content: space-between;
+
+    .row-bottoni{
+        height: 3rem;
+        gap: 1rem;
+    }
+
+    button{
+        transition: all .3s  cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    button:hover{
+        color: #FFF;
+        background-color: var(--accento);
+    }
+
+    .vedi-tutte{
+        gap: .5rem;
+        position: relative;
+        cursor: pointer;
+        height: 100%;
+        border-radius: .5rem;
+
+        ion-icon{
+            scale: 1.2;
+        }
+    }
+}

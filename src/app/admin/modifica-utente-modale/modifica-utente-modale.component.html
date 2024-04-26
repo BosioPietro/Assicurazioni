@@ -18,13 +18,30 @@
     <div class="wrapper flex-col">
       <div class="flex-row">
         @if (utenteModificato.pfp) {
-          <img [src]="utenteModificato.pfp" class="immagine-utente">
+          <div class="elimina-immagine" (click)="vuoleEliminare=true">
+            <img [src]="utenteModificato.pfp" class="immagine-utente">
+            <span>
+              <ion-icon name="trash"></ion-icon>
+            </span>
+            @if(vuoleEliminare){
+              <ModaleSiNo
+                #modaleElimina
+                colore="#eb4e4e"
+                si="Resetta"
+                titolo="Resetta Immagine"
+                messaggio="Vuoi resettare la tua immagine profilo?"
+                [inCaricamento]="inCaricamentoElimina"
+                (onNo)="vuoleEliminare = false"
+                (onSi)="ResetImmagine()"
+              />
+            }
+          </div>
         }
         @else {
           <ImmagineProfileDefault [nome]="utenteModificato.cognome" class="immagine-utente"/>
         }
         <div class="flex-col cambia-immagine jc-c">
-          <button>
+          <button (click)="cambioImmagine = true">
             {{ utenteModificato.pfp ? 'Modifica immagine' : 'Aggiungi immagine' }}
           </button>
           <p>
@@ -44,7 +61,12 @@
                 <ion-icon name="close"></ion-icon>
                 <span>Annulla</span>
               </button>
-              <button class="accento" [disabled]="!infoPersonali.valide || infoPersonali.uguali" (click)="AggiornaUtente('personale')" [class.caricamento]="infoPersonali.caricamento">
+              <button 
+                class="accento" 
+                [disabled]="!infoPersonali.valide || infoPersonali.uguali" 
+                [class.caricamento]="infoPersonali.caricamento"
+                (click)="AggiornaUtente('personale')" 
+              >
                 <ion-icon name="checkmark"></ion-icon>
                 <span>Applica</span>
                 <i class="pi pi-spin pi-spinner"></i>
@@ -138,7 +160,12 @@
                 <ion-icon name="close"></ion-icon>
                 <span>Annulla</span>
               </button>
-              <button class="accento" [disabled]="infoLavoro.uguali || !infoLavoro.valido" (click)="AggiornaUtente('lavoro')" [class.caricamento]="infoLavoro.caricamento">
+              <button 
+                class="accento" 
+                [disabled]="infoLavoro.uguali || !infoLavoro.valido" 
+                (click)="AggiornaUtente('lavoro')" 
+                [class.caricamento]="infoLavoro.caricamento"
+              >
                 <ion-icon name="checkmark"></ion-icon>
                 <span>Applica</span>
                 <i class="pi pi-spin pi-spinner"></i>
@@ -189,3 +216,11 @@
     </div>
   </div>
 </dialog>
+
+@if (cambioImmagine) {
+  <FileUpload
+    [inCaricamento]="caricamentoImmagine"
+    (onChiudi)="cambioImmagine = false"
+    (onConferma)="CaricaImmagine($event)"
+  />
+}

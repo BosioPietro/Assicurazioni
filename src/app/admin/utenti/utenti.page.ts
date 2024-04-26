@@ -19,9 +19,10 @@ import { PrimeNGConfig } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ControllaToken } from 'src/app/utils/funzioni';
 import { ContenitoreNotificheComponent } from 'src/app/comuni/notifiche/contenitore-notifiche/contenitore-notifiche.component';
-import Utente from './tabella-utenti/utente.model';
-import { EliminaUtenteModaleComponent } from '../elimina-utente-modale/elimina-utente-modale.component';
 import { ModificaUtenteModaleComponent } from '../modifica-utente-modale/modifica-utente-modale.component';
+import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
+import { AggiungiUtenteModaleComponent } from '../aggiungi-utente-modale/aggiungi-utente-modale.component';
+import Utente from './tabella-utenti/utente.model';
 
 @Component({
   selector: 'Utenti',
@@ -30,11 +31,17 @@ import { ModificaUtenteModaleComponent } from '../modifica-utente-modale/modific
   animations: [animazione],
   imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, 
             TabellaUtentiComponent, MenuModule, ImmagineProfiloDefault, InputTextComponent, DropdownComponent, 
-            ReactiveFormsModule, CalendarModule, ContenitoreNotificheComponent, EliminaUtenteModaleComponent,
-            ModificaUtenteModaleComponent],
+            ReactiveFormsModule, CalendarModule, ContenitoreNotificheComponent,
+            ModificaUtenteModaleComponent, ModaleSiNoComponent, AggiungiUtenteModaleComponent],
   standalone: true,
 })
 export class UtentiPage implements OnInit{
+
+  @ViewChild('modaleElimina') 
+  modaleElimina!: ModaleSiNoComponent;
+
+  @ViewChild('modaleAggiungi')
+  modaleAggiungi!: AggiungiUtenteModaleComponent;
 
   constructor(
     public tabella: TabellaService, 
@@ -85,6 +92,10 @@ export class UtentiPage implements OnInit{
   ]
 
   vuoleEliminare: boolean = false;
+  inCaricamentoElimina: boolean = false;
+
+  vuoleAggiungere: boolean = false;
+  inCaricamentoAggiungi: boolean = false;
   
   CambiaMod(s: string){
     this.tabella.tipo = s;
@@ -148,14 +159,55 @@ export class UtentiPage implements OnInit{
     this.ChiudiElimina();
   }
 
-  async GestisciEliminati(){
-    await this.CaricaTabella();
-    this.ChiudiElimina();
+  async EliminaUtenti(){
+    const modale = this.modaleElimina.modale.nativeElement;
+    
+    this.inCaricamentoElimina = true;
+    const status = await this.tabella.EliminaUtente(this.tabella.selezionati);
+    this.inCaricamentoElimina = false; 
+    
+    modale.classList.add("chiudi");
+    setTimeout(() => {
+      modale.close()
+      modale.classList.remove("chiudi");
+    }, 301);
+
+    if(!status){
+      await this.CaricaTabella();
+      this.ChiudiElimina();
+    }
+    else this.ErroreElimina(status);
+  }
+
+  async AggiungiUtente(u: Utente){
+    const modale = this.modaleAggiungi.modale.nativeElement;
+    
+    this.inCaricamentoAggiungi = true;
+    const status = await this.tabella.AggiungiUtente(u);
+    this.inCaricamentoAggiungi = false; 
+    
+    modale.classList.add("chiudi");
+    setTimeout(() => {
+      modale.close()
+      modale.classList.remove("chiudi");
+    }, 301);
+
+    if(!status){
+      await this.CaricaTabella();
+      this.vuoleAggiungere = false;
+    }
+    else this.ErroreElimina(status);
   }
 
   ChiudiModifica(){
     this.tabella.utenteModificato = undefined;
     this.tabella.utenteVisualizzato = undefined;
+  }
+
+  ImmagineCambiata(url: string){
+    this.tabella.utenteModificato!.pfp = url;
+    this.tabella.utenteVisualizzato!.pfp = url;
+    this.CaricaTabella();
   }
 
 }

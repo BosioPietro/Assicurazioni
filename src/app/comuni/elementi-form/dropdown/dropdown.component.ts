@@ -32,6 +32,9 @@ export class DropdownComponent{
   @Input("disabilitato")
   public disabilitato: boolean = false;
 
+  @Input("puo-deselezionare")
+  puoDeselezionare: boolean = false;
+
   public opzioneSelezionata?: Opzione;
   public aperto: boolean = false;
   public sopra: boolean = false;
@@ -102,7 +105,7 @@ export class DropdownComponent{
     const opzione = e.target as HTMLElement;
     const input = opzione.querySelector("input")!
 
-    if(opzione.classList.contains("selezionata"))
+    if(opzione.classList.contains("selezionata") && this.puoDeselezionare)
     {
       opzione.classList.remove("selezionata")
       this.opzioneSelezionata = undefined;

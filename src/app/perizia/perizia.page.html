@@ -1,0 +1,109 @@
+@if(perizia && mostraHtml){
+<h1>Informazioni Perizia</h1>
+ <div class="wrapper" [class.no-immagini]="!perizia.immagini.length">
+      <google-map 
+        [mapId]="'1436edaa72ee3004'"
+        [options]="{
+          'center': perizia.coordinate,
+          'zoom': 12,
+          'mapTypeControl': false,
+          'fullscreenControl': false,
+          'zoomControlOptions': {
+            'position': maps.ControlPosition.LEFT_TOP
+          },
+          'streetViewControl': true,
+          'streetViewControlOptions': {
+            'position': maps.ControlPosition.LEFT_TOP
+          }
+          }"
+        >
+        <map-advanced-marker 
+          [position]="perizia.coordinate"
+          [content]="opzioni.element"
+          />
+      </google-map>
+      @if(perizia.immagini.length){
+        <Carosello 
+          [immagini]="perizia.immagini"
+          (onVisualizza)="visualizzaImmagini = true" 
+        />
+      }
+ </div>
+ <div class="cont-info jc-c">
+  <main class="flex-col">
+    <div class="flex-col">
+      <p>{{ perizia.luogo.citta }},</p>
+      <p>{{ perizia.luogo.indirizzo }}</p>
+    </div>
+    <div class="flex-col" style="margin-block: auto;">
+      <h1>Perizia #{{ perizia.codice }}</h1>
+      <p>{{ perizia.immagini.length ? perizia.immagini.length + " Foto" : "Nessuna immagine"}} </p>
+    </div>
+    <div class="row-button flex-row">
+      <button class="flex-row jc-c accento" (click)="ApriModifica()">
+        <i class="pi pi-pencil"></i>
+        <span>Modifica</span>
+      </button>
+      <button class="flex-row jc-c" (click)="vuoleEliminare = true">
+        <ion-icon name="trash"></ion-icon>
+        <span>Elimina</span>
+      </button>
+    </div>
+  </main>
+  <div class="cella-info flex-col">
+    <div class="info flex-col">
+      <span class="flex-row al-c">
+        <ion-icon name="person"></ion-icon>
+        Effettuata Da
+      </span>
+      <p>{{ perizia.nomeOperatore || perizia.codOperatore }}</p>
+    </div>
+    <hr/>
+    <div class="info flex-col">
+      <span class="flex-row al-c">
+        <ion-icon name="calendar"></ion-icon>
+        Giorno
+      </span>
+      <p>{{ FormattaData(perizia.data) }}</p>
+    </div>
+    <hr/>
+    <div class="info flex-col">
+      <span class="flex-row al-c">
+        <ion-icon name="checkmark-circle"></ion-icon>
+        Stato
+      </span>
+      <p>{{ StampaStato() }}</p>
+    </div>
+  </div>
+</div>
+  @if(visualizzaImmagini){
+    <DialogoImmagini
+      [style]="{'position':'absolute'}"
+      #immagini
+      [immagini]="perizia.immagini"
+      (onChiudi)="ChiudiImmagini()"
+    />
+  }
+
+  @if(vuoleEliminare){
+    <ModaleSiNo
+      #modaleElimina
+      colore="#eb4e4e"
+      si="Elimina"
+      messaggio="Questa operazione è irreversibile."
+      [style]="{'position':'absolute'}"
+      [titolo]="'Eliminare la perizia #' + perizia.codice + '?'"
+      [inCaricamento]="inCaricamentoElimina"
+      (onNo)="ChiudiElimina(modaleElimina)"
+      (onSi)="EliminaPerizia()"
+    />
+  }
+
+  @if(periziaVisualizzata && periziaVisualizzata){
+    <ModificaPeriziaModale 
+      [style]="{'position':'absolute'}"
+      [periziaVisualizzata]="periziaVisualizzata"
+      [periziaModificata]="periziaVisualizzata"
+    />
+  }
+}

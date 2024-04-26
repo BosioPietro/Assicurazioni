@@ -3,7 +3,6 @@ import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/
 import { IonIcon } from '@ionic/angular/standalone'
 import { ContenitoreNotificheComponent } from 'src/app/comuni/notifiche/contenitore-notifiche/contenitore-notifiche.component';
 import Utente from '../utenti/tabella-utenti/utente.model';
-import { AxiosError } from 'axios';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
@@ -12,12 +11,16 @@ import { FormsModule } from '@angular/forms';
 import { RegexInput } from 'src/app/utils/Input';
 import { DropdownComponent } from 'src/app/comuni/elementi-form/dropdown/dropdown.component';
 import { ModificaUtenteService } from './modifica-utente.service';
+import { FileUploadComponent } from 'src/app/comuni/elementi-form/file-upload/file-upload.component';
+import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
 
 @Component({
   selector: 'ModificaUtenteModale',
   templateUrl: './modifica-utente-modale.component.html',
   styleUrls: ['./modifica-utente-modale.component.scss'],
-  imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, InputTextComponent, CalendarModule, FormsModule, DropdownComponent],
+  imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
+            InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
+            FileUploadComponent, ModaleSiNoComponent],
   standalone: true,
 })
 export class ModificaUtenteModaleComponent implements AfterViewInit{
@@ -34,13 +37,19 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   utenteModificato!: Utente;
 
   @Output()
-  onUtenteMoficato = new EventEmitter<Utente>();
+  onUtenteModificato = new EventEmitter<Utente>();
 
   @Output()
   onChiudi = new EventEmitter<void>();
 
+  @Output()
+  onImmagineCambiata = new EventEmitter<string>();
+
   @ViewChild("modaleUtente")
   modale!: ElementRef<HTMLDialogElement>;
+
+  @ViewChild("modaleElimina")
+  modaleElimina!: ModaleSiNoComponent;
 
   opzioniSiNo: Opzione[] = [
     { testo: "Sì", valore: "true" },
@@ -75,6 +84,10 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   }
 
   regexInput = RegexInput;
+  cambioImmagine: boolean = false;
+  caricamentoImmagine: boolean = false;
+  inCaricamentoElimina: boolean = false;
+  vuoleEliminare: boolean = false;
 
   ngAfterViewInit() {
     this.modale.nativeElement.showModal();
@@ -107,6 +120,16 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
 
     this.infoLavoro.uguali = Object.entries(m).every(([k, v]) => v === vis[k as keyof Utente] || !["ruolo", "assuntoIl", "attivo"].includes(k));
     this.infoLavoro.valido = ["ruolo", "assuntoIl", "attivo"].every((k) => m[k as keyof Utente] != null && m[k as keyof Utente] != undefined);
+
+    if(m.ruolo == "Admin" && m['2FA'] == false){
+      this.notifiche.NuovaNotifica({
+        "titolo": "Ruolo non valido",
+        "descrizione": "Non puoi assegnare il ruolo di Admin ad un utente senza 2FA",
+        "tipo": "errore"
+      })
+
+      setTimeout(() => m.ruolo = "Dipendente");
+    }
   }
 
   
@@ -132,7 +155,7 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   }
 
 
-  VerificaInputPersonali(e: Event){
+  async VerificaInputPersonali(e: Event){
     const input = e.target as HTMLInputElement;
     const valore = input.value
 
@@ -153,7 +176,11 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
         if(!RegexInput["username"].test(valore))
         {
           this.infoPersonali.errori["info-username"] = "Username non valido"
-        } 
+        }
+
+        if(!(await this.utenti.UsernameEsistente(valore))){
+          this.infoPersonali.errori["info-username"] = "Username già esistente"
+        }
       break;
       case "info-mail":
         if(!RegexInput["email"].test(valore))
@@ -181,7 +208,8 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
     const m = this.utenteModificato!;
     const vis = this.utenteVisualizzato!;
 
-    this.infoPersonali.uguali = Object.entries(m).every(([k, v]) => v === vis[k as keyof Utente] || !["nome", "cognome", "email" ,"telefono", "2FA"].includes(k));
+    this.infoPersonali.uguali = Object.entries(m).every(([k, v]) => v === vis[k as keyof Utente] || !["nome", "cognome", "email" ,"telefono", "2FA", "username"].includes(k));
+    console.log(this.infoPersonali)
   }
 
   ControllaErroriPersonali(){
@@ -206,7 +234,7 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
         tipo: "info"
       })
 
-      this.onUtenteMoficato.emit(utente);
+      this.onUtenteModificato.emit(utente);
     }
     else this.Errore(res);
 
@@ -239,6 +267,51 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
       this.modale.nativeElement.classList.remove("chiudi");
       this.onChiudi.emit();
     }, 301);
+  }
+
+  CaricaImmagine(e: File){
+    this.caricamentoImmagine = true;
+
+    this.utenti.CaricaImmagine(e, this.utenteVisualizzato.username)
+    .then((res: any) => {
+      if(isNaN(res)){
+        this.caricamentoImmagine = false;
+        this.notifiche.NuovaNotifica({
+          titolo: "Operazione completata",
+          descrizione: "L'immagine è stata caricata con successo",
+          tipo: "info"
+        })
+        this.cambioImmagine = false;
+        this.onImmagineCambiata.emit(res["url"]);
+      }
+      else this.Errore(res);
+    })
+  }
+
+  async ResetImmagine(){
+    const modale = this.modaleElimina.modale.nativeElement;
+      
+    this.inCaricamentoElimina = true;
+    const status = await this.utenti.ResetImmagine(this.utenteVisualizzato.username);
+    this.inCaricamentoElimina = false; 
+    
+    modale.classList.add("chiudi");
+    setTimeout(() => {
+      modale.close()
+      modale.classList.remove("chiudi");
+    }, 301);
+
+    if(!status)
+    {
+      this.onImmagineCambiata.emit("");
+    }
+    else this.Errore(status);
+
+    this.vuoleEliminare = false;
+  }
+
+  ResettaPassword(){
+    
   }
 
 }

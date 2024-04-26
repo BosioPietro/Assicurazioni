@@ -46,3 +46,12 @@ bootstrapApplication(AppComponent, {
     },
   ],
 });
+
+// https://maps.googleapis.com/maps/api/place/autocomplete/json
+// ?input=savigliano
+// &locationbias=ipbias
+// &language=it
+// &types=geocode
+// &key=AIzaSyBZKYgxbiyRE7DknUpnRP2QHCBVjvLgH7g
+
+// encodeURI

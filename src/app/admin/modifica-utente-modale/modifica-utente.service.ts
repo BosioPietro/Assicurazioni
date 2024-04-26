@@ -18,4 +18,34 @@ export class ModificaUtenteService {
             .catch((err: AxiosError) => resolve(err.status!));
         });
     }
+
+    async ResetImmagine(username: string) {
+        return new Promise<void | number>((resolve) => {
+            this.server.InviaRichiesta(Metodi.PATCH, "/api/reset-immagine", { username })
+            .then(() => resolve())
+            .catch((err: AxiosError) => resolve(err.status!));
+        });
+    }
+
+    async CaricaImmagine(immagine: File, username: string) {
+        return new Promise<{url: string} | number>((resolve) => {
+            const formData = new FormData();
+            formData.append("immagine", immagine);
+            formData.append("username", username);
+
+            console.log(immagine)
+
+            this.server.InviaRichiesta(Metodi.POST, "/api/carica-immagine", formData)
+            .then((e) => resolve(e.data))
+            .catch((err: AxiosError) => resolve(err.status!));
+        });
+    }
+
+    async UsernameEsistente(username: string) {
+        return new Promise<boolean>((resolve) => {
+            this.server.InviaRichiesta(Metodi.GET, "/api/controlla-username", { username })
+            .then(() => resolve(true))
+            .catch(() => resolve(false));
+        });
+    }
 }

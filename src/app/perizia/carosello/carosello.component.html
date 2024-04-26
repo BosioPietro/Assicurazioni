@@ -1,0 +1,41 @@
+<div 
+  class="cont-immagini flex-row"
+  [style]="{
+    '--tempo-transizione': tempoTransizione + 'ms',
+  }"
+>
+  <div class="immagini">
+    @for (img of immagini; track $index) {
+      <div
+        class="img"
+        [attr.commento]="img.commento"
+        [class.no-transizione]="noTransizione"
+        [class.selezionata]="$index == indice || grandezza == $index"
+        [class.riduci]="inTransizione && indicePrecedente == $index && indicePrecedente < indice"
+        [class.allarga]="inTransizione && indicePrecedente == $index && indicePrecedente > indice"
+        [style]="{'--img': 'url(' + img.url + ')'}"
+      ></div>
+    }
+  </div>
+  @if(immagineTransizione && indicePrecedente < indice){
+    <div 
+      class="img immagine-transizione"
+      [class.scompari]="this.inTransizione"
+      [style]="{'--img': 'url(' + immagineTransizione.url + ')'}"
+    ></div>
+  }
+</div>
+<div class="cont-controlli flex-row al-c">
+  <div class="row-bottoni flex-row">
+    <button (click)="Cambia(false)">
+      <ion-icon name="chevron-back"></ion-icon>
+    </button>
+    <button (click)="Cambia(true)">
+      <ion-icon name="chevron-forward"></ion-icon>
+    </button>
+  </div>
+  <button class="flex-row al-c vedi-tutte" (click)="onVisualizza.emit()">
+    Vedi Tutte
+    <ion-icon name="arrow-forward"></ion-icon>
+  </button>
+</div>

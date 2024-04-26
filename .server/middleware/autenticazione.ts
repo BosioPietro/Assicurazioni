@@ -264,7 +264,6 @@ const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
         const { username } = payload;
         const { codice } = req["body"];
 
-        console.log("ciao")
 
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
@@ -285,6 +284,19 @@ const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
     })
 }
 
+const ControllaUsername = async (app: Express, driver : MongoDriver) => {
+    app.get("/api/controlla-username", async (req : Request, res : Response) => {
+        const { username } = req.query;
+        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+
+        const user = await driver.PrendiUno({ username });
+        if(driver.Errore(user, res)) return;
+
+        if(user) return res.status(400).send("Username già esistente")
+        res.send({ "ok" : "Username disponibile" })
+    })
+}
+
 
 const LogoutUtente = (app : Express) => {
     app.get("/api/logout", (req : Request, res : Response) => {
@@ -301,16 +313,7 @@ const ControlloTokenMiddleware = (app : Express, driver : MongoDriver) => {
 }
 
 export { 
-    RegistraUtente, 
-    LoginUtente, 
-    LogoutUtente, 
-    ControlloToken, 
-    ControlloTokenMiddleware, 
-    LoginOAuth, 
-    CambiaPassword, 
-    RecuperoCredenziali, 
-    VerificaCodice,
-    VerificaRecupero,
-    InviaCodiceTelefono,
-    VerificaCodiceTelefono
+    RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, 
+    LoginOAuth, CambiaPassword, RecuperoCredenziali, VerificaCodice, 
+    VerificaRecupero, InviaCodiceTelefono, VerificaCodiceTelefono, ControllaUsername
 }

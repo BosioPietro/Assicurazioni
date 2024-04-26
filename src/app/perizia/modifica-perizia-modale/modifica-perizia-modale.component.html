@@ -1,0 +1,74 @@
+<dialog #modaleUtente id="dialogoModifica" class="flex-row">
+  <button class="btn-chiudi" >
+    <!-- (click)="ChiudiModale()" -->
+  <ion-icon name="close" />
+  </button>
+  <ContenitoreNotifiche />
+  <div class="pagina-dialogo">
+    <h1>Modifica Perizia</h1>
+    <div class="wrapper flex-col">
+      <div class="info-utente sopra">
+        <div class="flex-row header-info">
+          <h3>Informazioni Luogo</h3>
+        </div>
+        <form class="cont-utente">
+          <google-map 
+          [mapId]="'1436edaa72ee3004'"
+          [options]="{
+            'center': periziaModificata.coordinate || coordinateVallauri,
+            'zoom': 12,
+            'mapTypeControl': false,
+            'fullscreenControl': false,
+            'zoomControlOptions': {
+              'position': maps.ControlPosition.LEFT_TOP
+            },
+            'streetViewControl': false,
+            'streetViewControlOptions': {
+              'position': maps.ControlPosition.LEFT_TOP
+            }
+            }"
+          >
+          <map-advanced-marker 
+            [position]="coordinateVallauri"
+            [content]="opzioni.element"
+          />
+        </google-map>
+
+          <InputText 
+            #cercaIndirizzo
+            icona="home" 
+            name="cerca-indirizzo"
+            id-input="cerca-indirizzo"
+            testo-label="Cerca Indirizzo"
+          />
+          <FintoHr testo="Oppure" /> 
+          <button class="accento">
+            <ion-icon name="navigate"></ion-icon>
+            <span>Usa la mia posizione</span>
+          </button>
+          <!-- <Dropdown 
+            testo-label="2FA Abilitato"
+            name="info-2FA"
+            id-input="info-2FA"
+            icona="lock-closed" 
+            [mockup]="!infoLuogo.modifica" 
+            [disabilitato]="!regexInput['telefono'].test(utenteModificato['telefono'])" 
+            [opzioni]="opzioniSiNo"
+            [(ngModel)]="utenteModificato['2FA']"
+            (onChange)="VerificaInputPersonali($event)"
+            (onInput)="infoLuogo.errori['info-2FA']=''; ControllaErroriPersonali()"
+          /> -->
+
+        </form>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+@if (cambioImmagine) {
+  <FileUpload
+    [inCaricamento]="caricamentoImmagine"
+    (onChiudi)="cambioImmagine = false"
+    />
+    <!-- (onConferma)="CaricaImmagine($event)" -->
+}

@@ -122,17 +122,21 @@ export class TabellaService {
     });
   }
 
-  async EliminaUtenti(utenti: Utente[]){
-    return new Promise<boolean | string | undefined>((resolve, reject) => {
-      const username = utenti.map(u => u["username"]);
-      this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti : username })
-      .then(() => resolve(true))
-      .catch((res: AxiosError) => resolve(res.response?.statusText ?? false));
+  async EliminaUtente(utente: Utente[]) {
+    return new Promise<void | number>((resolve) => {
+        const username = utente.map(u => u.username);
+        this.server.InviaRichiesta(Metodi.DELETE, "/api/utenti", { utenti: username })
+        .then(() => resolve())
+        .catch((err: AxiosError) => resolve(err.status!));
     });
   }
 
-  ModificaUtente(u: Utente){
-    console.log(u)
+  async AggiungiUtente(u: Utente){
+    return new Promise<void | number>((resolve) => {
+      this.server.InviaRichiesta(Metodi.POST, "/api/utenti", u)
+      .then(() => resolve())
+      .catch((res: AxiosError) => resolve(res.status!));
+    });
   }
 
 }

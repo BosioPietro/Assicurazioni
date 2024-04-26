@@ -1,7 +1,6 @@
 dialog{
     border: 0;
     padding: 0;
-    min-height: calc(100dvh - 8rem);
     background-color: #f5f6f8;
     border-radius: 1rem;
     padding: 2rem;
@@ -65,9 +64,9 @@ button{
     from{ opacity: 1; }
     to{ opacity: 0; }
 }
-#dialogoModifica{
+
+dialog{
     padding: 0;
-    // width: calc(100% - 8rem);
     height: calc(100dvh - 8rem);
     background-color: #f5f6f8;
 
@@ -86,33 +85,6 @@ button{
     h1{
         font-size: 2rem;
         margin-bottom: 1rem;
-    }
-
-    .nav-dialogo{
-        background-color: #FFF;
-        padding: 2rem;
-        gap: 1rem;
-
-        .opzione{
-            white-space: nowrap;
-            padding: .5rem 1rem;
-            border-radius: .5rem;
-            font-size: 1.35rem;
-            gap: 1rem;
-            align-items: center;
-            cursor: pointer;
-            border-color: transparent;
-            caret-color: transparent;
-
-            &.selezionata{
-                border: 2px solid var(--accento);
-                outline: 4px solid color-mix(in srgb, var(--accento) 50%, transparent 50%);
-            }
-
-            ion-icon{
-                scale: 1.2;
-            }
-        }
     }
 
     .pagina-dialogo{

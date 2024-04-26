@@ -48,12 +48,13 @@ p, .username{
     font-size: .75rem;
 }
 
-img, ImmagineProfileDefault{
+.img, ImmagineProfileDefault{
     height: 2rem;
     aspect-ratio: 1;
     border-radius: 100vh;
     background-color: #AAA;
     caret-color: transparent;
+    background-size: cover;
 }
 
 .ruolo{

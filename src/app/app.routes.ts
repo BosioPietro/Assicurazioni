@@ -43,5 +43,10 @@ export const routes: Routes = [
   {
     path: 'utenti',
     loadComponent: () => import('./admin/utenti/utenti.page').then( m => m.UtentiPage)
+  },
+  {
+    path: 'perizia/:codice',
+    loadComponent: () => import('./perizia/perizia.page').then( m => m.PeriziaPage)
   }
+
 ];

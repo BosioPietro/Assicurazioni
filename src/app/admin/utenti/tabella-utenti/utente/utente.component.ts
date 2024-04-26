@@ -29,4 +29,9 @@ export class UtenteComponent{
     }
     else this.tabella.DeselezionaUtente(this.utente);
   }
+
+  Stop(e: Event){
+    e.stopPropagation();
+    e.preventDefault();
+  }
 }
