@@ -70,7 +70,13 @@
             </div>
           }
         </div>
-        <BarraRicerca (onCerca)="tabella.nome = $event"/>
+        <!-- <BarraRicerca (onCerca)="tabella.nome = $event"/> -->
+        <InputText
+          icona="search"
+          id-input="utenti-cerca"
+          name="utenti-cerca"
+          (onInput)="CercaNome($event)" 
+        />
       </div>
       <TabellaUtenti (utenteSelezionato)="MostraPannelloUtente()"/>
     </div>

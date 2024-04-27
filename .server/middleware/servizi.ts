@@ -4,14 +4,13 @@ import { DecifraToken, ControllaAdmin } from "../encrypt.js";
 import { CaricaImmagine } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
+import { env } from "process";
 
 const PrendiUtenti = (app: Express, driver: MongoDriver) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
         const filtri = req.query || {};
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const utenti = await driver.PrendiMolti(filtri);
         if(driver.Errore(utenti, res)) return;
@@ -29,9 +28,7 @@ const EliminaUtenti = (app: Express, driver: MongoDriver) => {
 
         if(!(await ControllaAdmin(token, driver, res))) return;
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const eliminati = await driver.Elimina({ username : { $in : utenti } });
         if(driver.Errore(eliminati, res)) return;
@@ -47,9 +44,7 @@ const AggiornaUtente = (app: Express, driver: MongoDriver) => {
 
         if(!(await ControllaAdmin(token, driver, res))) return;
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         delete utente["_id"];
 
@@ -67,9 +62,7 @@ const CaricaImmagineProfilo = (app: Express, driver: MongoDriver) => {
 
         const token = DecifraToken(req.headers.authorization!)
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const utente = await driver.PrendiUno({ username });
         if(driver.Errore(utente, res)) return;
@@ -96,9 +89,7 @@ const ResetImmagineProfilo = (app: Express, driver: MongoDriver) => {
         const { username } = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const utente = await driver.PrendiUno({ username });
         if(driver.Errore(utente, res)) return;
@@ -119,9 +110,7 @@ const AggiungiUtente = (app: Express, driver: MongoDriver) => {
 
         if(!(await ControllaAdmin(token, driver, res))) return;
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const aggiunto = await driver.Inserisci(utente);
         if(driver.Errore(aggiunto, res)) return;
@@ -134,9 +123,7 @@ const PrendiPerizia = (app: Express, driver: MongoDriver) => {
     app.get("/api/perizia/:idPerizia", async (req: Request, res: Response) => {
         const { idPerizia } = req["params"];
 
-        if(driver.Collezione != "perizie"){
-            await driver.SettaCollezione("perizie");
-        }
+        await driver.SettaCollezione("perizie");
 
         const perizia = await driver.PrendiUno({ codice : +idPerizia });
         if(driver.Errore(perizia, res)) return;
@@ -149,9 +136,7 @@ const PrendiOperatore = (app: Express, driver: MongoDriver) => {
     app.get("/api/operatore/:codOperatore", async (req: Request, res: Response) => {
         const { codOperatore } = req["params"];
 
-        if(driver.Collezione != "utenti"){
-            await driver.SettaCollezione("utenti");
-        }
+        await driver.SettaCollezione("utenti");
 
         const operatore = await driver.PrendiUno({ username : codOperatore });
         if(driver.Errore(operatore, res)) return;
@@ -167,9 +152,7 @@ const EliminaPerizia = (app: Express, driver: MongoDriver) => {
 
         if(!(await ControllaAdmin(token, driver, res))) return;
 
-        if(driver.Collezione != "perizie"){
-            await driver.SettaCollezione("perizie");
-        }
+        await driver.SettaCollezione("perizie");
 
         const eliminata = await driver.Elimina({ codice : +idPerizia });
         if(driver.Errore(eliminata, res)) return;
@@ -178,6 +161,25 @@ const EliminaPerizia = (app: Express, driver: MongoDriver) => {
     })
 }
 
+const PrendiIndirizzi = (app: Express) => {
+    app.get("/api/indirizzi", async (req: Request, res: Response) => {
+        const { valore } = req.query;
+
+        const richiesta = `https://maps.googleapis.com/maps/api/place/autocomplete/json` +
+                          `?input=${encodeURI(valore as string)}` +
+                          `&locationbias=ipbias` +
+                          `&language=it` +
+                          `&types=geocode` +
+                          `&key=${env["GOOGLE_PLACES_API_KEY"]}`;
+
+        const risposta = await fetch(richiesta);
+        const dati = await risposta.json();
+
+        res.send(dati)
+    })
+
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
-         PrendiPerizia, PrendiOperatore, EliminaPerizia};
+         PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi};

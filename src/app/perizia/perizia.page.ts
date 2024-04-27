@@ -60,7 +60,6 @@ export class PeriziaPage implements OnInit, AfterViewInit {
       "borderColor": "#f2f3f5",
       "glyphColor": "#f2f3f5",
       "scale": 1.2,
-      "glyph": "🏠"
     })
 
     const idPerizia = this.route.snapshot.paramMap.get('codice')!;

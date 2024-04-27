@@ -14,6 +14,8 @@ import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.co
 import { Perizia } from '../perizia.model';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
+import { RicercaComponent } from 'src/app/comuni/elementi-form/ricerca/ricerca.component';
+import { ModificaPeriziaService } from './modifica-perizia.service';
 
 @Component({
   selector: 'ModificaPeriziaModale',
@@ -22,12 +24,13 @@ import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent, GoogleMap, MapMarker, 
-            MapAdvancedMarker, FintoHrComponent],
+            MapAdvancedMarker, FintoHrComponent, RicercaComponent],
   standalone: true,
 })
 export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
 
   constructor(
+    public servizio: ModificaPeriziaService,
     private notifiche: NotificheService
   ){}
 
@@ -103,8 +106,69 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
       "borderColor": "#f2f3f5",
       "glyphColor": "#f2f3f5",
       "scale": 1.2,
-      "glyph": "🏠"
+    })
+  }
+  
+  ricercaInCaricamento: boolean = false;
+  opzioniRicerca: Opzione[] = [];
+  async CercaIndirizzi(e: Event){
+    const val = (e.target as HTMLInputElement).value;
+
+    if(val.length < 3) return;
+
+    this.ricercaInCaricamento = true;
+    const risultati = await this.servizio.CercaIndirizzi(val);
+    this.ricercaInCaricamento = false;
+
+    if(this.servizio.ControllaErrore(risultati)){
+      return;
+    }
+
+    this.opzioniRicerca = risultati.map((r: Record<string, any>) => {
+      return { testo: r["description"], valore: r }
+    });
+  }
+
+  async CambiaIndirizzo(opz: Opzione){
+    this.infoLuogo.caricamento = true;
+    const indirizzo = await this.Geocode(opz["valore"]);
+    this.infoLuogo.caricamento = false;
+
+    if(indirizzo == ""){
+      this.notifiche.NuovaNotifica({
+        titolo: "Errore",
+        tipo: "errore",
+        descrizione: "Errore nel trovare le coordinate",
+      });
+      return;
+    }
+
+    this.periziaModificata.luogo = {
+      citta: indirizzo.address_components[2].long_name,
+      provincia: indirizzo.address_components[4].short_name,
+      indirizzo: indirizzo.formatted_address.split(",").slice(0, 2).join(",").trim(),
+      coordinate: {
+        lat: indirizzo.geometry.location.lat(),
+        lng: indirizzo.geometry.location.lng()
+      }
+    }
+    console.log(this.periziaModificata.luogo, indirizzo)
+
+  }
+
+  async Geocode(posto: Record<string, any>){
+    const geocoder = new this.google.maps.Geocoder();
+
+    return new Promise<any>((resolve, reject) => {
+      geocoder.geocode({ "address" : posto["description"] }, (results: Record<string, any>, status: string) => {
+        if(status == "OK"){
+          resolve(results[0]);
+        } else {
+          resolve("");
+        }
+      })
     })
   }
 
+  prova:any = []
 }

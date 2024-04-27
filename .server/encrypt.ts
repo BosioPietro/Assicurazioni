@@ -82,9 +82,7 @@ const GeneraCodice = () => {
 }
 
 const ControllaAdmin = async (u: Token, driver: MongoDriver, res: Response) : Promise<boolean | null> => {
-    if(driver.Collezione != "utenti"){
-        await driver.SettaCollezione("utenti");
-    }
+    await driver.SettaCollezione("utenti");
 
     const admin = await driver.PrendiUno({ username: u.username });
     if(driver.Errore(admin, res)) return false;

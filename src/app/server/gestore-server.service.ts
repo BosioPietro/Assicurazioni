@@ -9,9 +9,13 @@ import { environment } from 'src/environments/environment';
 export class GestoreServerService{
 
 async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
+    const indirizzo = {
+      baseURL: url.startsWith("http") ? "" : environment.BASE_URL_SERVER + environment.PORTA_SERVER,
+      url: url
+    }
+
     const config : AxiosRequestConfig = {
-      "baseURL": environment.BASE_URL_SERVER + environment.PORTA_SERVER,
-      "url":  url, 
+      ...indirizzo, 
       "method": method.toString(),
       "headers": {
         "Accept": "application/json",
@@ -34,6 +38,7 @@ async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
     }	
     return axios(config);          
   }
+
 }
 
 axios.interceptors["request"].use((config) => {

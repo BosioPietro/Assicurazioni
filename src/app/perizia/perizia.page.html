@@ -4,7 +4,7 @@
       <google-map 
         [mapId]="'1436edaa72ee3004'"
         [options]="{
-          'center': perizia.coordinate,
+          'center': perizia.luogo.coordinate,
           'zoom': 12,
           'mapTypeControl': false,
           'fullscreenControl': false,
@@ -18,7 +18,7 @@
           }"
         >
         <map-advanced-marker 
-          [position]="perizia.coordinate"
+          [position]="perizia.luogo.coordinate"
           [content]="opzioni.element"
           />
       </google-map>

@@ -5,15 +5,15 @@ type Immagine = {
 
 type Perizia = {
     id: number,
-    coordinate: {
-        lat: number,
-        lng: number
-    },
     immagini: Immagine[],
     luogo: {
         provincia: string,
         citta: string,
-        indirizzo: string,
+        indirizzo: string,    
+        coordinate: {
+            lat: number,
+            lng: number
+        }
     },
     codice: number,
     codOperatore: string,

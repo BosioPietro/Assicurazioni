@@ -4,7 +4,7 @@
     --colore-normale: #d1d5db;
     --colore-testo: #4b5563;
     --font-size: 1rem;
-    --br: 100vh;
+    --br: .5rem;
 
     display: flex;
     align-items: center;
@@ -90,8 +90,8 @@ ion-icon{
         border: 0;
     }
     
-    :host:hover,
-    :host:has(input:focus-visible){
+    &:hover,
+    &:focus-within{
         border-color: var(--accento);
        
         ion-icon:not(.disabilitato){
@@ -103,12 +103,12 @@ ion-icon{
         }
     }
     
-    :host(:has(input:focus-visible)){
+    &:focus-within{
         outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
     }
 }
 
-:host:has(input:focus-visible),
+:host:focus-within,
 :host:not(:has(input:placeholder-shown)){
     label{
         top: calc(var(--padding) * -2);

@@ -1,6 +1,11 @@
 <div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato" [class.mockup]="mockup">
   @if(icona){
-    <ion-icon [name]="icona" class="icona"/>
+    @if(!caricamento){
+      <ion-icon [name]="icona" class="icona"/>
+    }
+    @else {
+      <i class="pi pi-spin pi-spinner" style="color: var(--colore-testo)"></i>
+    }
     <hr/>
   }
   <div class="flex-row">

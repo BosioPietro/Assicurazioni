@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { BottoniOpzioneComponent } from 'src/app/comuni/elementi-form/opzioni/opzioni.component';
-import { BarraRicercaComponent } from 'src/app/comuni/elementi-form/barra-ricerca/barra-ricerca.component';
 import { TabellaUtentiComponent } from './tabella-utenti/tabella-utenti.component';
 import { TabellaService } from './tabella.service';
 import { MenuModule } from 'primeng/menu';
@@ -29,10 +28,10 @@ import Utente from './tabella-utenti/utente.model';
   templateUrl: './utenti.page.html',
   styleUrls: ['./utenti.page.scss'],
   animations: [animazione],
-  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, BarraRicercaComponent, 
+  imports: [IonicModule, CommonModule, FormsModule, BottoniOpzioneComponent, AggiungiUtenteModaleComponent,
             TabellaUtentiComponent, MenuModule, ImmagineProfiloDefault, InputTextComponent, DropdownComponent, 
             ReactiveFormsModule, CalendarModule, ContenitoreNotificheComponent,
-            ModificaUtenteModaleComponent, ModaleSiNoComponent, AggiungiUtenteModaleComponent],
+            ModificaUtenteModaleComponent, ModaleSiNoComponent],
   standalone: true,
 })
 export class UtentiPage implements OnInit{
@@ -114,6 +113,11 @@ export class UtentiPage implements OnInit{
     document.body.appendChild(link);
     link.click();
     link.remove();
+  }
+
+  CercaNome(e: Event){
+    const input = e.target as HTMLInputElement;
+    this.tabella.nome = input.value
   }
 
   ConfermaElimina(){

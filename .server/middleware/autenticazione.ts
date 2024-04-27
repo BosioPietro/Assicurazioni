@@ -14,7 +14,7 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
         const { username, email } = req["body"];
     
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        await driver.SettaCollezione("utenti");
 
         const [userUtente, userEmail] = await Promise.all([
             driver.PrendiUno({ username }), 
@@ -48,8 +48,8 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
     app.post("/api/login", async (req : Request, res : Response) => {
         const { username: utente, password } = req["body"];
     
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
-
+        await driver.SettaCollezione("utenti");
+        
         const tipo = utente.includes("@") ? "email" : "username";
         const user = await driver.PrendiUno({ [tipo] : utente })
     
@@ -80,7 +80,7 @@ const LoginOAuth = async (app : Express, driver : MongoDriver) => {
         const { email } = req["body"];
         
         const regex = new RegExp(`^${email}$`, "i");
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ email : regex });
 
@@ -109,7 +109,7 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
 
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        await driver.SettaCollezione("utenti");
 
         const user : any = await driver.PrendiUno({ username })
         if(driver.Errore(user, res)) return;
@@ -135,7 +135,7 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
     app.post("/api/recupero-credenziali", async (req: Request, res: Response) => {
         const { email } = req["body"];
 
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        await driver.SettaCollezione("utenti");
         
         const user = await driver.PrendiUno({ email });
         if(driver.Errore(user, res)) return;
@@ -169,7 +169,7 @@ const VerificaRecupero = (app: Express, driver: MongoDriver) => {
         const payload = DecifraToken(req.headers["authorization"]!)
         const { username } = payload;
 
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
@@ -287,7 +287,8 @@ const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
 const ControllaUsername = async (app: Express, driver : MongoDriver) => {
     app.get("/api/controlla-username", async (req : Request, res : Response) => {
         const { username } = req.query;
-        if(driver.Collezione !== "utenti") await driver.SettaCollezione("utenti");
+        
+        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;

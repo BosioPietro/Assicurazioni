@@ -12,38 +12,44 @@
           <h3>Informazioni Luogo</h3>
         </div>
         <form class="cont-utente">
-          <google-map 
-          [mapId]="'1436edaa72ee3004'"
-          [options]="{
-            'center': periziaModificata.coordinate || coordinateVallauri,
-            'zoom': 12,
-            'mapTypeControl': false,
-            'fullscreenControl': false,
-            'zoomControlOptions': {
-              'position': maps.ControlPosition.LEFT_TOP
-            },
-            'streetViewControl': false,
-            'streetViewControlOptions': {
-              'position': maps.ControlPosition.LEFT_TOP
-            }
-            }"
-          >
-          <map-advanced-marker 
-            [position]="coordinateVallauri"
-            [content]="opzioni.element"
-          />
-        </google-map>
+          @if(opzioni){
+            <google-map 
+              [mapId]="'1436edaa72ee3004'"
+              [options]="{
+                'center': periziaModificata.luogo.coordinate,
+                'zoom': 12,
+                'mapTypeControl': false,
+                'fullscreenControl': false,
+                'zoomControlOptions': {
+                  'position': maps.ControlPosition.LEFT_TOP
+                },
+                'streetViewControl': false,
+                'streetViewControlOptions': {
+                  'position': maps.ControlPosition.LEFT_TOP
+                }
+                }"
+              >
+              <map-advanced-marker 
+                [position]="periziaModificata.luogo.coordinate"
+                [content]="opzioni.element"
+                />
+            </google-map>
+          }
 
-          <InputText 
+          <Ricerca 
             #cercaIndirizzo
             icona="home" 
             name="cerca-indirizzo"
             id-input="cerca-indirizzo"
             testo-label="Cerca Indirizzo"
+            [caricamento]="ricercaInCaricamento"
+            [opzioni]="opzioniRicerca"
+            (onInput)="CercaIndirizzi($event)"
+            (onSelezionato)="CambiaIndirizzo($event)"
           />
           <FintoHr testo="Oppure" /> 
           <button class="accento">
-            <ion-icon name="navigate"></ion-icon>
+            <ion-icon name="navigate" style="transform: translateX(-.25rem);"></ion-icon>
             <span>Usa la mia posizione</span>
           </button>
           <!-- <Dropdown 

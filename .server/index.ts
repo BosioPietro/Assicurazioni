@@ -61,6 +61,7 @@ Servizi.AggiungiUtente(app, driver);
 Servizi.PrendiPerizia(app, driver);
 Servizi.PrendiOperatore(app, driver);
 Servizi.EliminaPerizia(app, driver);
+Servizi.PrendiIndirizzi(app);
 
 // gestione errori
 Errori.LoggingErrori(app);

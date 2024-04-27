@@ -1,0 +1,23 @@
+<InputText
+  [testo-label]="testoLabel"
+  [disabilitato]="disabilitato"
+  [icona]="icona"
+  [id-input]="idInput"
+  [messaggio-errore]="errore"
+  [name]="name"
+  [disabled]="disabled"
+  [mockup]="mockup"
+  [valore]="value"
+  [caricamento]="caricamento"
+  (onChange)="Cambiato($event)"
+  (onInput)="Input($event)"
+  (onKeyDown)="onKeyDown.emit($event)"
+/>
+
+<div class="opzioni" [class]="{'aperto': opzioni.length}">
+  @for(opz of opzioni; track $index){
+    <div class="opzione" (click)="Seleziona(opz)">
+      {{ opz["testo"] }}
+    </div>
+  }
+</div>

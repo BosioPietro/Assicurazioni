@@ -1,15 +1,25 @@
-import { Component, ElementRef, EventEmitter, Input, Optional, Output, Self, ViewChild, input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Optional, Output, Self, ViewChild } from '@angular/core';
+import { InputTextComponent } from '../input-text/input-text.component';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { IonIcon } from '@ionic/angular/standalone';
+
+export type Opzione = {
+  testo: string,
+  valore: any
+}
+
+export type Errore = {
+  messaggio: string,
+  codice: number
+}
 
 @Component({
-  selector: 'InputText',
-  templateUrl: './input-text.component.html',
-  styleUrls: ['../stile-input.scss', './input-text.component.scss'],
-  imports: [IonIcon],
-  standalone: true
+  selector: 'Ricerca',
+  templateUrl: './ricerca.component.html',
+  styleUrls: ['./ricerca.component.scss'],
+  imports: [InputTextComponent],
+  standalone: true,
 })
-export class InputTextComponent implements ControlValueAccessor {
+export class RicercaComponent implements ControlValueAccessor {
   @Input("testo-label")
   public testoLabel!: string;
 
@@ -37,8 +47,14 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input("disabilitato")
   public disabilitato: boolean = false;
 
+  @Input("opzioni")
+  public opzioni!: Opzione[];
+
   @Input("caricamento")
   public caricamento: boolean = false;
+
+  @Output()
+  onSelezionato: EventEmitter<Opzione> = new EventEmitter<Opzione>();
 
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
@@ -50,12 +66,13 @@ export class InputTextComponent implements ControlValueAccessor {
   onKeyDown: EventEmitter<KeyboardEvent> = new EventEmitter<KeyboardEvent>();
 
   @ViewChild("inputText")
-  input!: ElementRef<HTMLInputElement>
+  input!: ElementRef<InputTextComponent>
 
   constructor(
     @Self()
     @Optional()
-    private ngControl: NgControl, ref:ElementRef<HTMLElement>) {
+    private ngControl: NgControl,
+    ref:ElementRef<HTMLElement>) {
     if (this.ngControl) {
       this.ngControl.valueAccessor = this;
     }
@@ -68,12 +85,11 @@ export class InputTextComponent implements ControlValueAccessor {
     })
   }
 
-  // Roba per far funzionare i ReactiveForm
   writeValue(value: string): void {
     this.value = value ?? "";
     
-    if(this.input && this.input.nativeElement){
-      this.input.nativeElement.value = this.value;
+    if(this.input && this.input.nativeElement && this.input.nativeElement.input){
+      this.input.nativeElement.input.nativeElement.value = this.value;
     }
   }
 
@@ -94,11 +110,18 @@ export class InputTextComponent implements ControlValueAccessor {
 
   public Input(e: Event){
     this.onInput.emit(e)
-    return this.onValueChange((e.target as HTMLInputElement | null)?.value)
+    const valore = (e.target as HTMLInputElement | null)?.value
+    return this.onValueChange(valore)
   }
 
   public Cambiato(e: Event){
     this.onChange.emit(e)
   }
-  
+
+  Seleziona(opzione: Opzione){
+    this.value = opzione.testo;
+    (document.activeElement as HTMLElement)?.blur();
+    this.onSelezionato.emit(opzione);
+  }
+
 }
