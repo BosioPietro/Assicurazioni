@@ -99,11 +99,12 @@
     />
   }
 
-  @if(periziaVisualizzata && periziaVisualizzata){
+  @if(periziaVisualizzata && periziaModicata){
     <ModificaPeriziaModale 
       [style]="{'position':'absolute'}"
       [periziaVisualizzata]="periziaVisualizzata"
       [periziaModificata]="periziaVisualizzata"
+      (onChiudi)="periziaVisualizzata = undefined; periziaModicata = undefined"
     />
   }
 }

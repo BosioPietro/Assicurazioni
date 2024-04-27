@@ -16,6 +16,8 @@ import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import { RicercaComponent } from 'src/app/comuni/elementi-form/ricerca/ricerca.component';
 import { ModificaPeriziaService } from './modifica-perizia.service';
+import { CaroselloComponent } from '../carosello/carosello.component';
+import { TextareaComponent } from 'src/app/comuni/elementi-form/textarea/textarea.component';
 
 @Component({
   selector: 'ModificaPeriziaModale',
@@ -24,7 +26,8 @@ import { ModificaPeriziaService } from './modifica-perizia.service';
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent, GoogleMap, MapMarker, 
-            MapAdvancedMarker, FintoHrComponent, RicercaComponent],
+            MapAdvancedMarker, FintoHrComponent, RicercaComponent, CaroselloComponent,
+            TextareaComponent],
   standalone: true,
 })
 export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
@@ -87,10 +90,7 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
   }
 
   regexInput = RegexInput;
-  cambioImmagine: boolean = false;
-  caricamentoImmagine: boolean = false;
-  inCaricamentoElimina: boolean = false;
-  vuoleEliminare: boolean = false;
+  indiceFoto: number = 0;
 
   ngAfterViewInit() {
     this.modale.nativeElement.showModal();
@@ -152,15 +152,15 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
         lng: indirizzo.geometry.location.lng()
       }
     }
-    console.log(this.periziaModificata.luogo, indirizzo)
-
   }
+
+  navigator: any = window.navigator;
 
   async Geocode(posto: Record<string, any>){
     const geocoder = new this.google.maps.Geocoder();
 
     return new Promise<any>((resolve, reject) => {
-      geocoder.geocode({ "address" : posto["description"] }, (results: Record<string, any>, status: string) => {
+      geocoder.geocode({ address : posto["description"] }, (results: Record<string, any>, status: string) => {
         if(status == "OK"){
           resolve(results[0]);
         } else {
@@ -170,5 +170,47 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
     })
   }
 
-  prova:any = []
+  caricamentoLocali: boolean = false;
+  CoordinateLocali(){
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const indirizzo = await this.servizio.PrendiIndirizzo({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }) as any;
+
+      if(!indirizzo){
+        this.notifiche.NuovaNotifica({
+          titolo: "Errore",
+          tipo: "errore",
+          descrizione: "Errore nel trovare le coordinate",
+        });
+        return;
+      }
+      
+
+      this.periziaModificata.luogo = {
+        citta: indirizzo.address_components[2].long_name,
+        provincia: indirizzo.address_components[4].short_name,
+        indirizzo: indirizzo.formatted_address.split(",").slice(0, 2).join(",").trim(),
+        coordinate: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+      }
+      
+    });
+  }
+
+  PrendiImmagini(){
+    return structuredClone(this.periziaModificata.immagini);
+  }
+
+  ChiudiModale(){
+    this.modale.nativeElement.classList.add("chiudi");
+    setTimeout(() => {
+      this.modale.nativeElement.close()
+      this.modale.nativeElement.classList.remove("chiudi");
+      this.onChiudi.emit();
+    }, 301);
+  }
 }

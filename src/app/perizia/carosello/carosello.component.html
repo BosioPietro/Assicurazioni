@@ -2,24 +2,28 @@
   class="cont-immagini flex-row"
   [style]="{
     '--tempo-transizione': tempoTransizione + 'ms',
+    'height': altezzaImmagine
   }"
 >
   <div class="immagini">
     @for (img of immagini; track $index) {
       <div
         class="img"
+        [class.quadrate]="quadrate"
         [attr.commento]="img.commento"
         [class.no-transizione]="noTransizione"
+        [class.disabilita-hover]="disabilitaHover"
         [class.selezionata]="$index == indice || grandezza == $index"
         [class.riduci]="inTransizione && indicePrecedente == $index && indicePrecedente < indice"
         [class.allarga]="inTransizione && indicePrecedente == $index && indicePrecedente > indice"
-        [style]="{'--img': 'url(' + img.url + ')'}"
+        [style]="PrendiStile(img)"
       ></div>
     }
   </div>
   @if(immagineTransizione && indicePrecedente < indice){
     <div 
       class="img immagine-transizione"
+      [class.quadrate]="quadrate"
       [class.scompari]="this.inTransizione"
       [style]="{'--img': 'url(' + immagineTransizione.url + ')'}"
     ></div>
@@ -34,8 +38,10 @@
       <ion-icon name="chevron-forward"></ion-icon>
     </button>
   </div>
-  <button class="flex-row al-c vedi-tutte" (click)="onVisualizza.emit()">
-    Vedi Tutte
-    <ion-icon name="arrow-forward"></ion-icon>
-  </button>
+  @if(nascondiTutte == false){
+    <button class="flex-row al-c vedi-tutte" (click)="onVisualizza.emit()">
+      Vedi Tutte
+      <ion-icon name="arrow-forward"></ion-icon>
+    </button>
+  }
 </div>

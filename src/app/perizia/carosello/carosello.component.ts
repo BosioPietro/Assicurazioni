@@ -14,8 +14,26 @@ export class CaroselloComponent {
   @Input()
   immagini!: Immagine[];
 
+  @Input()
+  stileImmagine?: Record<string, any>;
+
+  @Input("altezza-immagine")
+  altezzaImmagine?: string;
+
+  @Input("nascondi-tutte")
+  nascondiTutte?: boolean;
+
+  @Input("quadrate")
+  quadrate?: boolean;
+
+  @Input("disabilita-hover")
+  disabilitaHover?: boolean;
+
   @Output()
   onVisualizza = new EventEmitter<void>();
+
+  @Output()
+  onIndiceCambiato = new EventEmitter<boolean>();
 
   immagineTransizione?: Immagine;
   indice: number = 0;
@@ -24,6 +42,10 @@ export class CaroselloComponent {
   noTransizione: boolean = false;
   grandezza?: number;
   tempoTransizione: number = 1000;
+
+  PrendiStile(img: Immagine){
+    return {'--img': 'url(' + img.url + ')',  ...this.stileImmagine};
+  }
 
   Cambia(segno: boolean){
     if(this.inTransizione)return;

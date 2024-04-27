@@ -149,7 +149,6 @@ export class PeriziaPage implements OnInit, AfterViewInit {
   ApriModifica(){
     this.periziaVisualizzata = this.perizia!;
     this.periziaModicata = structuredClone(this.perizia!);
-
   }
 
 }

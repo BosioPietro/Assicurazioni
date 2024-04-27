@@ -82,7 +82,7 @@ button{
             height: 90%;
         }
 
-        &.selezionata:hover::before{
+        &.selezionata:not(.disabilita-hover):hover::before{
             opacity: 1;
         }
 
@@ -109,6 +109,10 @@ button{
 
         &.no-transizione{
             transition: none !important;
+        }
+
+        &.quadrate{
+            width: 30rem;
         }
     }
 }

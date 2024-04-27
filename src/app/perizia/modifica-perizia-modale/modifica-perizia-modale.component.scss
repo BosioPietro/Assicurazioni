@@ -129,18 +129,8 @@ button{
                 margin-block: 1rem;
             }
 
-            & > .flex-row{
+            & > .flex-row, & > .flex-col{
                 gap: 1rem;
-            }
-    
-            .cambia-immagine{
-                align-items: flex-start;
-                gap: 1rem;
-    
-                p{
-                    color: #AAA;
-                    font-size: .9rem;
-                }
             }
     
             .header-info{
@@ -163,41 +153,20 @@ button{
                     z-index: 2;
                 }
             }
-
-            .elimina-immagine{
-                overflow: clip;
-                border-radius: 100vh;
-                position: relative;
-                aspect-ratio: 1;
-
-                span{
-                    opacity: 0;
-                    pointer-events: none;
-                    transition: opacity .3s cubic-bezier(0.075, 0.82, 0.165, 1);
-                    background-color: #000A;
-                    position: absolute;
-                    inset: 0;
-                    display: grid;
-                    place-items: center;
-                    color: #FFF;
-                    cursor: pointer;
-                    font-size: 2rem;
-                }
-
-                &:hover{
-                    span{
-                        opacity: 1;
-                        pointer-events: unset;
-                    }
-                }
-
-
-            }
     
             .cont-utente{
                 display: flex;
-                flex-flow: row wrap;
+                flex-wrap: wrap;
+                flex-grow: 1;
                 gap: 1rem;
+
+                &:has(Carosello){
+                    min-width: 40rem;
+                    
+                    ComponenteTextarea{
+                        min-height: 10rem;
+                    }
+                }
 
                 google-map{
                     width: 100%;
@@ -264,22 +233,6 @@ button{
             }
         }
     }
-    
-    ImmagineProfileDefault{
-        aspect-ratio: 1;
-        border-radius: 100vh;
-        background-color: #AAA;
-        caret-color: transparent;
-        overflow: hidden;
-    }
-    
-    .immagine-utente{
-        height: 8rem;
-        aspect-ratio: 1;
-        font-size: 4rem;
-        object-fit: cover;
-        border-radius: 100vh;
-    }
 }
 
 
@@ -319,7 +272,7 @@ p-calendar::ng-deep{
         position: relative;
 
         &::before{
-            content: 'Assunto Il';
+            content: 'Effettuata il';
             position: absolute;
             border-radius: .5rem;
             background-color: #FFF;

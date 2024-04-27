@@ -23,4 +23,13 @@ export class ModificaPeriziaService {
   ControllaErrore(obj: Record<string, any> | Errore): obj is Errore {
     return "messaggio" in obj;
   }
+
+  PrendiIndirizzo({ lat, lng }: { lat: number; lng: number }) {
+
+    return new Promise<Record<string, any>[] | string>((resolve, reject) => {
+      this.server.InviaRichiesta(Metodi.GET, "/api/geocode-coordinate", { lat, lng })
+      .then((res: AxiosResponse) => {resolve(res["data"]["results"][0])})
+      .catch((err: AxiosError) => {reject("")})
+  })
+  }
 }

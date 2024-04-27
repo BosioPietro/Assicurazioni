@@ -177,9 +177,24 @@ const PrendiIndirizzi = (app: Express) => {
 
         res.send(dati)
     })
+}
 
+const IndirizzoDaCoordinate = (app: Express) => {
+    app.get("/api/geocode-coordinate", async (req: Request, res: Response) => {
+        const { lat, lng } = req.query;
+
+        const richiesta = `https://maps.googleapis.com/maps/api/geocode/json` +
+                          `?latlng=${lat},${lng}` +
+                          `&key=${env["GOOGLE_PLACES_API_KEY"]}`;
+
+        const risposta = await fetch(richiesta);
+        const dati = await risposta.json();
+
+        res.send(dati)
+    })
 }
 
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
-         PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi};
+         PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
+         IndirizzoDaCoordinate};

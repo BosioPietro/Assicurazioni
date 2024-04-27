@@ -1,80 +1,139 @@
 <dialog #modaleUtente id="dialogoModifica" class="flex-row">
-  <button class="btn-chiudi" >
-    <!-- (click)="ChiudiModale()" -->
+  <button class="btn-chiudi" (click)="ChiudiModale()" >
   <ion-icon name="close" />
   </button>
   <ContenitoreNotifiche />
   <div class="pagina-dialogo">
     <h1>Modifica Perizia</h1>
-    <div class="wrapper flex-col">
-      <div class="info-utente sopra">
-        <div class="flex-row header-info">
-          <h3>Informazioni Luogo</h3>
-        </div>
-        <form class="cont-utente">
-          @if(opzioni){
-            <google-map 
-              [mapId]="'1436edaa72ee3004'"
-              [options]="{
-                'center': periziaModificata.luogo.coordinate,
-                'zoom': 12,
-                'mapTypeControl': false,
-                'fullscreenControl': false,
-                'zoomControlOptions': {
-                  'position': maps.ControlPosition.LEFT_TOP
-                },
-                'streetViewControl': false,
-                'streetViewControlOptions': {
-                  'position': maps.ControlPosition.LEFT_TOP
+    <div class="wrapper flex-row">
+      <div class="flex-col">
+        <div class="info-utente sopra">
+          <div class="flex-row header-info">
+            <h3>Informazioni Luogo</h3>
+          </div>
+          <form class="cont-utente">
+            @if(opzioni){
+              <google-map 
+                [mapId]="'1436edaa72ee3004'"
+                [options]="{
+                  'center': periziaModificata.luogo.coordinate,
+                  'zoom': 12,
+                  'mapTypeControl': false,
+                  'fullscreenControl': false,
+                  'zoomControlOptions': {
+                    'position': maps.ControlPosition.LEFT_TOP
+                  },
+                  'streetViewControl': false,
+                  'streetViewControlOptions': {
+                    'position': maps.ControlPosition.LEFT_TOP
+                  }
+                  }"
+                >
+                <map-advanced-marker 
+                  [position]="periziaModificata.luogo.coordinate"
+                  [content]="opzioni.element"
+                  />
+              </google-map>
+            }
+  
+            <Ricerca 
+              #cercaIndirizzo
+              icona="home" 
+              name="cerca-indirizzo"
+              id-input="cerca-indirizzo"
+              testo-label="Cerca Indirizzo"
+              [caricamento]="ricercaInCaricamento"
+              [opzioni]="opzioniRicerca"
+              (onInput)="CercaIndirizzi($event)"
+              (onSelezionato)="CambiaIndirizzo($event)"
+            />
+            <FintoHr testo="Oppure" /> 
+            @if(navigator["geolocation"]){
+              <button class="accento" (click)="CoordinateLocali()">
+                @if(caricamentoLocali)
+                {
+                  <i class="pi pi-spin pi-spinner"></i>
                 }
-                }"
-              >
-              <map-advanced-marker 
-                [position]="periziaModificata.luogo.coordinate"
-                [content]="opzioni.element"
-                />
-            </google-map>
-          }
-
-          <Ricerca 
-            #cercaIndirizzo
-            icona="home" 
-            name="cerca-indirizzo"
-            id-input="cerca-indirizzo"
-            testo-label="Cerca Indirizzo"
-            [caricamento]="ricercaInCaricamento"
-            [opzioni]="opzioniRicerca"
-            (onInput)="CercaIndirizzi($event)"
-            (onSelezionato)="CambiaIndirizzo($event)"
+                @else {
+                  <ion-icon name="navigate" style="transform: translateX(-.25rem);"></ion-icon>
+                  <span>Usa la mia posizione</span>
+                }
+              </button>
+            }
+          </form>
+        </div>
+        <div class="info-utente sopra">
+          <div class="flex-row header-info">
+            <h3>Informazioni Generali</h3>
+          </div>
+          <form class="cont-utente">
+            <p-calendar 
+              [(ngModel)]="periziaModificata.data" dateFormat="yy-mm-dd"
+              name="lavoro-assuntoIl"
+              [firstDayOfWeek]="1"
+              [iconDisplay]="'input'" 
+              [showIcon]="true"
+            >
+            </p-calendar>
+            <InputText 
+              icona="person" 
+              name="info-operatore"
+              id-input="info-operatore"
+              testo-label="Operatore"
+              [mockup]="true"
+              [valore]="periziaModificata.nomeOperatore || periziaModificata.codOperatore"
+            />
+            <InputText 
+              icona="information-circle" 
+              name="info-id"
+              id-input="info-id"
+              testo-label="Codice Perizia"
+              [mockup]="true"
+              [valore]="periziaModificata.codice + ''"
+            />
+            <!-- (ngModelChange)="ControllaUgualiLavoro()" -->
+          </form>
+        </div>
+      </div>
+      <div class="info-utente sopra flex-col">
+        <div class="flex-row header-info">
+          <h3>Immagini Perizia</h3>
+        </div>
+        <form class="cont-utente flex-col" style="flex-wrap: nowrap;">
+          <Carosello 
+            altezza-immagine="30rem"
+            [quadrate]="true"
+            [nascondi-tutte]="true"
+            [disabilita-hover]="true"
+            [immagini]="periziaModificata.immagini"
           />
-          <FintoHr testo="Oppure" /> 
-          <button class="accento">
-            <ion-icon name="navigate" style="transform: translateX(-.25rem);"></ion-icon>
-            <span>Usa la mia posizione</span>
-          </button>
-          <!-- <Dropdown 
-            testo-label="2FA Abilitato"
-            name="info-2FA"
-            id-input="info-2FA"
-            icona="lock-closed" 
-            [mockup]="!infoLuogo.modifica" 
-            [disabilitato]="!regexInput['telefono'].test(utenteModificato['telefono'])" 
-            [opzioni]="opzioniSiNo"
-            [(ngModel)]="utenteModificato['2FA']"
-            (onChange)="VerificaInputPersonali($event)"
-            (onInput)="infoLuogo.errori['info-2FA']=''; ControllaErroriPersonali()"
-          /> -->
-
+          <ComponenteTextarea
+            name="textarea-commento"
+            [(ngModel)]="periziaModificata.immagini[indiceFoto].commento"
+          />
         </form>
       </div>
     </div>
   </div>
 </dialog>
 
-@if (cambioImmagine) {
+<!-- @if (cambioImmagine) {
   <FileUpload
     [inCaricamento]="caricamentoImmagine"
     (onChiudi)="cambioImmagine = false"
     />
-    <!-- (onConferma)="CaricaImmagine($event)" -->
-}
+    (onConferma)="CaricaImmagine($event)"
+} -->
+
+<!-- <Dropdown 
+  testo-label="2FA Abilitato"
+  name="info-2FA"
+  id-input="info-2FA"
+  icona="lock-closed" 
+  [mockup]="!infoLuogo.modifica" 
+  [disabilitato]="!regexInput['telefono'].test(utenteModificato['telefono'])" 
+  [opzioni]="opzioniSiNo"
+  [(ngModel)]="utenteModificato['2FA']"
+  (onChange)="VerificaInputPersonali($event)"
+  (onInput)="infoLuogo.errori['info-2FA']=''; ControllaErroriPersonali()"
+/> -->
