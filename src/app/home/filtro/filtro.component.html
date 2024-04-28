@@ -33,6 +33,6 @@
     <!-- <app-select [label]="day" [options]="utilityService.elencoGiorni"></app-select>
     <app-select [label]="month" [options]="utilityService.elencoMesi" (optionClicked)="onMonthClicked($event)"></app-select>
     <app-select [label]="year" [options]="utilityService.elencoAnni"></app-select> -->
-    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
+    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="single" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
   </div>
 </div>

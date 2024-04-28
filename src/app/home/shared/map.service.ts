@@ -6,7 +6,7 @@ import { UtilityService } from './utility.service';
 })
 export class MapService {
   markerCoordsObservable = new Subject<any>();
-  pickedDates!:Date[];
+  pickedDates:Date[] = [];
   flagInfoWindow:boolean = false;
   selectedOperators:any []= [];
   markers: google.maps.Marker[] = [];
@@ -25,7 +25,7 @@ export class MapService {
             "giorno": "Lunedì",
             "mese": "Giugno",
             "anno": 2020,
-            "date": "01/06/2020",
+            "date": "6/1/2020",
             "nGiorno": 1,
             "nMese": 6
         },
@@ -42,7 +42,7 @@ export class MapService {
             "giorno": "Giovedì",
             "mese": "Febbraio",
             "anno": 2022,
-            "date": "13/02/2022",
+            "date": "2/13/2022",
             "nGiorno": 13,
             "nMese": 2
         },
@@ -59,7 +59,7 @@ export class MapService {
             "giorno": "Mercoledì",
             "mese": "Aprile",
             "anno": 2023,
-            "date": "21/05/2023",
+            "date": "5/21/2023",
             "nGiorno": 21,
             "nMese": 5
         },
@@ -76,7 +76,7 @@ export class MapService {
             "giorno": "Domenica",
             "mese": "Ottobre",
             "anno": 2024,
-            "date": "28/10/2024",
+            "date": "10/28/2024",
             "nGiorno": 28,
             "nMese": 10
         },
@@ -93,7 +93,7 @@ export class MapService {
             "giorno": "Domenica",
             "mese": "Dicembre",
             "anno": 2022,
-            "date": "22/09/2022",
+            "date": "9/22/2022",
             "nGiorno": 22,
             "nMese": 9
         },
@@ -110,7 +110,7 @@ export class MapService {
             "giorno": "Lunedì",
             "mese": "Novembre",
             "anno": 2023,
-            "date": "13/02/2022",
+            "date": "2/13/2022",
             "nGiorno": 13,
             "nMese": 2
         },
@@ -127,7 +127,7 @@ export class MapService {
             "giorno": "Venerdì",
             "mese": "Agosto",
             "anno": 2023,
-            "date": "15/08/2023",
+            "date": "8/15/2023",
             "nGiorno": 15,
             "nMese": 8
         },
@@ -144,7 +144,7 @@ export class MapService {
             "giorno": "Sabato",
             "mese": "Venerdì",
             "anno": 2024,
-            "date": "11/02/2024",
+            "date": "2/11/2024",
             "nGiorno": 11,
             "nMese": 2
         },
@@ -156,6 +156,7 @@ export class MapService {
     }
 ]
 
+ 
 
   filteredMarkers:any[] = this.markerList;
   
@@ -167,8 +168,16 @@ export class MapService {
     this.filteredMarkers = this.filteredMarkers.filter(marker =>{
       return ((this.selectedOperators.includes(marker.utente.nome) && this.selectedOperators.length != 0) || this.selectedOperators.length == 0);
     })
-    this.filteredMarkers = this.filteredMarkers.filter(marker =>{
-      return ((this.pickedDates[0] == ))
+    this.filteredMarkers = this.filteredMarkers.filter(marker=>{
+      if(this.pickedDates.length == 2 && this.pickedDates[1] == undefined){
+        // return (new Date(marker.data.date) >= new Date(this.pickedDates[0]));
+        return true;
+      }else if(this.pickedDates.length == 2 && this.pickedDates[1] != undefined){
+        return (new Date(marker.data.date) >= new Date(this.pickedDates[0]) && new Date(marker.data.date) <= new Date(this.pickedDates[1]));
+      }else if(this.pickedDates.length == 1){
+        return (new Date(marker.data.date) >= new Date(this.pickedDates[0]));
+      }
+      else return true;
     })
   }
 

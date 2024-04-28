@@ -26,7 +26,10 @@ export class FiltroComponent  implements OnInit {
   ngOnInit() {}
 
   datePicked(){
-    this.mapService.pickedDates = this.rangeDates;
+    this.mapService.pickedDates = Array.isArray(this.rangeDates) ? this.rangeDates : [this.rangeDates];
+    console.log(this.mapService.pickedDates);
+    console.log(this.rangeDates);
+    this.mapService.creaMappa();
     if(this.rangeDates.length == 2){
       
     }else{
