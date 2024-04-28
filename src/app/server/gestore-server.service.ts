@@ -50,6 +50,12 @@ axios.interceptors["request"].use((config) => {
 
 axios.interceptors["response"].use((response) => {
   const token = response.headers["authorization"];
-  if(token) localStorage["token"] = token;
+  
+  if(token)
+  {
+    localStorage["token"] = token
+  }
+  else localStorage.removeItem("token")
+
   return response;
 });

@@ -23,7 +23,11 @@ textarea{
     border-radius: var(--br);
     padding: var(--padding);
     flex-grow: 1;
-    transition: border-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1), outline-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition: border-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1), outline-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1), opacity .3s  cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &:disabled{
+        opacity: .5;
+    }
 }
 
 textarea:focus{

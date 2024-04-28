@@ -4,6 +4,7 @@ dialog{
     border-radius: 1rem;
     padding: 2rem;
     animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    z-index: 1000;
 
     &.chiudi{
         animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;

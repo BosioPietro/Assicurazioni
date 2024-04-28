@@ -105,5 +105,9 @@ p-calendar::ng-deep{
             background-color: #000;
         }
     }
+
+    .p-calendar::before{
+        color: #000;
+    }
 }
 

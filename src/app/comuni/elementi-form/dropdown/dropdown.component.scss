@@ -27,6 +27,11 @@
     ion-icon{
         color: color-mix(in srgb, var(--colore-testo) 50%, transparent 50%);
     }
+
+    .valore{
+        --colore-testo: #4b5563;
+        color: var(--colore-testo);
+    }
 }
 
 .cont{

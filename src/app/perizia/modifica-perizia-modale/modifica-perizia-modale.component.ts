@@ -14,10 +14,11 @@ import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.co
 import { Perizia } from '../perizia.model';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
-import { RicercaComponent } from 'src/app/comuni/elementi-form/ricerca/ricerca.component';
+import { Errore, RicercaComponent } from 'src/app/comuni/elementi-form/ricerca/ricerca.component';
 import { ModificaPeriziaService } from './modifica-perizia.service';
 import { CaroselloComponent } from '../carosello/carosello.component';
 import { TextareaComponent } from 'src/app/comuni/elementi-form/textarea/textarea.component';
+import { DataInStringa } from 'src/app/utils/funzioni';
 
 @Component({
   selector: 'ModificaPeriziaModale',
@@ -42,6 +43,9 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
 
   @Input()
   periziaModificata!: Perizia;
+
+  @Input()
+  operatori!: Record<string, any>[];
 
   @Output()
   onPeriziaModificata = new EventEmitter<Perizia>();
@@ -77,15 +81,17 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
   }
 
   infoLuogo = {
-    errori: {
-      "info-coordinate": "",
-      "info-provincia": "",
-      "info-indirizzo":"",
-      "info-citta": ""
-    },
     modifica: false,
-    uguali: true,
-    valide: true,
+    caricamento: false
+  }
+
+  infoImmagini = {
+    modifica: false,
+    caricamento: false
+  }
+
+  infoGenerali = {
+    modifica: false,
     caricamento: false
   }
 
@@ -214,23 +220,166 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
     }, 301);
   }
 
-  ResettaInfoLuogo(){
-    this.infoLuogo.modifica = false;
-    this.periziaModificata.luogo = structuredClone(this.periziaVisualizzata.luogo);
+  ResettaInfo(mod: "luogo"|"immagini"|"generali"){
+    switch(mod){
+      case "luogo":
+        this.periziaModificata.luogo = structuredClone(this.periziaVisualizzata.luogo);
+        this.infoLuogo.modifica = false;
+        break;
+      case "immagini":
+        this.periziaModificata.immagini = structuredClone(this.periziaVisualizzata.immagini);
+        this.infoImmagini.modifica = false;
+        break;
+      case "generali":
+        this.periziaModificata = Object.assign(structuredClone(this.periziaModificata), {
+          codOperatore: this.periziaModificata.codOperatore,
+          data: this.periziaModificata.data,
+        });
+        this.infoGenerali.modifica = false;
+        break;
+    }
   }
 
-  AggiornaUtente(mod: "luogo"|"immagini"|"generali"){
-    if(!this.infoLuogo.valide)return;
+  async AggiornaUtente(mod: "luogo"|"immagini"|"generali"){
 
     switch(mod){
       case "luogo":
-        this.infoLuogo.modifica = false;
-        this.servizio.ModificaPerizia(this.periziaModificata);
-        this.periziaVisualizzata.luogo = structuredClone(this.periziaModificata.luogo);   
-        this.infoLuogo.modifica = true;
+        {
+          this.infoLuogo.caricamento = true;
+
+          const nuovaPerizia = Object.assign(structuredClone(this.periziaVisualizzata), { luogo: structuredClone(this.periziaModificata.luogo) });
+          const res = await this.servizio.ModificaPerizia(nuovaPerizia);
+
+          if(!this.servizio.ControllaErrore(res))
+          {
+            this.notifiche.NuovaNotifica({
+              titolo: "Perizia modificata",
+              descrizione: "La perizia è stata modificata con successo",
+              tipo: "info"
+            })
+          }
+          else this.Errore(res);
+          
+
+          this.periziaVisualizzata = nuovaPerizia;   
+          
+          this.infoLuogo.caricamento = false;
+        }
+        break;
+      case "immagini":
+        {
+          this.infoImmagini.caricamento = true;
+
+
+          const nuovaPerizia = Object.assign(structuredClone(this.periziaVisualizzata), { immagini: structuredClone(this.periziaModificata.immagini) });
+          const res = await this.servizio.ModificaPerizia(nuovaPerizia);
+          
+          if(!this.servizio.ControllaErrore(res))
+            {
+              this.notifiche.NuovaNotifica({
+                titolo: "Perizia modificata",
+                descrizione: "La perizia è stata modificata con successo",
+                tipo: "info"
+              })
+            }
+            else this.Errore(res);
+
+          this.periziaVisualizzata = nuovaPerizia;
+          this.infoImmagini.caricamento = false;
+        }
+        break;
+      case "generali":
+        {
+          this.infoGenerali.caricamento = true;
+
+          const operatore = this.operatori.find((o: Record<string, any>) => o["username"] == this.periziaModificata.codOperatore)!;
+
+          const nuovaPerizia = Object.assign(structuredClone(this.periziaVisualizzata), {
+            codOperatore: this.periziaModificata.codOperatore,
+            data: typeof this.periziaModificata.data == "string" ? this.periziaModificata.data : DataInStringa(this.periziaModificata.data),
+            nomeOperatore: `${operatore["cognome"]} ${operatore["nome"]}`
+          });
+
+          const res = await this.servizio.ModificaPerizia(nuovaPerizia);
+          if(!this.servizio.ControllaErrore(res))
+            {
+              this.notifiche.NuovaNotifica({
+                titolo: "Perizia modificata",
+                descrizione: "La perizia è stata modificata con successo",
+                tipo: "info"
+              })
+            }
+            else this.Errore(res);
+          this.infoGenerali.caricamento = false;
+          this.periziaVisualizzata = nuovaPerizia;
+        }
         break;
     }
-      this.onPeriziaModificata.emit(this.periziaModificata);
-    
+
+    this.onPeriziaModificata.emit(structuredClone(this.periziaVisualizzata));
+  }
+
+  Errore(res: Errore){
+    this.notifiche.NuovaNotifica({
+      titolo: "Errore",
+      descrizione: res.messaggio || "Qualcosa è andato storto",
+      tipo: "errore"
+    })
+  }
+
+  vuoleEliminareImmagine: boolean = false;
+  CancellaImmagine(m: HTMLDialogElement){
+
+    this.periziaModificata.immagini.splice(this.indiceFoto, 1);
+
+    this.ChiudiModaleElimina(m);
+  }
+
+  ChiudiModaleElimina(m: HTMLDialogElement){
+    m.classList.add("chiudi");
+    setTimeout(() => {
+      m.close()
+      m.classList.remove("chiudi");
+      this.vuoleEliminareImmagine = false;
+    }, 301);
+  }
+
+  vuoleAggiungereImmagine: boolean = false;
+  inCaricamentoAggiungiImmagine: boolean = false;
+  CaricaImmagine(e: File){
+    this.inCaricamentoAggiungiImmagine = true;
+
+    this.servizio.CaricaImmaginePerizia(e)
+    .then((res: any) => {
+      if(isNaN(res)){
+        this.inCaricamentoAggiungiImmagine = false;
+        this.vuoleAggiungereImmagine = false;
+
+        const url = res["secure_url"];
+        this.periziaModificata.immagini.unshift({ url, commento: "" });
+      }
+      else{
+        this.notifiche.NuovaNotifica({
+          titolo: "Qualcosa è andato storto",
+          descrizione: "Non è stato possibile completare l'operazione richiesta",
+          tipo: "errore"
+        })
+      }
+    })
+  }
+
+  ChiudiModaleUpload(m: HTMLDialogElement){
+    m.classList.add("chiudi");
+    setTimeout(() => {
+      m.close()
+      m.classList.remove("chiudi");
+      this.vuoleAggiungereImmagine = false;
+    }, 301);
+  }
+
+  PrendiOpzioniOperatori(): Opzione[]{
+    return this.operatori.map((o: Record<string, any>) => {
+      return { testo: `${o["cognome"]} ${o["nome"]}`, valore: o["username"] }
+    });
   }
 }

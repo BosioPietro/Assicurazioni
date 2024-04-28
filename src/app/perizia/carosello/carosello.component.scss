@@ -44,6 +44,22 @@ button{
     flex-grow: 1;
     overflow-x: hidden;
 
+    &.no-immagini{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h1{
+            font-weight: 500;
+            color: var(--accento);
+        }
+
+        p{
+            color: #AAA;
+        }
+    }
+
     .immagini{
         position: absolute;
         top: 0;
@@ -112,7 +128,7 @@ button{
         }
 
         &.quadrate{
-            width: 30rem;
+            width: max(25vw, 25rem);
         }
     }
 }
@@ -155,7 +171,7 @@ button{
         transition: all .3s  cubic-bezier(0.22, 0.61, 0.36, 1);
     }
 
-    button:hover{
+    button:not(:disabled):hover{
         color: #FFF;
         background-color: var(--accento);
     }

@@ -40,4 +40,15 @@ export class ModificaPeriziaService {
       .catch((err: AxiosError) => {reject({messaggio: err.message, codice: err.response?.status || 500})})
     })
   }
+
+  async CaricaImmaginePerizia(immagine: File) {
+    return new Promise<{url: string} | number>((resolve) => {
+        const formData = new FormData();
+        formData.append("immagine", immagine);
+
+        this.server.InviaRichiesta(Metodi.POST, "/api/carica-immagine-perizia", formData)
+        .then((e) => resolve(e.data))
+        .catch((err: AxiosError) => resolve(err.status!));
+    });
+}
 }

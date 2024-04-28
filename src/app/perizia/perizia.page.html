@@ -77,8 +77,8 @@
 </div>
   @if(visualizzaImmagini){
     <DialogoImmagini
-      [style]="{'position':'absolute'}"
       #immagini
+      [style]="{'position':'absolute'}"
       [immagini]="perizia.immagini"
       (onChiudi)="ChiudiImmagini()"
     />
@@ -102,8 +102,10 @@
     <ModificaPeriziaModale 
       [style]="{'position':'absolute'}"
       [periziaVisualizzata]="periziaVisualizzata"
-      [periziaModificata]="periziaVisualizzata"
+      [periziaModificata]="periziaModicata"
+      [operatori]="operatori"
       (onChiudi)="periziaVisualizzata = undefined; periziaModicata = undefined"
+      (onPeriziaModificata)="perizia = $event"
     />
   }
 }

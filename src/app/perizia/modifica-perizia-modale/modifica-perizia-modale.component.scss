@@ -69,6 +69,7 @@ button{
     // width: calc(100% - 8rem);
     height: calc(100dvh - 8rem);
     background-color: #f5f6f8;
+    overflow: visible;
 
     .row-bottoni{
         gap: 1rem;
@@ -170,6 +171,16 @@ button{
                     }
                 }
 
+                &.generali{
+                    InputText::ng-deep{
+                        --colore-testo: #4b5563;
+                    }
+
+                    p-calendar{
+                        flex-grow: 1;
+                    }
+                }
+
                 google-map{
                     width: 100%;
                     border: 1.5px solid #AAA;
@@ -266,3 +277,4 @@ google-map::ng-deep{
         height: 100% !important;
     }
 }
+

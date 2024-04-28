@@ -29,6 +29,18 @@ export class CaroselloComponent {
   @Input("disabilita-hover")
   disabilitaHover?: boolean;
 
+  @Input("controlli-immagine")
+  controlliImmagine?: boolean;
+
+  @Input()
+  disabilitato: boolean = false;
+
+  @Output()
+  onAggiungi = new EventEmitter<void>();
+
+  @Output()
+  onRimuovi = new EventEmitter<void>();
+
   @Output()
   onVisualizza = new EventEmitter<void>();
 

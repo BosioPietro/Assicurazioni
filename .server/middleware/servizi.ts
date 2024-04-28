@@ -56,7 +56,7 @@ const AggiornaUtente = (app: Express, driver: MongoDriver) => {
 }
 
 const CaricaImmagineProfilo = (app: Express, driver: MongoDriver) => {
-    app.post("/api/carica-immagine", async (req: Request, res: Response) => {
+    app.post("/api/carica-immagine-profilo", async (req: Request, res: Response) => {
         const { username } = req.body;
         const immagine: File = (req as any).files["immagine"];
 
@@ -145,6 +145,18 @@ const PrendiOperatore = (app: Express, driver: MongoDriver) => {
     })
 }
 
+const PrendiOperatori = (app: Express, driver: MongoDriver) => {
+    app.get("/api/operatori", async (req: Request, res: Response) => {
+        await driver.SettaCollezione("utenti");
+
+        const operatori = await driver.PrendiMolti({ ruolo : { $in : [new RegExp("admin", "i"), new RegExp("dipendente", "i")]} });
+        if(driver.Errore(operatori, res)) return;
+
+        RispondiToken(res, DecifraToken(req.headers.authorization!), operatori)
+    })
+
+}
+
 const EliminaPerizia = (app: Express, driver: MongoDriver) => {
     app.delete("/api/perizia/:idPerizia", async (req: Request, res: Response) => {
         const { idPerizia } = req["params"];
@@ -203,6 +215,9 @@ const ModificaPerizia = (app: Express, driver: MongoDriver) => {
 
         await driver.SettaCollezione("perizie");
 
+        delete perizia["_id"];
+        delete perizia["nomeOperatore"];
+
         const aggiornata = await driver.Replace({ codice : perizia.codice }, perizia);
         if(driver.Errore(aggiornata, res)) return;
 
@@ -210,7 +225,23 @@ const ModificaPerizia = (app: Express, driver: MongoDriver) => {
     })
 }
 
+const CaricaImmaginePerizia = (app: Express) => {
+    app.post("/api/carica-immagine-perizia", async (req: Request, res: Response) => {
+        const immagine: File = (req as any).files["immagine"];
+
+        const caricata = await CaricaImmagine(immagine);
+
+        if(caricata["errore"]){
+            res.status(500).send(caricata["errore"]);
+            return;
+        }
+        else res.send(caricata)
+    })
+
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
-         IndirizzoDaCoordinate, ModificaPerizia};
+         IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
+         PrendiOperatori};

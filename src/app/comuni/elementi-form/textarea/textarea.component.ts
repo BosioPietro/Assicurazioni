@@ -15,6 +15,9 @@ export class TextareaComponent implements ControlValueAccessor{
   @Input("name")
   public name?: string;
 
+  @Input()
+  disabilitata: boolean = false;
+
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
 
@@ -36,9 +39,8 @@ export class TextareaComponent implements ControlValueAccessor{
     }
   }
 
-  writeValue(value: string): void {
+  writeValue(value?: string): void {
     this.value = value ?? "";
-    
     this.textarea.nativeElement.value = this.value;
   }
 
@@ -53,7 +55,8 @@ export class TextareaComponent implements ControlValueAccessor{
     this.onTouched = fn;
   }
 
-  public onValueChange(value?: string) {}
+  public onValueChange(value?: string) {
+  }
   public onTouched() {}
 
   public Input(e: Event){

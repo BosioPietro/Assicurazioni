@@ -46,6 +46,7 @@ export class PeriziaPage implements OnInit, AfterViewInit {
 
   vuoleEliminare: boolean = false;
   inCaricamentoElimina: boolean = false;
+  operatori: Record<string, any>[] = [];
 
   ngAfterViewInit(): void {
     this.mostraHtml = true;
@@ -70,8 +71,12 @@ export class PeriziaPage implements OnInit, AfterViewInit {
       return;
     }
 
-    this.periziaService.PrendiOperatore(this.perizia!.codOperatore)
-    .then((o) => this.perizia!.nomeOperatore = o)
+    this.periziaService.PrendiOperatori()
+    .then((o) => {
+      this.operatori = o;
+      const operatorePerizia = this.operatori.find((o) => o["username"] == this.perizia!.codOperatore)!;
+      this.perizia!.nomeOperatore = `${operatorePerizia["cognome"]} ${operatorePerizia["nome"]}`;
+    })
     .catch(() =>{
         this.notifiche.NuovaNotifica({
           titolo: "Qualcosa è andato storto",

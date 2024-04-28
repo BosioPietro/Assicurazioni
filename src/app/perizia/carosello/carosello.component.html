@@ -1,5 +1,6 @@
 <div 
   class="cont-immagini flex-row"
+  [class.no-immagini]="!immagini.length"
   [style]="{
     '--tempo-transizione': tempoTransizione + 'ms',
     'height': altezzaImmagine
@@ -28,6 +29,11 @@
       [style]="{'--img': 'url(' + immagineTransizione.url + ')'}"
     ></div>
   }
+
+  @if(!immagini.length){
+    <h1>Nessuna immagine presente</h1>
+    <p>Tocca "+" per aggiungerne una</p>
+  }
 </div>
 <div class="cont-controlli flex-row al-c">
   <div class="row-bottoni flex-row">
@@ -43,5 +49,15 @@
       Vedi Tutte
       <ion-icon name="arrow-forward"></ion-icon>
     </button>
+  }
+  @else if(controlliImmagine){
+    <div class="row-bottoni flex-row">
+      <button (click)="onRimuovi.emit()" [disabled]="disabilitato">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      <button class="accento" (click)="onAggiungi.emit()" [disabled]="disabilitato">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </div>
   }
 </div>

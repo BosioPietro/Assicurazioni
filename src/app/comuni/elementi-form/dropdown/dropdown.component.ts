@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, Optional, Self } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, Optional, Self, ViewChild } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import Opzione from './opzione.model';
 import { NgControl } from '@angular/forms';
@@ -35,6 +35,9 @@ export class DropdownComponent{
   @Input("puo-deselezionare")
   puoDeselezionare: boolean = false;
 
+  @ViewChild("contopzioni")
+  contOpzioni!: ElementRef<HTMLElement>;
+
   public opzioneSelezionata?: Opzione;
   public aperto: boolean = false;
   public sopra: boolean = false;
@@ -56,6 +59,17 @@ export class DropdownComponent{
   
     this.opzioneSelezionata = this.opzioni.find((o) => o.valore == value.toString())
     this.value = this.opzioneSelezionata?.valore;
+
+    const opzioni = Array.from(this.contOpzioni.nativeElement.children);
+
+    opzioni.find((op) => {
+      const input = op.querySelector("input")!;
+      if(input.value == value.toString()){
+        op.classList.add("selezionata");
+        return true;
+      }
+      return false;
+    })?.classList.add("selezionata")
   }
 
   /**
@@ -101,8 +115,16 @@ export class DropdownComponent{
     else this.sopra = true;
   }
 
+  DeselezionaAltre(opz: HTMLElement){
+    const opzioni = Array.from(this.contOpzioni.nativeElement.children);
+
+    opzioni.forEach((op) => {
+      if(op != opz) op.classList.remove("selezionata")
+    });
+  }
+
   Seleziona(e: Event){
-    const opzione = e.target as HTMLElement;
+    const opzione = e.currentTarget as HTMLElement;
     const input = opzione.querySelector("input")!
 
     if(opzione.classList.contains("selezionata") && this.puoDeselezionare)
@@ -112,7 +134,10 @@ export class DropdownComponent{
       this.value = undefined;
       return;
     }
-    else opzione.classList.add("selezionata") 
+    else{
+      this.DeselezionaAltre(opzione);
+      opzione.classList.add("selezionata") 
+    }
     
     this.opzioneSelezionata = this.opzioni.find((o) => o.valore == input.value);
     this.value = this.opzioneSelezionata?.valore;

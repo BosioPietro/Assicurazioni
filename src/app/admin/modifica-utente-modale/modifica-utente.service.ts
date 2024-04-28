@@ -35,7 +35,7 @@ export class ModificaUtenteService {
 
             console.log(immagine)
 
-            this.server.InviaRichiesta(Metodi.POST, "/api/carica-immagine", formData)
+            this.server.InviaRichiesta(Metodi.POST, "/api/carica-immagine-profilo", formData)
             .then((e) => resolve(e.data))
             .catch((err: AxiosError) => resolve(err.status!));
         });

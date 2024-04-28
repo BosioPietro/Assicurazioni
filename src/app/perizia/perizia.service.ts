@@ -20,10 +20,10 @@ export class PeriziaService {
     });
   }
 
-  PrendiOperatore(codOperatore: string) {
-    return new Promise<string>((resolve, reject) => {
-      this.server.InviaRichiesta(Metodi.GET, `/api/operatore/${codOperatore}`)
-      .then((res: AxiosResponse) => resolve(res["data"]["nome"]))
+  PrendiOperatori() {
+    return new Promise<Record<string, any>[]>((resolve, reject) => {
+      this.server.InviaRichiesta(Metodi.GET, `/api/operatori`)
+      .then((res: AxiosResponse) => resolve(res["data"]))
       .catch(() => reject());
     });
   }

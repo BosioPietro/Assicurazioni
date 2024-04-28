@@ -309,9 +309,4 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
 
     this.vuoleEliminare = false;
   }
-
-  ResettaPassword(){
-    
-  }
-
 }
