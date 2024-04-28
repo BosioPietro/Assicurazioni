@@ -1,0 +1,87 @@
+google-map::ng-deep{
+
+    & > div > div > div.gm-style > div:nth-child(16) > div,
+    & > div > div > div.gm-style > div:nth-child(14) > div{
+        display: none !important;
+
+    }
+
+    & > div > div > div.gm-style > div:nth-child(7) > div > div > div{
+        border-radius: .25rem !important;
+        overflow: clip !important;
+
+        button{
+            position: relative;
+
+            img{
+                visibility: hidden !important;
+            }
+
+            &::before{
+                content: '';
+                position: absolute;
+                inset: 0;
+                scale: .75;
+            }
+            
+            &:nth-child(1)::before{
+                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512"><path fill="%23245c73" d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" ></path></svg>');
+                transform: rotate(45deg);
+            }
+
+            &:nth-child(3)::before{
+                transform: rotateX(82deg);
+                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512"><path fill="%23245c73" d="M392 432H120a40 40 0 0 1-40-40V120a40 40 0 0 1 40-40h272a40 40 0 0 1 40 40v272a40 40 0 0 1-40 40z"/></svg>');
+            }
+        }
+    }
+
+    & > div > div > div.gm-style{
+        font: inherit !important;
+    }
+
+    & > div > div > div.gm-style > div:nth-child(3){
+        border-color: transparent !important;
+    }
+
+    & > div > div > div.gm-style > div:nth-child(7) > div > button{
+        border-radius: .25rem !important;
+        overflow: clip !important;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+
+        & > div{
+            filter: hue-rotate(157deg) brightness(.57) saturate(.88) contrast(1.2);
+        }
+    }
+
+    & > div > div > div.gm-style > div:nth-child(4) > div{
+        border-radius: .25rem !important;
+        overflow: clip !important;
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+
+        & > div:nth-child(1) > button{
+            font-size: 0 !important;
+
+            &::before{
+                content: 'Mappa';
+                font-size: 1rem !important;
+            }
+        }
+        
+        & > div > button{
+            color: var(--accento) !important;
+            font-family: inherit !important;
+            font-weight: 500 !important;
+            transition: color .3s cubic-bezier(0.22, 0.61, 0.36, 1), background-color .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+            &[aria-checked="true"]{
+                color: #FFF !important;
+                background-color: var(--accento) !important;
+            }
+        }
+    }
+
+    & > div > div > div.gm-style > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(3) > img{
+        filter: hue-rotate(157deg) brightness(.57) saturate(.88) contrast(1.2);
+    }
+}

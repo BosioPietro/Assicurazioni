@@ -5,8 +5,7 @@
         [mapId]="'1436edaa72ee3004'"
         [options]="{
           'center': perizia.luogo.coordinate,
-          'zoom': 12,
-          'mapTypeControl': false,
+          'zoom': 15,
           'fullscreenControl': false,
           'zoomControlOptions': {
             'position': maps.ControlPosition.LEFT_TOP
@@ -15,9 +14,9 @@
           'streetViewControlOptions': {
             'position': maps.ControlPosition.LEFT_TOP
           }
-          }"
-        >
-        <map-advanced-marker 
+        }"
+      >
+      <map-advanced-marker 
           [position]="perizia.luogo.coordinate"
           [content]="opzioni.element"
           />

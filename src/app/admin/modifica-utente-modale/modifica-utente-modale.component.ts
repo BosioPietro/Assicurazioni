@@ -17,7 +17,7 @@ import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.co
 @Component({
   selector: 'ModificaUtenteModale',
   templateUrl: './modifica-utente-modale.component.html',
-  styleUrls: ['./modifica-utente-modale.component.scss'],
+  styleUrls: ['./modifica-utente-modale.component.scss', '../../comuni/elementi-form/stile-calendario.scss'],
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent],

@@ -22,7 +22,7 @@ import { TextareaComponent } from 'src/app/comuni/elementi-form/textarea/textare
 @Component({
   selector: 'ModificaPeriziaModale',
   templateUrl: './modifica-perizia-modale.component.html',
-  styleUrls: ['./modifica-perizia-modale.component.scss'],
+  styleUrls: ['./modifica-perizia-modale.component.scss','../../comuni/stile-mappa.scss', '../../comuni/elementi-form/stile-calendario.scss'],
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent, GoogleMap, MapMarker, 
@@ -212,5 +212,25 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
       this.modale.nativeElement.classList.remove("chiudi");
       this.onChiudi.emit();
     }, 301);
+  }
+
+  ResettaInfoLuogo(){
+    this.infoLuogo.modifica = false;
+    this.periziaModificata.luogo = structuredClone(this.periziaVisualizzata.luogo);
+  }
+
+  AggiornaUtente(mod: "luogo"|"immagini"|"generali"){
+    if(!this.infoLuogo.valide)return;
+
+    switch(mod){
+      case "luogo":
+        this.infoLuogo.modifica = false;
+        this.servizio.ModificaPerizia(this.periziaModificata);
+        this.periziaVisualizzata.luogo = structuredClone(this.periziaModificata.luogo);   
+        this.infoLuogo.modifica = true;
+        break;
+    }
+      this.onPeriziaModificata.emit(this.periziaModificata);
+    
   }
 }

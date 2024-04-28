@@ -147,4 +147,46 @@ ion-icon{
     25%, 75% { transform: translateX(-5px); }
     50% { transform: translateX(5px); }
 }
-  
+
+:host.abilitato{
+    --colore-normale: #CCC;
+    --br: .5rem;
+
+    label{
+        color: var(--colore-normale);
+    }
+
+    .cont{
+        --colore-testo: #000;
+        --colore-normale: #000;
+
+        label{
+            color: unset;
+        }
+    }
+
+    .cont.errore{
+        --colore-testo: #eb4e4e;
+        --colore-normale: #eb4e4e;
+
+        label{
+            color: var(--colore-normale);
+        }
+    }
+
+    .cont:has(input:focus){
+        outline-color: color-mix(in srgb, 50% var(--accento), transparent 50%);
+    }
+
+    &:hover{
+        border-color: var(--accento);
+
+        ion-icon:not(.disabilitato){
+            color: var(--accento);
+        }
+    
+        hr:not(.disabilitato){
+            border-color: var(--accento);        
+        }
+    }
+}

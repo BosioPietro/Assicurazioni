@@ -1,0 +1,109 @@
+p-calendar::ng-deep{
+    --colore-testo: #4b5563;
+
+    &.mockup::ng-deep{
+        pointer-events: none;
+        caret-color: transparent;
+    }
+
+    &:not(.mockup){
+        .p-inputtext:enabled:hover {
+            border-color: var(--accento);
+        }
+    }
+    
+    & > *{
+        width: 100%;
+    }
+
+    .p-inputtext{
+        border-radius: .5rem;
+        padding: .5rem;
+        opacity: 1 !important;
+        cursor: pointer;
+        border-color: #000;
+
+        &:disabled{
+            cursor: not-allowed !important;
+            border-color: #CCC !important;
+        }
+    }
+
+    .p-calendar{
+        position: relative;
+
+        &::before{
+            content: 'Effettuata il';
+            position: absolute;
+            border-radius: .5rem;
+            background-color: #FFF;
+            padding: 0 .5rem;
+            top: -.5rem;
+            left: 2rem;
+            color: #CCC;
+            font-size: .75rem;
+        }
+
+    }
+
+    .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
+        box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accento) 40%, transparent 40%);
+        border-color: var(--accento) ;
+    }
+
+    .p-datepicker table td > span.p-highlight {
+        color: var(--accento);
+        background: color-mix(in srgb, var(--accento) 10%, transparent 90%);
+    }
+
+    .p-datepicker{
+        translate: 0 .5rem;
+        filter: drop-shadow(0 0 1rem rgba(0, 0, 0, .1));
+        border-radius: .5rem;
+    }
+
+    .p-input-icon-right input{
+        padding-left: 2.5rem;
+    }
+
+    .p-input-icon-right > .p-icon-wrapper{
+        right: initial;
+        left: .75rem;
+        padding-right: .5rem;
+        border-right: 1px solid #CCC;
+
+        svg{
+            display: none;
+        }
+
+        &::before{
+            content: '';
+            width: 1rem;
+            height: 1rem;
+            background-color: var(--colore-testo);
+            mask: url('/assets/icon/calendar.svg') no-repeat 50% 50%;
+            mask-size: cover;
+        }
+    }
+}
+
+.disabilitato::ng-deep{
+    .p-inputtext{
+        color: var(--colore-testo);
+    }
+    
+    .p-input-icon-right > .p-icon-wrapper{
+        &::before{
+            background-color: color-mix(in srgb, var(--colore-testo) 50%, transparent 50%);
+        }
+    }
+}
+
+.abilitato::ng-deep{
+    .p-input-icon-right > .p-icon-wrapper{
+        &::before{
+            background-color: #000;
+        }
+    }
+}
+

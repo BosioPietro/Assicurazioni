@@ -122,6 +122,7 @@ button{
             background-color: #FFF;
             padding: 2rem;
             gap: 1rem;
+            flex-grow: 1;
             border-radius: 1rem;
             
             hr{
@@ -135,7 +136,6 @@ button{
     
             .header-info{
                 justify-content: space-between;
-                margin-bottom: 1rem;
                 gap: 1rem;
             
                 h3{
@@ -148,9 +148,11 @@ button{
                 padding: 1rem;
                 border-radius: 1rem;
                 border: 1px solid #CCC;
+                gap: 1rem;
 
                 &.sopra{
                     z-index: 2;
+                    flex-grow: 1;
                 }
             }
     
@@ -235,94 +237,6 @@ button{
     }
 }
 
-
-p-calendar::ng-deep{
-    &.mockup::ng-deep{
-        pointer-events: none;
-        caret-color: transparent;
-    }
-
-    &:not(.mockup){
-        .p-inputtext:enabled:hover {
-            border-color: var(--accento);
-        }
-    }
-
-    min-width: 49%;
-    flex-grow: 1;
-    
-    & > *{
-        width: 100%;
-    }
-
-    .p-inputtext{
-        border-radius: .5rem;
-        padding: .5rem;
-        opacity: 1 !important;
-        cursor: pointer;
-        border-color: #000;
-
-        &:disabled{
-            cursor: not-allowed !important;
-            border-color: #CCC !important;
-        }
-    }
-
-    .p-calendar{
-        position: relative;
-
-        &::before{
-            content: 'Effettuata il';
-            position: absolute;
-            border-radius: .5rem;
-            background-color: #FFF;
-            padding: 0 .5rem;
-            top: -.5rem;
-            left: 2rem;
-            color: #CCC;
-            font-size: .75rem;
-        }
-
-    }
-
-    .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {
-        box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accento) 40%, transparent 40%);
-        border-color: var(--accento) ;
-    }
-
-    .p-datepicker table td > span.p-highlight {
-        color: var(--accento);
-        background: color-mix(in srgb, var(--accento) 10%, transparent 90%);
-    }
-
-    .p-datepicker{
-        translate: 0 .5rem;
-        filter: drop-shadow(0 0 1rem rgba(0, 0, 0, .1));
-        border-radius: .5rem;
-    }
-
-    .p-input-icon-right input{
-        padding-left: 2.5rem;
-    }
-
-    .p-input-icon-right > .p-icon-wrapper{
-        right: initial;
-        left: .75rem;
-        padding-right: .5rem;
-        border-right: 1px solid #CCC;
-
-        svg{
-            display: none;
-        }
-
-        &::before{
-            content: url('/assets/icon/calendar.svg');
-            width: 1rem;
-            height: 1rem;
-        }
-    }
-}
-
 button:not(.caricamento){
     i{
         display: none;
@@ -345,57 +259,10 @@ button:not(.caricamento){
 
 //stili mappa brutti brutti
 google-map::ng-deep{
+    flex-grow: 1;
 
     & > div{
         width: 100% !important;
-    }
-
-    & > div > div > div.gm-style > div:nth-child(16) > div,
-    div > div > div.gm-style > div:nth-child(14) > div{
-        display: none !important;
-
-    }
-
-    div > div > div.gm-style > div:nth-child(7) > div > div > div{
-        border-radius: .25rem !important;
-        overflow: clip !important;
-
-        button{
-            position: relative;
-
-            img{
-                visibility: hidden !important;
-            }
-
-            &::before{
-                content: '';
-                position: absolute;
-                inset: 0;
-                scale: .75;
-            }
-            
-            &:nth-child(1)::before{
-                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512"><path fill="%23245c73" d="M289.94 256l95-95A24 24 0 00351 127l-95 95-95-95a24 24 0 00-34 34l95 95-95 95a24 24 0 1034 34l95-95 95 95a24 24 0 0034-34z" ></path></svg>');
-                transform: rotate(45deg);
-            }
-
-            &:nth-child(3)::before{
-                transform: rotateX(82deg);
-                background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512"><path fill="%23245c73" d="M392 432H120a40 40 0 0 1-40-40V120a40 40 0 0 1 40-40h272a40 40 0 0 1 40 40v272a40 40 0 0 1-40 40z"/></svg>');
-            }
-        }
-    }
-
-    div > div > div.gm-style > div:nth-child(7) > div > button{
-        border-radius: .25rem !important;
-        overflow: clip !important;
-
-        & > div{
-            filter: hue-rotate(157deg) brightness(.57) saturate(.88) contrast(1.2);
-        }
-    }
-
-    & > div > div > div.gm-style > div:nth-child(1) > div:nth-child(1) > div:nth-child(4) > div:nth-child(3) > img{
-        filter: hue-rotate(157deg) brightness(.57) saturate(.88) contrast(1.2);
+        height: 100% !important;
     }
 }

@@ -3,15 +3,40 @@
   <ion-icon name="close" />
   </button>
   <ContenitoreNotifiche />
-  <div class="pagina-dialogo">
+  <div class="pagina-dialogo flex-col">
     <h1>Modifica Perizia</h1>
     <div class="wrapper flex-row">
       <div class="flex-col">
-        <div class="info-utente sopra">
+        <div class="info-utente sopra flex-col">
           <div class="flex-row header-info">
             <h3>Informazioni Luogo</h3>
+            @if(infoLuogo.modifica)
+            {
+              <div class="flex-row row-bottoni">
+                <button (click)="ResettaInfoLuogo()">
+                  <ion-icon name="close"></ion-icon>
+                  <span>Annulla</span>
+                </button>
+                <button 
+                  class="accento" 
+                  [disabled]="infoLuogo.uguali" 
+                  (click)="AggiornaUtente('luogo')" 
+                  [class.caricamento]="infoLuogo.caricamento"
+                >
+                  <ion-icon name="checkmark"></ion-icon>
+                  <span>Applica</span>
+                  <i class="pi pi-spin pi-spinner"></i>
+                </button>
+              </div>
+            }
+            @else {
+            <button (click)="infoLuogo.modifica = true">
+              <i class="pi pi-pencil"></i>
+              <span>Modifica</span>
+            </button>
+            }
           </div>
-          <form class="cont-utente">
+          <form class="cont-utente flex-col">
             @if(opzioni){
               <google-map 
                 [mapId]="'1436edaa72ee3004'"
@@ -62,7 +87,7 @@
             }
           </form>
         </div>
-        <div class="info-utente sopra">
+        <div class="info-utente flex-col">
           <div class="flex-row header-info">
             <h3>Informazioni Generali</h3>
           </div>
@@ -73,6 +98,7 @@
               [firstDayOfWeek]="1"
               [iconDisplay]="'input'" 
               [showIcon]="true"
+              disabled="true"
             >
             </p-calendar>
             <InputText 
@@ -91,7 +117,6 @@
               [mockup]="true"
               [valore]="periziaModificata.codice + ''"
             />
-            <!-- (ngModelChange)="ControllaUgualiLavoro()" -->
           </form>
         </div>
       </div>

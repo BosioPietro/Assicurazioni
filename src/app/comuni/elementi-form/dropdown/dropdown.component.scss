@@ -4,7 +4,7 @@
     --colore-normale: #d1d5db;
     --colore-testo: #4b5563;
     --font-size: 1rem;
-    --br: 100vh;
+    --br: .5rem;
 
     display: flex;
     align-items: stretch;
@@ -23,7 +23,10 @@
 .disabilitato{
     pointer-events: none;
     cursor: not-allowed;
-    opacity: .5;
+
+    ion-icon{
+        color: color-mix(in srgb, var(--colore-testo) 50%, transparent 50%);
+    }
 }
 
 .cont{
@@ -170,4 +173,47 @@ label.haValore{
 
 ion-icon{
     transition: color .33s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:host.abilitato:not(:has(.disabilitato)){
+    --colore-normale: #CCC;
+    --br: .5rem;
+
+    label{
+        color: var(--colore-normale);
+    }
+
+    .cont{
+        --colore-testo: #000;
+        --colore-normale: #000;
+
+        label{
+            color: unset;
+        }
+    }
+
+    .cont.errore{
+        --colore-testo: #eb4e4e;
+        --colore-normale: #eb4e4e;
+
+        label{
+            color: var(--colore-normale);
+        }
+    }
+
+    .cont:has(input:focus){
+        outline-color: color-mix(in srgb, 50% var(--accento), transparent 50%);
+    }
+
+    &:hover{
+        border-color: var(--accento);
+
+        ion-icon:not(.disabilitato){
+            color: var(--accento);
+        }
+    
+        hr:not(.disabilitato){
+            border-color: var(--accento);        
+        }
+    }
 }
