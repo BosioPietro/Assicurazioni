@@ -74,13 +74,13 @@
             </div>
           }
           @else {
-          <button (click)="infoPersonali.modifica = true">
+          <button (click)="infoPersonali.modifica = true; Focus('personali')">
             <i class="pi pi-pencil"></i>
             <span>Modifica</span>
           </button>
           }
         </div>
-        <form class="cont-utente">
+        <form class="cont-utente" #personali>
           <InputText 
             icona="person" 
             name="info-nome"

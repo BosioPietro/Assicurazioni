@@ -131,6 +131,41 @@ button{
             background-color: #CCC;
         }
 
+        .loader{
+            --grigio: #EEE;
+            border-radius: .25rem;
+            padding: .25rem;
+            height: 1.75rem;
+            width: 12ch;
+            background-color: var(--grigio);
+            color: #FFF;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .loader::before{
+            content: ' ';
+            position: absolute;
+            z-index: 1;
+            transform: translateY(-50%) rotateZ(.1turn);
+            top: 1rem;
+            height: 4rem;
+            width: 1rem;
+            background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+            left: -200%;
+            animation: caricamento 1s infinite linear;
+            filter: blur(1rem);
+        }
+        
+        @keyframes caricamento{
+            0%{
+                left: -200%;
+            }
+            100%{
+                left: 200%;
+            }
+        }
+
         .info{
             padding: 1rem;
             gap: calc(var(--gap) / 4);

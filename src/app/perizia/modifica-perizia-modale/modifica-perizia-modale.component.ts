@@ -60,7 +60,10 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
   modaleElimina!: ModaleSiNoComponent;
 
   @ViewChild("cercaIndirizzo")
-  cercaIndirizzo!: ElementRef<InputTextComponent>;
+  cercaIndirizzo!: ElementRef<HTMLElement>;
+
+  @ViewChild("immagini")
+  immagini!: ElementRef<HTMLElement>;
 
   opzioniSiNo: Opzione[] = [
     { testo: "Sì", valore: "true" },
@@ -381,5 +384,24 @@ export class ModificaPeriziaComponent implements AfterViewInit, OnInit{
     return this.operatori.map((o: Record<string, any>) => {
       return { testo: `${o["cognome"]} ${o["nome"]}`, valore: o["username"] }
     });
+  }
+
+  Focus(s: "indirizzo" | "immagini"){
+    setTimeout(() => {
+      switch(s){
+        case "indirizzo":
+          {  
+            const input: HTMLElement | null = this.cercaIndirizzo.nativeElement.querySelector("InputText input");
+            input?.focus();
+          }
+          break;
+          case "immagini":
+          {
+            const input = this.immagini.nativeElement.querySelector("textarea");
+            input?.focus();
+          }
+          break;
+      }
+    }, 100);
   }
 }

@@ -29,13 +29,13 @@
               </div>
             }
             @else {
-            <button (click)="infoLuogo.modifica = true">
+            <button (click)="infoLuogo.modifica = true; Focus('indirizzo')">
               <i class="pi pi-pencil"></i>
               <span>Modifica</span>
             </button>
             }
           </div>
-          <form class="cont-utente flex-col">
+          <form class="cont-utente flex-col" #cercaIndirizzo>
             @if(opzioni){
               <google-map 
                 [mapId]="'1436edaa72ee3004'"
@@ -60,7 +60,6 @@
               </google-map>
             }
             <Ricerca 
-              #cercaIndirizzo
               icona="home" 
               name="cerca-indirizzo"
               id-input="cerca-indirizzo"
@@ -72,6 +71,7 @@
               [opzioni]="opzioniRicerca"
               (onInput)="CercaIndirizzi($event)"
               (onSelezionato)="CambiaIndirizzo($event)"
+              
             />
             <FintoHr testo="Oppure" /> 
             @if(navigator["geolocation"]){
@@ -143,7 +143,7 @@
               />
             }
             @else{
-
+              <div class="loader"></div>
             }
             <InputText 
               icona="information-circle" 
@@ -179,13 +179,13 @@
             </div>
           }
           @else {
-            <button (click)="infoImmagini.modifica = true">
+            <button (click)="infoImmagini.modifica = true; Focus('immagini')">
               <i class="pi pi-pencil"></i>
               <span>Modifica</span>
             </button>
           }
         </div>
-        <form class="cont-utente flex-col" style="flex-wrap: nowrap;">
+        <form class="cont-utente flex-col" style="flex-wrap: nowrap;" #immagini>
           <Carosello 
             altezza-immagine="30rem"
             [quadrate]="true"

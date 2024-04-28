@@ -207,6 +207,12 @@ button{
                     min-width: 49%;
                     flex-grow: 1;
                 }
+
+                p-calendar::ng-deep{
+                    .p-calendar::before{
+                        content: 'Assunto Il';
+                    }
+                }
             }
         }
     }

@@ -55,7 +55,12 @@
         <ion-icon name="person"></ion-icon>
         Effettuata Da
       </span>
-      <p>{{ perizia.nomeOperatore || perizia.codOperatore }}</p>
+      @if(perizia.nomeOperatore){
+        <p>{{ perizia.nomeOperatore }}</p>
+      }
+      @else {
+        <div class="loader"></div> 
+      }
     </div>
     <hr/>
     <div class="info flex-col">

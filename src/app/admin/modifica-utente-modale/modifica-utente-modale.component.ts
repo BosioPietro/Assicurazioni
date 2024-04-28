@@ -51,6 +51,9 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   @ViewChild("modaleElimina")
   modaleElimina!: ModaleSiNoComponent;
 
+  @ViewChild("personali")
+  personali!: ElementRef<HTMLElement>;
+
   opzioniSiNo: Opzione[] = [
     { testo: "Sì", valore: "true" },
     { testo: "No", valore: "false" }
@@ -218,25 +221,79 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   }
 
   async AggiornaUtente(tipo: "lavoro" | "personale"){
-    const utente = this.utenteModificato!;
-    const info = tipo == "personale" ? this.infoPersonali : this.infoLavoro;
+    // const utente = this.utenteModificato!;
+    // const info = tipo == "personale" ? this.infoPersonali : this.infoLavoro;
     
-    info.caricamento = true;
-    const res = await this.utenti.ModificaUtente(utente);
-    info.caricamento = false;
+    // info.caricamento = true;
+    // const res = await this.utenti.ModificaUtente(utente);
+    // info.caricamento = false;
 
-    if(!res){
-      info.modifica = false;
+    // if(!res){
+    //   info.modifica = false;
 
-      this.notifiche.NuovaNotifica({
-        titolo: "Operazione completata",
-        descrizione: "Le modifiche sono state apportate con successo",
-        tipo: "info"
-      })
+    //   this.notifiche.NuovaNotifica({
+    //     titolo: "Operazione completata",
+    //     descrizione: "Le modifiche sono state apportate con successo",
+    //     tipo: "info"
+    //   })
 
-      this.onUtenteModificato.emit(utente);
+    //   this.onUtenteModificato.emit(utente);
+    // }
+    // else this.Errore(res);
+
+    switch(tipo){
+      case "personale":
+        {
+          const utente = Object.assign(structuredClone(this.utenteVisualizzato), {
+            nome: this.utenteModificato.nome,
+            cognome: this.utenteModificato.cognome,
+            username: this.utenteModificato.username,
+            email: this.utenteModificato.email,
+            telefono: this.utenteModificato.telefono,
+            "2FA": this.utenteModificato['2FA']
+          });
+          
+          this.infoPersonali.caricamento = true;
+          const res = await this.utenti.ModificaUtente(utente);
+          this.infoPersonali.caricamento = false;
+
+          if(!res){
+            this.utenteVisualizzato = utente;
+            this.onUtenteModificato.emit(utente);
+            this.notifiche.NuovaNotifica({
+              "titolo": "Operazione completata",
+              "descrizione": "Le modifiche sono state apportate con successo",
+              "tipo": "info"
+            })
+          }
+          else this.Errore(res);
+        }
+        break;
+      case "lavoro":
+        {
+          const utente = Object.assign(structuredClone(this.utenteVisualizzato), {
+            ruolo: this.utenteModificato.ruolo,
+            assuntoIl: this.utenteModificato.assuntoIl,
+            attivo: this.utenteModificato.attivo
+          });
+
+          this.infoLavoro.caricamento = true;
+          const res = await this.utenti.ModificaUtente(utente);
+          this.infoLavoro.caricamento = false;
+
+          if(!res){
+            this.utenteVisualizzato = utente;
+            this.onUtenteModificato.emit(utente);
+            this.notifiche.NuovaNotifica({
+              "titolo": "Operazione completata",
+              "descrizione": "Le modifiche sono state apportate con successo",
+              "tipo": "info"
+            })
+          }
+          else this.Errore(res);
+        }
+        break;
     }
-    else this.Errore(res);
 
   }
 
@@ -308,5 +365,16 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
     else this.Errore(status);
 
     this.vuoleEliminare = false;
+  }
+
+  Focus(s: "personali"){
+    setTimeout(() => {
+      switch(s){
+        case "personali":
+          const input: HTMLInputElement | null = this.personali.nativeElement.querySelector("input");
+          input?.focus();
+          break;
+      }
+    }, 100);
   }
 }

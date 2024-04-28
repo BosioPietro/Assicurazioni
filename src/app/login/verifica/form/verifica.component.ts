@@ -35,6 +35,11 @@ export class VerificaComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.transizione.formVeri["/login/verifica"] = this.formHtml.nativeElement;
     this.InviaCodice(false)
+
+    setTimeout(() => {
+      const input : HTMLInputElement | null = this.formHtml.nativeElement.querySelector("InputCodice input")
+      input?.focus();
+    }, 100);
   }
 
   async VerificaCodice(){
