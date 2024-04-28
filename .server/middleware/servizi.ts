@@ -194,7 +194,23 @@ const IndirizzoDaCoordinate = (app: Express) => {
     })
 }
 
+const ModificaPerizia = (app: Express, driver: MongoDriver) => {
+    app.patch("/api/perizia", async (req: Request, res: Response) => {
+        const perizia = req.body;
+        const token = DecifraToken(req.headers.authorization!);
+
+        if(!(await ControllaAdmin(token, driver, res))) return;
+
+        await driver.SettaCollezione("perizie");
+
+        const aggiornata = await driver.Replace({ codice : perizia.codice }, perizia);
+        if(driver.Errore(aggiornata, res)) return;
+
+        RispondiToken(res, token, aggiornata)
+    })
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
-         IndirizzoDaCoordinate};
+         IndirizzoDaCoordinate, ModificaPerizia};
