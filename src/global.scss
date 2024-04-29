@@ -106,3 +106,7 @@ html{
     transform: scaleY(0) !important;
     opacity: 0 !important;
 }
+
+.p-menu.p-menu-overlay{
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.3);
+}

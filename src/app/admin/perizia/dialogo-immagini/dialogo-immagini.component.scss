@@ -5,7 +5,7 @@ dialog{
     max-height: unset;
     max-width: unset;
     animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
-    background-color: var(--bianco);
+    background-color: #FFF;
     height: calc(100vh - 4rem);
     width: calc(100vw - 4rem);
     overflow: hidden;
@@ -105,7 +105,7 @@ dialog{
 button{
     font-size: 1.1rem;
     padding: .5rem 1rem;
-    background-color: var(--bianco);
+    background-color: #FFF;
     border: 1px solid #CCC;
     border-radius: .5rem;
     gap: .5rem;

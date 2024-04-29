@@ -1,11 +1,30 @@
-<div id="wrapperHead">
-  <div>
-    <img src="../../assets/icon/logoSito.jpg">
-    <span>Assicurazioni</span>
-  </div>
+<div id="wrapperHead" class="flex-row jc-c al-c">
+  <img src="https://t3.ftcdn.net/jpg/03/68/95/08/360_F_368950850_aMW6C9P5SV7udFGHWgz97fvgNVsnOvpp.jpg">
+  Assicurazioni
 </div>
-<div id="wrapperAside">
+<div id="wrapperAside" class="flex-col">
   @for (voce of elencoVoci; track $index) {
-    <app-aside-component [voce]="voce" [icon]="elencoIcons[$index]" [notification]="elencoNotifications[$index]"></app-aside-component>
+    <VoceAside 
+      [voce]="voce" 
+      [icon]="elencoIcons[$index]" 
+      [notification]="elencoNotifications[$index]" 
+    />
   }
+</div>
+<div class="wrapper-logout flex-row">
+  <div class="img"></div>
+  <div class="flex-col jc-c">
+    <h6>Nome Cognome</h6>
+    <p>&commat;nome_utente</p>
+  </div>
+  <button type="button" (click)="menu.toggle($event)" class="flex-row al-c jc-c" [@appari]>
+    <p-menu 
+    #menu 
+    [model]="[opzioneLogout]" 
+    [popup]="true"
+    appendTo="body"
+    >
+  </p-menu>
+    <ion-icon name="ellipsis-vertical"></ion-icon>
+  </button>
 </div>

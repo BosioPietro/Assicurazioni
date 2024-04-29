@@ -9,7 +9,7 @@ header{
     justify-content: space-between;
     padding: var(--padding);
     border-radius: 1.5rem 1.5rem 0 0;
-    background-color: var(--bianco);
+    background-color: #FFF;
     
     .flex-row{
         gap: 1rem;
@@ -28,7 +28,7 @@ header{
 button{
     font-size: 1.1rem;
     padding: .5rem 1rem;
-    background-color: var(--bianco);
+    background-color: #FFF;
     border: 1px solid #CCC;
     border-radius: .5rem;
     gap: .5rem;
@@ -64,7 +64,7 @@ main{
     
     .padding{
         width: var(--padding);
-        background-color: var(--bianco);
+        background-color: #FFF;
     }
 
     .wrapper{
@@ -144,7 +144,7 @@ main{
 
             .carta{
                 height: 100%;
-                background-color: var(--bianco);
+                background-color: #FFF;
                 flex-grow: 1;
                 border-radius: calc(var(--br-figli) / 2);
             }
@@ -157,7 +157,7 @@ main{
 
         .cont-utenti{
             flex-grow: 1;
-            background-color: var(--bianco);
+            background-color: #FFF;
             gap: calc(var(--padding) / 2);
             
             .cont-bottoni{
@@ -197,7 +197,7 @@ main{
 
 footer{
     height: var(--padding);
-    background-color: var(--bianco);
+    background-color: #FFF;
     border-radius: 0 0 1.5rem 1.5rem;
 }
 

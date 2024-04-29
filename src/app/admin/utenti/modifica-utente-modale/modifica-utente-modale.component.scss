@@ -26,7 +26,7 @@ dialog{
 button{
     font-size: 1.1rem;
     padding: .5rem 1rem;
-    background-color: var(--bianco);
+    background-color: #FFF;
     border: 1px solid #CCC;
     border-radius: .5rem;
     gap: .5rem;
@@ -89,7 +89,7 @@ button{
     }
 
     .nav-dialogo{
-        background-color: var(--bianco);
+        background-color: #FFF;
         padding: 2rem;
         gap: 1rem;
 
@@ -120,7 +120,7 @@ button{
         padding: 2rem;
 
         .wrapper{
-            background-color: var(--bianco);
+            background-color: #FFF;
             padding: 2rem;
             gap: 1rem;
             border-radius: 1rem;
