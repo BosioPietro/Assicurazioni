@@ -1,0 +1,2 @@
+<span *ngIf="!flag" (click)="radioClicked(label)" [ngClass]="{'radioClicked': utilityService.flagRadioClicked === label}" [ngStyle]="{'width': width, 'height':width}">{{label}}</span>
+<span *ngIf="flag" (click)="rc(label)" [ngClass]="{'radioClicked': utilityService.flagRcClicked === label}" [ngStyle]="{'width': width, 'height':width}"><ion-icon  name="{{label}}"></ion-icon></span>

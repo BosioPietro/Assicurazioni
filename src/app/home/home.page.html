@@ -1,9 +1,9 @@
-<ion-content [fullscreen]="true">
+  <AsideComponent/>
   <div id="wrapper">
     <span>
       <span id="spanBackground" [ngClass]="{'markerCliccato': this.mapService.flagInfoWindow, 'markerUnclickato': !this.mapService.flagInfoWindow}"></span>
       <div #mapElement id="mappa"></div>
-      <app-info-window></app-info-window>
+      <InfoWindow/>
     </span>
+    <Filtri></Filtri>
   </div>
-</ion-content>

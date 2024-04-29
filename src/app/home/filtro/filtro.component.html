@@ -1,0 +1,38 @@
+<div>
+  <span><ion-icon name="filter-outline"></ion-icon></span>
+</div>
+<div class="filterDiv" id="filterOperatore">
+  <div>Operatore</div>
+  <div id="wrapperFiltriGenere">
+    <div class="lbl"><small>Gender</small></div>
+    <div>
+      @for (gender of elencoGenders; track $index){
+        <app-radio-button [width]="'1.3rem'" [label]="gender"></app-radio-button>
+      }
+    </div>
+  </div>
+  <div class="lbl"><small>Name</small></div>
+  <div id="wrapperFiltriOperatore">
+    <app-select [label]="'Operatore'" [options]="utilityService.elencoOperatori" [ngStyle]="{width: '30%'}" (optionClicked)="onOptionClicked($event)"></app-select>
+  </div>
+  <div id="wrapperOperatoriSelezionati">
+    @for (operatore of mapService.selectedOperators; track $index){
+      <app-selection [selection]="operatore" (selectionRemoved)="onSelectionRemoved($event)"></app-selection>
+    }
+  </div>
+</div>
+<div class="filterDiv" id="filterPerizia">
+  <div>Perizia</div>
+  <div class="lbl"><small>Data</small></div>
+  <!-- <div id="wrapperInd">
+    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'chevron-back-outline'"></app-radio-button>
+    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'reorder-two-outline'"></app-radio-button>
+    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'chevron-forward-outline'"></app-radio-button>
+  </div> -->
+  <div id="wrapperFiltroData">
+    <!-- <app-select [label]="day" [options]="utilityService.elencoGiorni"></app-select>
+    <app-select [label]="month" [options]="utilityService.elencoMesi" (optionClicked)="onMonthClicked($event)"></app-select>
+    <app-select [label]="year" [options]="utilityService.elencoAnni"></app-select> -->
+    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="single" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
+  </div>
+</div>

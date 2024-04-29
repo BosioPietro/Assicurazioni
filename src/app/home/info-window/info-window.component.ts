@@ -3,10 +3,8 @@ import { Component, ViewChild } from '@angular/core';
 import { GoogleMap, GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
 import { MapService } from 'src/app/home/shared/map.service';
 
-
-
 @Component({
-  selector: 'app-info-window',
+  selector: 'InfoWindow',
   templateUrl: './info-window.component.html',
   styleUrls: ['./info-window.component.scss'],
   standalone: true,
@@ -31,9 +29,10 @@ export class InfoWindowComponent{
   chiudiInfoWindow(){
     this.mapService.flagInfoWindow = false;
   }
+  google = window.google;
   ngAfterViewInit() {
-    this.directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer({
+    this.directionsService = new this.google.maps.DirectionsService();
+    this.directionsRenderer = new this.google.maps.DirectionsRenderer({
       polylineOptions: {
         strokeColor: 'pink',
         strokeOpacity: 1,
@@ -51,7 +50,7 @@ export class InfoWindowComponent{
 
     };
     
-    this.map = new google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
+    this.map = new this.google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
     this.directionsRenderer.setMap(this.map!);
     this.mapService.markerCoordsObservable.subscribe((marker:any)=>{
       this.mapService.flagInfoWindow = true;
@@ -65,10 +64,10 @@ export class InfoWindowComponent{
       this.directionOptions = {
         origin: { lat: 44.55577411467918, lng: 7.735974391878129 },
         destination: this.coords,
-        travelMode: google.maps.TravelMode.DRIVING
+        travelMode: this.google.maps.TravelMode.DRIVING
       }
   
-      this.directionsService.route(this.directionOptions, (result, status : google.maps.DirectionsStatus) => {
+      this.directionsService.route(this.directionOptions, (result, status: google.maps.DirectionsStatus) => {
         if (status === 'OK' && result) {
           this.directionsRenderer.setDirections(result);
           this.travelDuration = result.routes[0].legs[0].duration?.text;
@@ -77,6 +76,5 @@ export class InfoWindowComponent{
     })
   }
   
+  
 }
-
-declare var google:any;
