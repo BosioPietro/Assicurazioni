@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
 import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/immagine-profilo-default.component';
 import { IonIcon } from '@ionic/angular/standalone'
 import { ContenitoreNotificheComponent } from 'src/app/comuni/notifiche/contenitore-notifiche/contenitore-notifiche.component';
-import Utente from '../utenti/tabella-utenti/utente.model';
+import Utente from '../tabella-utenti/utente.model';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
@@ -17,7 +17,7 @@ import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.co
 @Component({
   selector: 'ModificaUtenteModale',
   templateUrl: './modifica-utente-modale.component.html',
-  styleUrls: ['./modifica-utente-modale.component.scss', '../../comuni/elementi-form/stile-calendario.scss'],
+  styleUrls: ['./modifica-utente-modale.component.scss', '/src/app/comuni/elementi-form/stile-calendario.scss'],
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent],

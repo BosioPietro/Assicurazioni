@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone'
-import Utente from '../utenti/tabella-utenti/utente.model';
+import Utente from '../tabella-utenti/utente.model';
 import { ContenitoreNotificheComponent } from 'src/app/comuni/notifiche/contenitore-notifiche/contenitore-notifiche.component';
 import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
 import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/immagine-profilo-default.component';

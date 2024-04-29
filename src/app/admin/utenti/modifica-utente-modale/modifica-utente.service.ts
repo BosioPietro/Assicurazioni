@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GestoreServerService } from "src/app/server/gestore-server.service";
 import { Metodi } from "src/app/utils/TipiSpeciali";
-import Utente from "../utenti/tabella-utenti/utente.model";
+import Utente from "../tabella-utenti/utente.model";
 import { AxiosError } from "axios";
 
 @Injectable({

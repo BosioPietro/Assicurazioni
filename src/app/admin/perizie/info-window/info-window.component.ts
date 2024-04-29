@@ -1,7 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { GoogleMap, GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
-import { MapService } from 'src/app/home/shared/map.service';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { MapService } from '../shared/map.service';
 
 @Component({
   selector: 'InfoWindow',

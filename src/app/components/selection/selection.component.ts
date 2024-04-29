@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MapService } from 'src/app/home/shared/map.service';
+import { MapService } from 'src/app/admin/perizie/shared/map.service';
 import {IonIcon} from "@ionic/angular/standalone";
 
 @Component({

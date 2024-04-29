@@ -1,9 +1,8 @@
-  <AsideComponent/>
   <div id="wrapper">
     <span>
       <span id="spanBackground" [ngClass]="{'markerCliccato': this.mapService.flagInfoWindow, 'markerUnclickato': !this.mapService.flagInfoWindow}"></span>
       <div #mapElement id="mappa"></div>
       <InfoWindow/>
     </span>
-    <Filtri></Filtri>
+    <Filtri/>
   </div>

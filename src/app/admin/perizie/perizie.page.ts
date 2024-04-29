@@ -1,22 +1,21 @@
 import { Component, ViewChild } from '@angular/core';
-import { GoogleMapsModule, MapAdvancedMarker } from '@angular/google-maps';
+import { GoogleMapsModule } from '@angular/google-maps';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
 import { InfoWindowComponent } from './info-window/info-window.component';
 import { MapService } from './shared/map.service';
 import { NgClass } from '@angular/common';
-import { AsideComponent } from '../comuni/aside/aside.component';
 import { FiltroComponent } from './filtro/filtro.component';
 
 // declare var google:any;
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'PeriziePage',
+  templateUrl: 'perizie.page.html',
+  styleUrls: ['perizie.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, InfoWindowComponent, NgClass, AsideComponent, FiltroComponent],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, InfoWindowComponent, NgClass, FiltroComponent],
 })
-export class HomePage {
+export class PeriziePage {
   @ViewChild('mapElement') mapElement: any;
   constructor(public mapService:MapService) {}
   vallauri:string = "../assets/icon/vallauri.png"

@@ -7,16 +7,16 @@ import { PeriziaService } from './perizia.service';
 import { Perizia } from './perizia.model';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { CaroselloComponent } from './carosello/carosello.component';
-import { ControllaToken, FormattaData, StringaInData } from '../utils/funzioni';
-import { NotificheService } from '../comuni/notifiche/notifiche.service';
+import { ControllaToken, FormattaData, StringaInData } from 'src/app/utils/funzioni';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import { DialogoImmaginiComponent } from './dialogo-immagini/dialogo-immagini.component';
-import { ModaleSiNoComponent } from '../comuni/modale-si-no/modale-si-no.component';
+import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
 import { ModificaPeriziaComponent } from './modifica-perizia-modale/modifica-perizia-modale.component';
 
 @Component({
   selector: 'app-perizia',
   templateUrl: './perizia.page.html',
-  styleUrls: ['./perizia.page.scss', '../comuni/stile-mappa.scss'],
+  styleUrls: ['./perizia.page.scss', '/src/app/comuni/elementi-form/stile-mappa.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, GoogleMap, MapMarker, 
             MapAdvancedMarker, CaroselloComponent, DialogoImmaginiComponent,

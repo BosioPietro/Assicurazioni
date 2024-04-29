@@ -3,13 +3,9 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'utenti',
+    redirectTo: 'admin/utenti',
     pathMatch: 'full',
-  },  
-  {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
+  }, 
   {
     path: 'login',
     loadComponent: () => import('./login/login.page').then((m) => m.LoginPage),
@@ -41,12 +37,34 @@ export const routes: Routes = [
     loadComponent: () => import('./registrazione/registrazione.page').then( m => m.RegistrazionePage)
   },
   {
-    path: 'utenti',
-    loadComponent: () => import('./admin/utenti/utenti.page').then( m => m.UtentiPage)
+    path: 'admin',
+    children: [
+      {
+        path: 'utenti',
+        loadComponent: () => import('./admin/utenti/utenti.page').then( m => m.UtentiPage)
+      },
+      {
+        path: 'perizie',
+        loadComponent: () => import('./admin/perizie/perizie.page').then( m => m.PeriziePage)
+      },
+      {
+        path: 'perizie/:codice',
+        loadComponent: () => import('./admin/perizia/perizia.page').then( m => m.PeriziaPage)
+      },
+      {
+        path: 'perizia',
+        pathMatch: 'full',
+        redirectTo: 'perizie'
+      }
+    ]
   },
   {
-    path: 'perizia/:codice',
-    loadComponent: () => import('./perizia/perizia.page').then( m => m.PeriziaPage)
+    path: 'admin',
+    pathMatch: 'full',
+    redirectTo: 'admin/perizie',
+  },  {
+    path: 'home',
+    loadComponent: () => import('./admin/home/home.page').then( m => m.HomePage)
   }
 
 ];

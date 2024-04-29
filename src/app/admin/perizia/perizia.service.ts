@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { GestoreServerService } from '../server/gestore-server.service';
-import { Metodi } from '../utils/TipiSpeciali';
+import { GestoreServerService } from 'src/app/server/gestore-server.service';
+import { Metodi } from 'src/app/utils/TipiSpeciali';
 import { Perizia } from './perizia.model';
 import { AxiosResponse } from 'axios';
 

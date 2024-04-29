@@ -1,8 +1,8 @@
 import { NgClass } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {IonIcon} from "@ionic/angular/standalone";
-import { MapService } from 'src/app/home/shared/map.service';
-import { UtilityService } from 'src/app/home/shared/utility.service';
+import { MapService } from 'src/app/admin/perizie/shared/map.service';
+import { UtilityService } from 'src/app/admin/perizie/shared/utility.service';
 
 @Component({
   selector: 'app-select',

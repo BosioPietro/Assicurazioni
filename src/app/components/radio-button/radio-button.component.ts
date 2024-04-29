@@ -1,7 +1,7 @@
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { MapService } from 'src/app/home/shared/map.service';
-import { UtilityService } from 'src/app/home/shared/utility.service';
+import { MapService } from 'src/app/admin/perizie/shared/map.service';
+import { UtilityService } from 'src/app/admin/perizie/shared/utility.service';
 import { IonIcon } from "@ionic/angular/standalone";
 
 @Component({

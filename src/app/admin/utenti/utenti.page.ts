@@ -18,9 +18,9 @@ import { PrimeNGConfig } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ControllaToken } from 'src/app/utils/funzioni';
 import { ContenitoreNotificheComponent } from 'src/app/comuni/notifiche/contenitore-notifiche/contenitore-notifiche.component';
-import { ModificaUtenteModaleComponent } from '../modifica-utente-modale/modifica-utente-modale.component';
+import { ModificaUtenteModaleComponent } from './modifica-utente-modale/modifica-utente-modale.component';
 import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
-import { AggiungiUtenteModaleComponent } from '../aggiungi-utente-modale/aggiungi-utente-modale.component';
+import { AggiungiUtenteModaleComponent } from './aggiungi-utente-modale/aggiungi-utente-modale.component';
 import Utente from './tabella-utenti/utente.model';
 
 @Component({
