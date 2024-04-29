@@ -1,0 +1,36 @@
+:host{
+    --padding: .5rem;
+    --colore-normale: #d1d5db;
+    --colore-testo: #4b5563;
+    --font-size: 1rem;
+    --br: .5rem;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+textarea{
+    width: 100%;
+    background-color: transparent;
+    border: 1.5px solid;
+    border-color: var(--colore-normale);
+    caret-color: var(--colore-testo);
+    color: var(--colore-testo);
+    font-size: var(--font-size);
+    outline: 3px solid;
+    outline-color: transparent;
+    resize: none;
+    border-radius: var(--br);
+    padding: var(--padding);
+    flex-grow: 1;
+    transition: border-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1), outline-color .3s  cubic-bezier(0.22, 0.61, 0.36, 1), opacity .3s  cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &:disabled{
+        opacity: .5;
+    }
+}
+
+textarea:focus{
+    border-color: var(--accento);        
+    outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
+}

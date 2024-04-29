@@ -1,5 +1,5 @@
 <div class="form flex-col" #form>
-  <img class="logo" src="assets/google-logo.svg"/>
+  <img class="logo" src="assets/login/google-logo.svg"/>
   <span class="flex-col jc-c invisibile">
     <h1>Recupero Credenziali</h1>
     <span class="piccolo flex-row jc-c">
@@ -48,7 +48,8 @@
     </span>
     <div class="form-item">
       <label>Codice</label>
-      <InputCodiceFinto  
+      <InputCodice  
+        [mockup]="true"
         [class.inTransizione]="transizione.inTransizione && (transizione.ultimaRoute || RimuoviParametri(router.url)) == '/login/recupero-credenziali'"
         [messaggio-errore]="sinc.errori['codice']"
       />

@@ -9,20 +9,24 @@ const CifraPwd = (password: string): string => bcrypt.hashSync(password, 10);
 
 const ConfrontaPwd = (password: string, hash: string) : boolean => bcrypt.compareSync(password, hash);
 
-const CreaToken = (utente : {username : string, _id? : string, iat? : number}) : string => {
+const CreaToken = (utente : {username : string, _id? : string, iat? : number, "2FA"?: boolean}) : string => {
     const secondi = Math.floor(new Date().getTime() / 1000);
     const durata = env["DURATA_TOKEN"];
     
-    const payload = {
+    let payload: Record<string, any> = {
         iat : utente["iat"] || secondi,
         exp : secondi + durata,
         username : utente["username"],
-        _id : utente["_id"]
+        _id : utente["_id"],
+    }
+
+    if(utente["2FA"] != undefined)
+    {
+        payload["2FA"] = utente["2FA"];   
     }
     
     return jwt.sign(payload, env["ENCRYPTION_KEY"]);
 }
-
 
 const ControllaToken = (driver : MongoDriver, req : Request, res : Response, next? : NextFunction) => {
     if(!req.headers["authorization"]) return res.status(403).send("Token non fornito");
@@ -45,11 +49,7 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
             const utente = await driver.PrendiUno({ [tipo] : payload["username"] }, { cambioPwd : 1, dataCreazione : 1 })
             if(!driver.Errore(utente))
             {
-                res.send({ 
-                    "ok" : "Token valido",
-                    "deveCambiare" : !!utente["cambioPwd"],
-                    "dataCreazione" : utente["dataCreazione"]
-                })
+                res.send(payload)
             }
             else res.status(500).send("Errore durante la convalida dell'utente")
         }
@@ -57,7 +57,7 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
     })
 }
 
-type Token = {iat: number, exp: number, username: string, id? : string}
+type Token = { username : string, _id? : string, iat? : number, "2FA"?: boolean }
 const DecifraToken = (token : string) => jwt.decode(token) as Token;
 
 const GeneraPassword = () : string => {
@@ -65,27 +65,34 @@ const GeneraPassword = () : string => {
     const numeri = "0123456789";
     const speciali = "!@#$%^&*()_+";
 
-    const caratteri = alfabeto + alfabeto.toLowerCase() + numeri + speciali;
-    let pwd = "";
-    for(let i = 0; i < 14; i++)
-    {
-        pwd += caratteri.charAt(Math.floor(Math.random() * caratteri.length));
-    }
-
-    return pwd;
+    const c = alfabeto + alfabeto.toLowerCase() + numeri + speciali;
+    const Carattere = () => c.charAt(Math.floor(Math.random() * c.length))
+    
+    return new Array(14).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
 const GeneraCodice = () => {
     const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numeri = "0123456789";
-    const caratteri = alfabeto + numeri;
+    const c = alfabeto + numeri;
 
-    let codice = "";
-    for(let i = 0; i < 6; ++i){
-        codice += caratteri.charAt(Math.floor(Math.random() * caratteri.length))
-    }
+    const Carattere = () => c.charAt(Math.floor(Math.random() * c.length))
 
-    return codice;
+    return new Array(6).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
-export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken }
+const ControllaAdmin = async (u: Token, driver: MongoDriver, res: Response) : Promise<boolean | null> => {
+    await driver.SettaCollezione("utenti");
+
+    const admin = await driver.PrendiUno({ username: u.username });
+    if(driver.Errore(admin, res)) return false;
+
+    if(admin.ruolo.toLowerCase() != "admin"){
+        res.status(405).send("Non hai i permessi per effettuare questa operazione");
+        return false;
+    }
+
+    return true;
+}
+
+export { ConfrontaPwd, CreaToken, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken, Token, ControllaAdmin }

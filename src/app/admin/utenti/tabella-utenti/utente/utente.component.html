@@ -1,0 +1,36 @@
+<span>
+  <p-checkbox 
+    [binary]="true" 
+    [ngModel]="tabella.selezionati.includes(utente)"
+    (onChange)="Seleziona($event)" 
+    (click)="Stop($event)"
+  />
+  <span class="flex-row" >
+    @if(utente.pfp){
+      <div class="img" [style.background-image]="'url(' + utente.pfp + ')'"></div>
+    }
+    @else {
+      <ImmagineProfileDefault [nome]="utente.cognome"/>
+    }
+    <div class="flex-col">
+      <p>{{utente.cognome}} {{ utente.nome }}</p>
+      <span class="username">{{utente.username}}</span>
+    </div>
+  </span>
+  <span>
+    <div class="ruolo" [attr.ruolo]="utente.ruolo">
+      {{utente.ruolo}}
+    </div>
+  </span>
+  <span>{{utente.nPerizie}}</span>
+  <span>{{utente.assuntoIl}}</span>
+  <span>
+    @if (utente.attivo) {
+      <ion-icon name="checkmark-circle"></ion-icon>
+    }
+    @else {
+      <ion-icon name="close-circle"></ion-icon>
+    }
+    <span>{{utente.attivo ? 'Attivo' : 'Non Attivo'}}</span>
+  </span>
+</span>

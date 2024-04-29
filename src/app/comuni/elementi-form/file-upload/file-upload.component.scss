@@ -1,0 +1,156 @@
+dialog{
+    border: 0;
+    padding: 0;
+    background-color: #f5f6f8;
+    border-radius: 1rem;
+    padding: 2rem;
+    min-width: 40dvw;
+    animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    gap: 1rem;
+
+    &.chiudi{
+        animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        &::backdrop{
+            animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+    }
+
+    .btn-chiudi{
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        outline-color: transparent;
+    }
+
+    h1{
+        margin-bottom: .5rem;
+    }
+
+    p{
+        color: #AAA;
+    }
+
+    .cella{
+        width: 100%;
+        height: 20rem;
+        border-radius: 1rem;
+        border: .25rem dotted #000;
+        justify-content: center;
+        align-items: center;
+        gap: .5rem;
+        font-weight: 500;
+        background-color: transparent;
+        transition: all .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+        &.draggando{
+            background-color: color-mix(in srgb, 75% #FFF, var(--accento) 25%);
+        }
+
+        p{
+            color: #000;
+        }
+
+        .piccolo{
+            color: #AAA;
+            font-size: .9rem;
+        }
+
+        ion-icon{
+            color: var(--accento);
+            font-size: 5rem;
+            transition: all .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+    }
+
+    .caricato{
+        box-sizing: content-box;
+        height: 1rem;
+        justify-content: space-between;
+        padding: .25rem;
+        border-radius: .25rem;
+        background-color: #f5f6f8;
+        transition: background-color .3s cubic-bezier(.22, .61, .36, 1);
+
+        &.attivo{
+            background-color: color-mix(in srgb, #f5f6f8 90%, 10% var(--accento));
+        }
+
+        ion-icon{
+            color: var(--accento);
+        }
+    }
+
+    .row-bottoni{
+        gap: 1rem;
+    }
+
+    &::backdrop{
+        background-color: #0007;
+    }
+
+}
+
+button{
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        font-size: 1.5rem;
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+
+    &:not(.caricamento){
+        i{
+            display: none;
+        }
+    }
+    
+    &.caricamento{
+        position: relative;
+    
+        ion-icon, span{
+            visibility: hidden;
+        }
+    
+        i{
+            position: absolute;
+            left: 50%;
+            translate: -50% 0;
+        }
+    
+    }
+}
+
+@keyframes appari{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes scompari{
+    from{ opacity: 1; }
+    to{ opacity: 0; }
+}
+

@@ -2,13 +2,14 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { Router } from '@angular/router';
-import { InputCodiceComponent } from './input-codice/input-codice.component';
+import { InputCodiceComponent } from '../../../comuni/elementi-form/input-codice/input-codice.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { RegexInput } from 'src/app/utils/Input';
 import { RimuoviParametri } from 'src/app/utils/funzioni';
 import { AxiosError } from 'axios';
 import { RecuperoCredenzialiService } from './recupero-credenziali.service';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 
 @Component({
   selector: 'form-recupero-credenziali',
@@ -23,7 +24,8 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
     public transizione: TransizioneService, 
     public sinc: SincronizzazioneService,
     private servizio: RecuperoCredenzialiService, 
-    public router: Router
+    public router: Router,
+    private notifiche: NotificheService
   ){}
 
   @ViewChild("formHtml")
@@ -48,14 +50,25 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
       }, 500);
   }
 
-  async InviaMail(){
-    // try
-    // {
-      //await this.servizio.InviaMailRecupero(this.formInvioMail.get("mail-recupero")?.value);
-      
-      this.sinc.TransizioneForm(this.formHtml.nativeElement);
-    // }
-    // catch(e) {this.GestisciErroreMail(e as AxiosError)}
+  async InviaMail(notifica: boolean = false, transizione: boolean = true){
+    this.transizione.caricamento = true;
+    try
+    {
+      await this.servizio.InviaMailRecupero(this.formInvioMail.get("mail-recupero")?.value);
+      this.transizione.caricamento = false;  
+      if(transizione){
+        this.sinc.TransizioneForm(this.formHtml.nativeElement);
+      }
+
+      if(notifica){
+        this.notifiche.NuovaNotifica({
+          tipo: "info",
+          titolo: "Codice Inviato",
+        })
+      }
+    }
+    catch(e) {this.GestisciErroreMail(e as AxiosError)}
+    finally{this.transizione.caricamento = false;}
     
   }
 
@@ -71,6 +84,7 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
 
       this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/reset-password");
       setTimeout(() => {
+        this.sinc.stato = 0;
         this.router.navigateByUrl("/login/reset-password");
       }, 500);
     }
@@ -78,24 +92,42 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   }
 
   private GestisciErroreCodice(err : AxiosError){
-    const { status, data } = err.response!;
+    const { status } = err.response!;
 
     if(status == 403)
     {
       this.sinc.errori["codice"] = "Codice incoretto"
+      return;
     }
-    else alert(data)
+
+    if(status == 402)
+    {
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Codice scaduto",
+        descrizione: "Sono passati più di 30 minuti dalla richiesta del codice"
+      }) 
+      return;
+    }
+    
+    this.notifiche.NuovaNotifica({
+      tipo: "errore",
+      titolo: "Qualcosa è andato storto"
+    })
   }
 
   private GestisciErroreMail(err : AxiosError){
-    const { status, data } = err.response!;
+    const { status } = err.response!;
 
     if(status == 400)
     {
-      this.sinc.errori["mail"] = "Mail non registrata"
+      this.sinc.errori["mail"] = "Mail non registrata";
+      return;
     }
-    else alert(data)
+    
+    this.notifiche.NuovaNotifica({
+      tipo: "errore",
+      titolo: "Qualcosa è andato storto"
+    })
   }
-
-
 }

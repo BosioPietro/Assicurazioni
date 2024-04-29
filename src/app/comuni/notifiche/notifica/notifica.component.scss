@@ -1,0 +1,45 @@
+
+
+.wrapper-notifica{
+    margin: .125rem;
+    transition: all .5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cont-notifica{
+    --sfondo: color-mix(in srgb, var(--colore) 10%, #FFF 90%);
+    background-color: var(--sfondo);
+    padding: 1rem;
+    border-radius: .33rem;
+    color: var(--colore);
+    gap: .5rem;
+    border: 2px solid var(--colore);
+
+}
+
+ion-icon{
+    font-size: 1.25rem;
+}
+
+.wrapper-notifica{
+    overflow: visible;
+    max-height: 5rem;
+}
+
+.titolo-notifica{
+    font-weight: bold;
+}
+
+.testo-notifica{
+    font-size: .8em;
+}
+
+.wrapper-notifica.chiudi{
+    margin-block: 0;
+    max-height: 0;
+    opacity: 0;
+}
+
+.cont-notifica{
+    border: 0;
+    border-left: 4px solid var(--colore);
+}

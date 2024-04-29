@@ -1,0 +1,42 @@
+*{
+    caret-color: transparent;
+    font-size: 1rem;
+}
+
+.cont{
+    --spazio: .25rem;
+    background-color: #eeeeee;
+    padding: var(--spazio);
+    position: relative;
+    border-radius: .5rem;
+}
+
+.flex-row{
+    gap: var(--spazio);
+}
+
+.overlay{
+    position: absolute;
+    z-index: 3;
+}
+
+button{
+    box-sizing: content-box;
+    width: var(--width-bottoni);
+    white-space: nowrap;
+    padding: .5rem 1rem;
+    background-color: transparent;
+    color: #000;
+    user-select: none;
+}
+
+.cella{
+    position: absolute;
+    transition: all .5s cubic-bezier(0.22, 0.61, 0.36, 1);;
+    background-color: #FFF;
+    border-radius: .25rem;
+    top: var(--spazio);
+    bottom: var(--spazio);
+    z-index: 2;
+    width: 30%;
+}

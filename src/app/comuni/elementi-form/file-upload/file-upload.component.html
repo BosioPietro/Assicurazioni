@@ -1,0 +1,45 @@
+<dialog class="flex-col" #dialogo>
+  <ContenitoreNotifiche/>
+  <span>
+    <h1>Carica un'immagine</h1>
+    <p>Sono supportati PNG e JPG</p>
+  </span>
+  <div 
+    class="cella flex-col" 
+    [class.draggando]="draggando"
+    (dragenter)="DragStart($event)"
+    (dragleave)="DragEnd($event)"
+    (dragover)="$event.preventDefault()"
+    (drop)="DropImmagine($event)"
+  >
+    <ion-icon name="cloud-upload"></ion-icon>
+    <p>
+      <a (click)="file.click()">Clicka per caricare&nbsp;</a>
+      <span>oppure trascina un'immagine</span>
+    </p>
+    <span class="piccolo">
+      Dimensione massima: 10MB
+    </span>
+  </div>
+  <div class="caricato flex-row" [class.attivo]="!!immagine?.name">
+    @if(immagine){
+      <span>
+        {{ immagine.name }}
+      </span>
+      <ion-icon name="checkmark-circle"></ion-icon>
+    }
+  </div>
+<input type="file" #file style="display: none;"  accept=".png,.jpg,.jpeg" (change)="immagine = file.files ? file.files[0] : undefined"/>
+  <div class="row-bottoni flex-row">
+    <button 
+      class="accento" 
+      [disabled]="!immagine" 
+      [class.caricamento]="inCaricamento"
+      (click)="onConferma.emit(immagine)"
+    >
+      <span>Carica</span>
+      <i class="pi pi-spin pi-spinner"></i>
+    </button>
+    <button (click)="Chiudi()">Annulla</button>
+  </div>
+</dialog>

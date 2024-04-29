@@ -1,0 +1,119 @@
+<header class="flex-row">
+  <div class="flex-col">
+    <h1>Utenti</h1>
+    <p>Visualizza e modifica utenti</p>
+  </div>
+  <div class="flex-row">
+    <button (click)="EsportaCSV()">
+      <ion-icon name="arrow-down"></ion-icon>
+      <span>Esporta CSV</span>
+    </button>
+    <button class="accento" (click)="vuoleAggiungere = true">
+      <ion-icon name="add"></ion-icon>
+      <span>Nuovo utente</span>
+    </button>
+  </div>
+</header>
+<main class="flex-row">
+  <div class="padding"></div>
+  <div class="wrapper flex-col">
+    <div class="cont-carte flex-row">
+      <div class="angolo"></div>
+      <div class="angolo"></div>
+      <div class="angolo"></div>
+      <div class="angolo"></div>
+      <div class="carta">
+        <p>Perizie in corso</p>
+        <h1>
+          <span>123</span>
+          <ion-icon name="arrow-up"></ion-icon>
+        </h1>
+      </div>
+      <div class="carta">
+        <p>Perizie completate oggi</p>
+        <h1>
+          <span>123</span>
+          <ion-icon name="arrow-down"></ion-icon>
+        </h1>
+      </div>
+      <div class="carta">
+        <p>Dipendenti totali</p>
+        <h1>
+          <span>123</span>
+          <ion-icon name="arrow-up"></ion-icon>
+        </h1>
+      </div>
+      <div class="carta">
+        <p>Dipendenti attivi oggi</p>
+        <h1>
+          <span>123</span>
+          <ion-icon name="arrow-up"></ion-icon>
+        </h1>
+      </div>
+    </div>
+    <div class="cont-utenti flex-col">
+      <hr/>
+      <h1>Dipendenti</h1>
+      <div class="flex-row">
+        <div class="flex-row">
+          <BottoniOpzione (onChange)="CambiaMod($event)" [opzioni]="opzioniDipendenti"/>
+          @if (tabella.selezionati.length) {
+            <div class="wrapper-menu flex-row jc-c">
+                <p-menu #menu 
+                  [model]="[opzioneElimina, tabella.selezionati.length == 1 ? opzioneCreaChat : opzioneCreaGruppo]" 
+                  [popup]="true" 
+                  appendTo="body">
+                </p-menu>
+                <button type="button" (click)="menu.toggle($event)" class="flex-row al-c" [@appari]>
+                  <ion-icon name="ellipsis-horizontal"></ion-icon>
+                </button>
+            </div>
+          }
+        </div>
+        <!-- <BarraRicerca (onCerca)="tabella.nome = $event"/> -->
+        <InputText
+          icona="search"
+          id-input="utenti-cerca"
+          name="utenti-cerca"
+          (onInput)="CercaNome($event)" 
+        />
+      </div>
+      <TabellaUtenti (utenteSelezionato)="MostraPannelloUtente()"/>
+    </div>
+  </div>
+  <div class="padding"></div>
+</main>
+<footer></footer>
+
+@if(vuoleEliminare){
+  <ModaleSiNo
+    #modaleElimina
+    colore="#eb4e4e"
+    si="Elimina"
+    [titolo]="'Elimina Utent' + (tabella.selezionati.length > 1 ? 'i' : 'e')"
+    [messaggio]="'Stai per eliminare ' + (tabella.selezionati.length > 1 ? tabella.selezionati.length : 'un') + 
+                 'utent' + (tabella.selezionati.length > 1 ? 'i' : 'e') + ',\n' + 
+                 'questa azione è irreversibile.'"
+    [inCaricamento]="inCaricamentoElimina"
+    (onNo)="vuoleEliminare = false"
+    (onSi)="EliminaUtenti()"
+  />
+}
+
+@if(tabella.utenteVisualizzato && tabella.utenteModificato){
+  <ModificaUtenteModale 
+    [utenteModificato]="tabella.utenteModificato"
+    [utenteVisualizzato]="tabella.utenteVisualizzato"
+    (onChiudi)="ChiudiModifica()"
+    (onUtenteModificato)="CaricaTabella()"
+    (onImmagineCambiata)="ImmagineCambiata($event)"
+  />
+}
+
+@if(vuoleAggiungere){
+  <AggiungiUtenteModale
+    #modaleAggiungi
+    [caricamento]="inCaricamentoAggiungi"
+    (onAggiungi)="AggiungiUtente($event)"
+  />
+}

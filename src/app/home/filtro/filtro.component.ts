@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 
 @Component({
-  selector: 'app-filtro',
+  selector: 'Filtri',
   templateUrl: './filtro.component.html',
   styleUrls: ['./filtro.component.scss'],
   imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, NgStyle, FormsModule, CalendarModule],

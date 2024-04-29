@@ -1,0 +1,13 @@
+<div 
+  class="wrapper-popover"
+  (mouseenter)="visibile = true" 
+  (mouseleave)="visibile = false"
+>
+  <ion-icon [name]="icona" [style.color]="colore"/>
+</div>
+<div class="messaggio-popover" [class.visibile]="visibile && !mockup">
+  <span class="testo">
+    {{ messaggio }}
+  </span>
+</div>
+  

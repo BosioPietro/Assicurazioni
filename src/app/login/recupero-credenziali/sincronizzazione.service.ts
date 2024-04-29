@@ -8,7 +8,7 @@ export class SincronizzazioneService {
 
     constructor(private transizione: TransizioneService){}
 
-    public stato: number = 1;
+    public stato: number = 0;
     public mail: string = "";
     public codiceCorretto: boolean = false;
     public caratteriCodice = new Array(6).fill("");

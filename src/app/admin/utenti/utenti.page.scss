@@ -1,0 +1,207 @@
+:host{
+    --padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    border-radius: 1.5rem;
+    width: 85%;
+    margin-left: auto;
+    height: calc(100dvh - 2rem);
+}
+
+header{
+    justify-content: space-between;
+    padding: var(--padding);
+    border-radius: 1.5rem 1.5rem 0 0;
+    background-color: #FFF;
+    
+    .flex-row{
+        gap: 1rem;
+    }
+
+    h1{
+        font-size: 2rem;
+    }
+
+    p{
+        color: #CCC;
+        font-size: .9rem;
+    }
+}
+
+button{
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        font-size: 1.5rem;
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+}
+
+main{
+    width: 100%;
+    flex-grow: 1;
+    
+    .padding{
+        width: var(--padding);
+        background-color: #FFF;
+    }
+
+    .wrapper{
+        flex-grow: 1;
+
+        .cont-carte{
+            --margin: 1rem;
+            --br-figli: calc(var(--padding) / 2);
+            position: relative;
+            gap: calc(var(--margin) / 2);
+            justify-content: space-around;
+            margin: calc(var(--margin) / 2);
+
+            &::before{
+                content: '';
+                position: absolute;
+                inset: calc(var(--margin) * -1);
+                z-index: -1;
+                background-color: #FFF6;
+            }
+
+            .carta{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+
+                h1{
+                    font-size: 3rem;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                ion-icon{
+                    font-size: 2rem;
+                }
+
+                ion-icon[name="arrow-up"]{
+                    color: #72db80;
+                }
+
+                ion-icon[name="arrow-down"]{
+                    color: #eb4e4e;
+                }
+            }
+
+            .angolo{
+                height: var(--br-figli);
+                width: var(--br-figli);
+                background-image: radial-gradient(circle at 100% 100%, transparent var(--br-figli), #FFF var(--br-figli));
+                position: absolute;
+                top: calc(var(--margin) * -.5);
+                left: calc(var(--margin) * -.5);
+
+                &:nth-of-type(1){
+                    left: initial;
+                    right: calc(var(--margin) * -.5);
+                    rotate: 90deg;
+                }
+
+                &:nth-of-type(2){
+                    top: initial;
+                    bottom: calc(var(--margin) * -.5);
+                    rotate: -90deg;
+                }
+
+                &:nth-of-type(3){
+                    left: initial;
+                    top: initial;
+                    right: calc(var(--margin) * -.5);
+                    bottom: calc(var(--margin) * -.5);
+                    rotate: 180deg;
+                }
+            }
+
+            .carta{
+                height: 100%;
+                background-color: #FFF;
+                flex-grow: 1;
+                border-radius: calc(var(--br-figli) / 2);
+            }
+        }
+
+        hr{
+            background-color: #CCC;
+            margin-top: calc(var(--padding) / 2);
+        }
+
+        .cont-utenti{
+            flex-grow: 1;
+            background-color: #FFF;
+            gap: calc(var(--padding) / 2);
+            
+            .cont-bottoni{
+                background-color: black;
+                flex-grow: 1;
+                height: 4rem;
+            }
+
+            .flex-row{
+                gap: .5rem;
+                justify-content: space-between;
+            }
+
+            TabellaUtenti{
+                flex-grow: 1;
+            }
+
+            .btn-aggiungi{
+                padding: .5rem;
+            }
+
+            .wrapper-menu{
+                button{
+                    padding: 0;
+                    font-size: 1rem;
+                    color: #CCC;
+                    aspect-ratio: 1;
+
+                    ion-icon{
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+footer{
+    height: var(--padding);
+    background-color: #FFF;
+    border-radius: 0 0 1.5rem 1.5rem;
+}
+

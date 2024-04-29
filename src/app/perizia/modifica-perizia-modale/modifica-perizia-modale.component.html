@@ -1,0 +1,247 @@
+<dialog #modaleUtente id="dialogoModifica" class="flex-row">
+  <button class="btn-chiudi" (click)="ChiudiModale()" >
+  <ion-icon name="close" />
+  </button>
+  <ContenitoreNotifiche />
+  <div class="pagina-dialogo flex-col">
+    <h1>Modifica Perizia</h1>
+    <div class="wrapper flex-row">
+      <div class="flex-col">
+        <div class="info-utente sopra flex-col">
+          <div class="flex-row header-info">
+            <h3>Informazioni Luogo</h3>
+            @if(infoLuogo.modifica)
+            {
+              <div class="flex-row row-bottoni">
+                <button (click)="ResettaInfo('luogo')">
+                  <ion-icon name="close"></ion-icon>
+                  <span>Annulla</span>
+                </button>
+                <button 
+                  class="accento" 
+                  (click)="AggiornaUtente('luogo')" 
+                  [class.caricamento]="infoLuogo.caricamento"
+                >
+                  <ion-icon name="checkmark"></ion-icon>
+                  <span>Applica</span>
+                  <i class="pi pi-spin pi-spinner"></i>
+                </button>
+              </div>
+            }
+            @else {
+            <button (click)="infoLuogo.modifica = true; Focus('indirizzo')">
+              <i class="pi pi-pencil"></i>
+              <span>Modifica</span>
+            </button>
+            }
+          </div>
+          <form class="cont-utente flex-col" #cercaIndirizzo>
+            @if(opzioni){
+              <google-map 
+                [mapId]="'1436edaa72ee3004'"
+                [options]="{
+                  'center': periziaModificata.luogo.coordinate,
+                  'zoom': 12,
+                  'mapTypeControl': false,
+                  'fullscreenControl': false,
+                  'zoomControlOptions': {
+                    'position': maps.ControlPosition.LEFT_TOP
+                  },
+                  'streetViewControl': false,
+                  'streetViewControlOptions': {
+                    'position': maps.ControlPosition.LEFT_TOP
+                  }
+                  }"
+                >
+                <map-advanced-marker 
+                  [position]="periziaModificata.luogo.coordinate"
+                  [content]="opzioni.element"
+                  />
+              </google-map>
+            }
+            <Ricerca 
+              icona="home" 
+              name="cerca-indirizzo"
+              id-input="cerca-indirizzo"
+              testo-label="Cerca Indirizzo"
+              [class.abilitato]="infoLuogo.modifica" 
+              [mockup]="!infoLuogo.modifica" 
+              [disabilitato]="!infoLuogo.modifica" 
+              [caricamento]="ricercaInCaricamento"
+              [opzioni]="opzioniRicerca"
+              (onInput)="CercaIndirizzi($event)"
+              (onSelezionato)="CambiaIndirizzo($event)"
+              
+            />
+            <FintoHr testo="Oppure" /> 
+            @if(navigator["geolocation"]){
+              <button class="accento" [disabled]="!infoLuogo.modifica" (click)="infoLuogo.modifica && CoordinateLocali()">
+                @if(caricamentoLocali)
+                {
+                  <i class="pi pi-spin pi-spinner"></i>
+                }
+                @else {
+                  <ion-icon name="navigate" style="transform: translateX(-.25rem);"></ion-icon>
+                  <span>Usa la mia posizione</span>
+                }
+              </button>
+            }
+          </form>
+        </div>
+        <div class="info-utente flex-col">
+          <div class="flex-row header-info">
+            <h3>Informazioni Generali</h3>
+            @if(infoGenerali.modifica)
+            {
+              <div class="flex-row row-bottoni">
+                <button (click)="ResettaInfo('generali')">
+                  <ion-icon name="close"></ion-icon>
+                  <span>Annulla</span>
+                </button>
+                <button 
+                  class="accento" 
+                  (click)="AggiornaUtente('generali')" 
+                  [class.caricamento]="infoGenerali.caricamento"
+                >
+                  <ion-icon name="checkmark"></ion-icon>
+                  <span>Applica</span>
+                  <i class="pi pi-spin pi-spinner"></i>
+                </button>
+              </div>
+            }
+            @else {
+              <button (click)="infoGenerali.modifica = true">
+                <i class="pi pi-pencil"></i>
+                <span>Modifica</span>
+              </button>
+            }
+          </div>
+          <form class="cont-utente generali">
+            <p-calendar 
+              [(ngModel)]="periziaModificata.data" dateFormat="yy-mm-dd"
+              name="lavoro-assuntoIl"
+              [firstDayOfWeek]="1"
+              [iconDisplay]="'input'" 
+              [showIcon]="true"
+              [disabled]="!infoGenerali.modifica"
+              [class.disabilitato]="!infoGenerali.modifica"
+              [class.abilitato]="infoGenerali.modifica"
+            >
+            </p-calendar>
+            @if(operatori.length){
+              <Dropdown 
+                testo-label="Operatore Perizia"
+                name="info-2FA"
+                id-input="info-2FA"
+                icona="lock-closed" 
+                [mockup]="!infoGenerali.modifica" 
+                [class.abilitato]="infoGenerali.modifica" 
+                [class.disabilitato]="!infoGenerali.modifica"
+                [disabilitato]="!infoGenerali.modifica" 
+                [opzioni]="PrendiOpzioniOperatori()"
+                [(ngModel)]="periziaModificata.codOperatore"
+              />
+            }
+            @else{
+              <div class="loader"></div>
+            }
+            <InputText 
+              icona="information-circle" 
+              name="info-id"
+              id-input="info-id"
+              testo-label="Codice Perizia"
+              testo-label="Codice Perizia" 
+              [mockup]="true"
+              [valore]="periziaModificata.codice + ''"
+            />
+          </form>
+        </div>
+      </div>
+      <div class="info-utente sopra flex-col">
+        <div class="flex-row header-info">
+          <h3>Immagini Perizia</h3>
+          @if(infoImmagini.modifica)
+          {
+            <div class="flex-row row-bottoni">
+              <button (click)="ResettaInfo('immagini')">
+                <ion-icon name="close"></ion-icon>
+                <span>Annulla</span>
+              </button>
+              <button 
+                class="accento" 
+                (click)="AggiornaUtente('immagini')" 
+                [class.caricamento]="infoImmagini.caricamento"
+              >
+                <ion-icon name="checkmark"></ion-icon>
+                <span>Applica</span>
+                <i class="pi pi-spin pi-spinner"></i>
+              </button>
+            </div>
+          }
+          @else {
+            <button (click)="infoImmagini.modifica = true; Focus('immagini')">
+              <i class="pi pi-pencil"></i>
+              <span>Modifica</span>
+            </button>
+          }
+        </div>
+        <form class="cont-utente flex-col" style="flex-wrap: nowrap;" #immagini>
+          <Carosello 
+            altezza-immagine="30rem"
+            [quadrate]="true"
+            [nascondi-tutte]="true"
+            [disabilita-hover]="true"
+            [immagini]="periziaModificata.immagini"
+            [controlli-immagine]="true"
+            [disabilitato]="!infoImmagini.modifica"
+            (onAggiungi)="vuoleAggiungereImmagine = true"
+            (onRimuovi)="vuoleEliminareImmagine = true"
+          />
+          @if(periziaModificata.immagini.length){
+            <ComponenteTextarea
+              name="textarea-commento"
+              [disabilitata]="!infoImmagini.modifica"
+              [(ngModel)]="periziaModificata.immagini[indiceFoto].commento"
+            />
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+@if(vuoleEliminareImmagine){
+  <ModaleSiNo 
+    #modaleElimina
+    style="position: absolute;"
+    colore="#eb4e4e"
+    si="Elimina"
+    titolo="Elimina Immagine"
+    messaggio="Vuoi eliminare l'immagine dalla perizia?"
+    (onNo)="ChiudiModaleElimina(modaleElimina.modale.nativeElement)"
+    (onSi)="CancellaImmagine(modaleElimina.modale.nativeElement);"
+  />
+}
+
+@if (vuoleAggiungereImmagine) {
+  <FileUpload
+    #fileupload
+    style="position: absolute;"
+    [inCaricamento]="inCaricamentoAggiungiImmagine"
+    (onChiudi)="ChiudiModaleUpload(fileupload.modale.nativeElement)"
+    (onConferma)="CaricaImmagine($event)"
+  />
+}
+
+<!-- <Dropdown 
+  testo-label="2FA Abilitato"
+  name="info-2FA"
+  id-input="info-2FA"
+  icona="lock-closed" 
+  [mockup]="!infoLuogo.modifica" 
+  [disabilitato]="!regexInput['telefono'].test(utenteModificato['telefono'])" 
+  [opzioni]="opzioniSiNo"
+  [(ngModel)]="utenteModificato['2FA']"
+  (onChange)="VerificaInputPersonali($event)"
+  (onInput)="infoLuogo.errori['info-2FA']=''; ControllaErroriPersonali()"
+/> -->

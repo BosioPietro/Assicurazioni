@@ -16,6 +16,8 @@ export class TransizioneService {
   private ultimaRoutePagina?: string;
   private routeAttualePagina?: string;
 
+  public caricamento: boolean = false;
+
   AggiungiForm(form : HTMLElement, route : string){
     this.formFinti[route] = form;
   }
@@ -81,22 +83,23 @@ export class TransizioneService {
 
   MostraOverlay(){
     if(!this.overlay || !this.ultimaRoutePagina || !this.routeAttualePagina) return;
-
-    console.log(this.ultimaRoute)
-    console.log(this.routeAttuale)
-
+    
     const formPrec = this.formFinti[this.ultimaRoutePagina]
     const formAtt = this.formVeri[this.routeAttualePagina]
-
+    
     formPrec.classList.add("mostra")
     this.overlay.classList.add("visibile")
     if(!this.ControllaLogo(formAtt)){
       setTimeout(() => {
         this.MostraOverlay();
-      }, 1)
+      }, 0)
       return;
     }
+
+    console.log(formAtt)
+    console.log(formPrec)
     
+
     this.MuoviLogo(formPrec, formAtt);
     this.NascondiFigli(formPrec);
     this.NascondiFigli(formAtt, false)
@@ -152,9 +155,11 @@ export class TransizioneService {
   MuoviLogo(prec: HTMLElement, att: HTMLElement){
     const logoPrec = prec.querySelector(".logo")! as HTMLElement
     const logoAtt = att.querySelector(".logo")! as HTMLElement
-
+    
+    att.classList.add("misura")
     const [xPrec, yPrec] = this.CalcolaCoordinate(logoPrec)
     const [xAtt, yAtt] = this.CalcolaCoordinate(logoAtt)
+    att.classList.remove("misura")
 
     const yDiff = yAtt - yPrec;
 

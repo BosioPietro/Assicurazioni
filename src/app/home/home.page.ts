@@ -4,7 +4,7 @@ import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/stan
 import { InfoWindowComponent } from './info-window/info-window.component';
 import { MapService } from './shared/map.service';
 import { NgClass } from '@angular/common';
-import { AsideComponent } from '../aside/aside.component';
+import { AsideComponent } from '../comuni/aside/aside.component';
 import { FiltroComponent } from './filtro/filtro.component';
 
 // declare var google:any;
@@ -23,9 +23,10 @@ export class HomePage {
 
   directionService?: google.maps.DirectionsService;
   //marker
+  google = window.google;
   ngAfterViewInit(){
       this.mapService.mapRecipient = this.mapElement.nativeElement;
-      this.mapService.map = new google.maps.Map(this.mapElement.nativeElement, this.mapService.mapOptions);
+      this.mapService.map = new this.google.maps.Map(this.mapElement.nativeElement, this.mapService.mapOptions);
       this.mapService.creaMappa();
   }
   ngOnInit(){

@@ -11,7 +11,14 @@ const env = {
     MAILUSER : process.env.MAIL_USER!,
     MAILPWD : process.env.MAIL_PWD!,
     EMAIL : process.env.EMAIL!,
-    OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!
+    OAUTH_CREDENTIALS : process.env.OAUTH_CREDENTIALS!,
+    TWILIO_API_KEY: process.env.TWILIO_API_KEY!, 
+    TWILIO_API_SECRET: process.env.TWILIO_API_SECRET!,
+    TWILIO_API_SID: process.env.TWILIO_API_SID!,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY!,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET!,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME!,
+    GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY!,
 }
 
 export default env;

@@ -1,0 +1,48 @@
+<header #header>
+  <p-checkbox 
+    [binary]="true" 
+    [disabled]="!tabella.utenti.length || tabella.utentiNonTrovati"
+    [(ngModel)]="tabella.selezionatiTutti" 
+    (onChange)="SelezionaTutti($event)"
+  />
+  <span class="th" (click)="Filtra(0, 'cognome')">
+    <span>Nome</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(1, 'ruolo')">
+    <span>Ruolo</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(2, 'nPerizie')">
+    <span>Perizie</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(3, 'assuntoIl')">
+    <span>Creazione</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+  <span class="th" (click)="Filtra(4, 'stato')">
+    <span>Stato</span>
+    <ion-icon [attr.name]="'chevron-expand'"></ion-icon>
+  </span>
+</header>
+<div class="body-tabella">
+  <div class="wrapper-utenti">
+    @if(tabella.utentiNonTrovati)
+    {
+      <h1 class="no-utenti">Nessun Risultato</h1>
+      <p>Non ci sono utenti con i criteri di ricerca selezionati</p>
+    }
+    @else if(!tabella.utenti.length)
+    {
+      @for (u of '111111111111111'.split(''); track $index) {
+        <UtentePlaceholder />
+      } 
+    }
+    @else {
+       @for (u of tabella.utenti; track $index) {
+          <Utente [utente]="u" (click)="ModificaUtente(u)"/>
+       }
+    }
+  </div>
+</div>

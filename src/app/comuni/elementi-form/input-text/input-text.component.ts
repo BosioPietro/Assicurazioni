@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, Optional, Output, Self, input } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Optional, Output, Self, ViewChild, input } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { IonIcon } from '@ionic/angular/standalone';
 
@@ -37,11 +37,20 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input("disabilitato")
   public disabilitato: boolean = false;
 
+  @Input("caricamento")
+  public caricamento: boolean = false;
+
   @Output()
   onInput: EventEmitter<Event> = new EventEmitter<Event>();
 
   @Output()
   onChange: EventEmitter<Event> = new EventEmitter<Event>();
+
+  @Output()
+  onKeyDown: EventEmitter<KeyboardEvent> = new EventEmitter<KeyboardEvent>();
+
+  @ViewChild("inputText")
+  input!: ElementRef<HTMLInputElement>
 
   constructor(
     @Self()
@@ -61,7 +70,11 @@ export class InputTextComponent implements ControlValueAccessor {
 
   // Roba per far funzionare i ReactiveForm
   writeValue(value: string): void {
-    this.value = value;
+    this.value = value ?? "";
+    
+    if(this.input && this.input.nativeElement){
+      this.input.nativeElement.value = this.value;
+    }
   }
 
   setDisabledState(isDisabled: boolean): void {

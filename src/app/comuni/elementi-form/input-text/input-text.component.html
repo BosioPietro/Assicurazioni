@@ -1,6 +1,11 @@
-<div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato">
+<div class="cont flex-row" [class.errore]="errore" [class.disabilitato]="disabilitato" [class.mockup]="mockup">
   @if(icona){
-    <ion-icon [name]="icona" class="icona"/>
+    @if(!caricamento){
+      <ion-icon [name]="icona" class="icona"/>
+    }
+    @else {
+      <i class="pi pi-spin pi-spinner" style="color: var(--colore-testo)"></i>
+    }
     <hr/>
   }
   <div class="flex-row">
@@ -8,13 +13,15 @@
       <input 
         type="text" 
         placeholder=""
-        [disabled]="disabilitato"
+        [disabled]="disabilitato || mockup"
         [attr.name]="name"
-        [attr.value]="value"
+        [(attr.value)]="value"
         [attr.id]="idInput" 
         (input)="!mockup && Input($event)"
         (change)="!mockup && Cambiato($event)"
         (blur)="!mockup && onTouched()"
+        (keyup)="onKeyDown.emit($event)"
+        #inputText
       />
   </div>
 </div>

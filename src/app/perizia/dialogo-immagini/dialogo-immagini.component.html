@@ -1,0 +1,25 @@
+<dialog #modale class="flex-col">
+  <div class="cont-img flex-row">
+    <div [style]="{'background-image': 'url(' + immagini[indice].url + ')'}" class="img">
+    </div>
+    <div class="flex-col">
+      <div class="header">
+        <button (click)="onChiudi.emit()">
+          <ion-icon name="close"/>
+        </button>
+      </div>
+      <div class="commento">
+        {{ immagini[indice].commento }}
+      </div>
+    </div>
+  </div>
+  <div class="barra-img flex-row">
+    @for (img of immagini; track $index) {
+      <img 
+        [src]="img.url"
+        [class.selezionata]="indice == $index"  
+        (click)="indice = $index"
+      />
+    }
+  </div>
+</dialog>

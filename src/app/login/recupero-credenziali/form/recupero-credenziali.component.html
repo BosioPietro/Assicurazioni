@@ -1,5 +1,5 @@
 <div class="form flex-col" #formHtml>
-  <img class="logo" src="assets/google-logo.svg"/>
+  <img class="logo" src="assets/login/google-logo.svg"/>
   <span class="flex-col jc-c invisibile">
     <h1>Recupero Credenziali</h1>
     <span class="piccolo flex-row jc-c">
@@ -42,11 +42,11 @@
       </form>
     }
     @case (1) {
-      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione">
+      <form class="flex-col" [class.animando]="sinc.staAnimando" [class.transizione]="sinc.inTransizione" (ngSubmit)="ResetPassword()">
         <span class="flex-col jc-c">
           <h1>Verifica Codice</h1>
           <span class="piccolo flex-row jc-c">
-            Codice non ricevuto?&nbsp;<a>Invia dinuovo</a>
+            Codice non ricevuto?&nbsp;<a (click)="InviaMail(true, false)" >Invia dinuovo</a>
           </span>   
         </span>
         <div class="form-item">
@@ -60,10 +60,9 @@
         </div>
         <div class="form-item">
           <button 
-            type="button" 
+            type="submit" 
             [disabled]="!sinc.codiceCorretto" 
             class="btn-accento" 
-            (click)="ResetPassword()"
           >
           Verifica Codice</button>
           <a (click)="NavigaLogin()" class="piccolo">Torna al login</a>

@@ -1,4 +1,5 @@
 import express, { Express, Request, Response, NextFunction } from "express";
+import FormData  from "express-form-data";
 
 const LoggingRichieste = (app : Express) => {
     app.use("/", (req : Request, res : Response, next : NextFunction) => {
@@ -27,8 +28,11 @@ const MiddlewareLogParametri = (app : Express) => {
             console.log(`    ${JSON.stringify(req["body"])}`)
         }
         next();
-    }) 
-    
+    })    
 }
 
-export { LoggingRichieste, MiddlewareJson, MiddlewareBodyParser, MiddlewareLogParametri }
+const MiddlewareFormData = (app : Express) => {
+    app.use(FormData.parse());
+}
+
+export { LoggingRichieste, MiddlewareJson, MiddlewareBodyParser, MiddlewareLogParametri, MiddlewareFormData }

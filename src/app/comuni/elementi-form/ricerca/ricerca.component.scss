@@ -1,0 +1,57 @@
+:host{
+    position: relative;
+}
+
+.opzioni{
+    --padding: .5rem;
+    --altezza-tot: calc(2 * var(--padding) + 1rem);
+    --num-opzioni-visibili: 4;
+
+    --altezza-massima: calc(calc(var(--altezza-tot) * var(--num-opzioni-visibili)) + 2px + var(--padding));
+
+    position: absolute;
+    top: calc(100% + .5rem);
+    z-index: 1000;
+    width: 100%;
+    max-height: 0;
+    overflow-y: scroll;
+    font-size: 1rem;
+    border: 1px solid var(--accento);
+    border-radius: .5rem;
+    pointer-events: none;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.175);
+    transition: background-color .3s;
+    animation: apri .3s;
+    opacity: 0;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::-webkit-scrollbar {
+    width: .75rem;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 100vh;
+    background-color: var(--accento);
+}
+
+.opzione{
+    padding: var(--padding);
+    border-radius: .5rem;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #EEE;
+    }
+}
+
+:host:focus-within .opzioni{
+    &.aperto{
+        max-height: var(--altezza-massima);
+        opacity: 1;
+        pointer-events: all;
+    }
+}

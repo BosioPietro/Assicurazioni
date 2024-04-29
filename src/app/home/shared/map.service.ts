@@ -159,7 +159,7 @@ export class MapService {
  
 
   filteredMarkers:any[] = this.markerList;
-  
+  google = window.google;
   filterMarkers(){
     this.filteredMarkers = this.markerList;
     this.filteredMarkers = this.markerList.filter(marker =>{
@@ -187,7 +187,7 @@ export class MapService {
     });
     this.filterMarkers();
     this.filteredMarkers.forEach(marker => {
-      this.newMarker = new google.maps.Marker({
+      this.newMarker = new this.google.maps.Marker({
         position: marker.coords,
         map: this.map,
         icon: {

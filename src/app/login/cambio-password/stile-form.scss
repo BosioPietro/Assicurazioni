@@ -1,0 +1,83 @@
+:host{
+    display: flex;
+    flex-grow: 1;
+    --gap: 1.5rem;
+    position: relative;
+}
+
+form{
+    border-radius: 1.5rem;
+    flex-grow: 1;
+    color: #000;
+    padding: 2rem 6rem;
+    background-color: #FFF;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap);
+    transition: all .5s ease-in;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 2rem;
+    margin-top: 0;
+    text-align: center;
+}
+
+.flex-row{
+    gap: calc(var(--gap) / 2);
+    justify-content: center;
+}
+
+.form-item{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.registrati{
+    font-size: .75rem;
+}
+
+label{
+    font-size: .75rem;
+    margin-bottom: .5rem;
+}
+
+.form-row{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+    width: 100%;
+}
+
+a{
+    margin-inline: auto;
+    color: #000;
+}
+
+Tooltip{
+    position: absolute;
+    transform: translateY(50%);
+    right: calc(100% + 2rem);
+    bottom: 25%;
+}
+
+span{
+    text-align: center;
+    font-size: .75rem;
+}
+
+.piccolo{
+    white-space: nowrap;
+}
+
+.piccolo span{
+    gap: .5rem;
+}
+
+// no
+.btn-accento{
+    margin-bottom: 0;
+}

@@ -6,20 +6,22 @@ import { LoginService } from './login.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AxiosError } from 'axios';
 import { LoginGoogleComponent } from './bottone-login-google/login-google.component';
-import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { MicrosoftLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
 import { Subscription } from 'rxjs';
 import { FintoHrComponent } from 'src/app/comuni/finto-hr/finto-hr.component';
 import { TransizioneService } from '../../servizio-transizione.service';
 import { InputTextComponent } from 'src/app/comuni/elementi-form/input-text/input-text.component';
 import { InputPasswordComponent } from 'src/app/comuni/elementi-form/input-password/input-password.component';
 import { SincronizzazioneService } from '../sincronizzazione.service';
-
+import { LoginMicrosoftComponent } from './bottone-login-microsoft/login-microsoft.component';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { BottoneLoginAppleComponent } from './bottone-login-apple/bottone-login-apple.component';
 
 @Component({
   selector: 'form-login',
   templateUrl: './login.component.html',
   styleUrls: ['../../stile-form.scss', '../stile-form.scss', './login.component.scss'],
-  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent],
+  imports: [IonicModule, CommonModule, FormsModule, ReactiveFormsModule, LoginGoogleComponent, FintoHrComponent, InputTextComponent, InputPasswordComponent, LoginMicrosoftComponent, BottoneLoginAppleComponent],
   standalone: true,
 })
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -29,7 +31,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private authService: SocialAuthService, 
     public transizione : TransizioneService, 
     private router : Router,
-    public sinc: SincronizzazioneService
+    public sinc: SincronizzazioneService,
+    public notifiche: NotificheService
   ) {}
 
   private activatedRoute = inject(ActivatedRoute);
@@ -47,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
-      this.servizio.LoginGoogle(user)
+      this.servizio.LoginOAuth(user)
       .then(() => this.router.navigate(["/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
@@ -67,46 +70,76 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     googleWrapper.click();
   }
 
+  MicrosoftSignin(){
+    this.authService.signIn(MicrosoftLoginProvider.PROVIDER_ID)
+  }
+
   async Login(){
     try
     {
+      this.transizione.caricamento = true;
       let info = await this.servizio.Login(this.form.value["username"], this.form.value["password"]);
+      this.transizione.caricamento = false;
+
       info = info["data"];
       
       if("deveCambiare" in info)
       {
-        this.router.navigate(["/login/cambio-password"])
+        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+        setTimeout(() => {
+          this.router.navigateByUrl("/login/cambio-password");
+        }, 500);
       }
-      else this.router.navigate(["/home"]);
+      else if("2FA" in info && !info["2FA"])
+      {
+        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
+        setTimeout(() => {
+          this.router.navigateByUrl("/login/verifica");
+        }, 500);
+      }
+      else this.router.navigate(["/home"])
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }
 
   private GestisciErrore(err : AxiosError){
+    this.transizione.caricamento = false;
     switch(err.response?.status)
     {
-      case 500: 
-        return alert("Errore interno del server");
       case 400:
         this.sinc.errori["username"] = "Username non esistente"
         break;
       case 401:
-        this.sinc.errori["password"] = "Password errata";
+        this.sinc.errori["password"] = "Password errata"
         break;
       default:
-        return alert(`Errore: ${err.response?.data} (${err.response?.status})`);
+        return this.notifiche.NuovaNotifica({
+          "tipo" : "errore",
+          "titolo" : "Qualcosa è andato storto"
+        })
     }
-  }
+  } 
 
   CredenzialiDimenticate(){
-    // this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
-    // setTimeout(() => {
-    //   this.router.navigateByUrl("/login/recupero-credenziali");
-    // }, 500);
-    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+    this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/recupero-credenziali");
     setTimeout(() => {
-      this.router.navigateByUrl("/login/cambio-password");
+      this.router.navigateByUrl("/login/recupero-credenziali");
     }, 500);
+  }
+
+  AppleSignin(){
+    const CLIENT_ID = "com.myapp.bundle.backend"
+    const REDIRECT_API_URL = "https://bosio.zip/api/login-oauth"
+    window.open(
+        `https://appleid.apple.com/auth/authorize? +
+            client_id=${CLIENT_ID}& +
+            redirect_uri=${encodeURIComponent(REDIRECT_API_URL)}& +
+            response_type=code id_token& +
+            scope=name email& +
+            response_mode=form_post`,
+        '_blank',
+        "width=400,height=500,menubar=no,location=no,status=no"
+    );
   }
 
 }

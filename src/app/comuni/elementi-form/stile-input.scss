@@ -4,23 +4,35 @@
     --colore-normale: #d1d5db;
     --colore-testo: #4b5563;
     --font-size: 1rem;
+    --br: .5rem;
 
     display: flex;
     align-items: center;
-}
-
-:host{
     user-select: none;
     caret-color: transparent;
+
+    &:has(.cont.mockup){
+        cursor: not-allowed;
+    }
+}
+
+.mockup{
+    pointer-events: none;
+    caret-color: transparent;
+
+    *{
+        caret-color: transparent;
+    }
 }
 
 .cont{
     padding: var(--padding) calc(var(--padding) * 1.5);
     border: 1px solid var(--colore-normale);
-    border-radius: 100vw;
+    border-radius: var(--br);
     background-color: #FFF;
     outline: 3px solid;
     outline-color: transparent;
+    transition: all .33s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .flex-row{
@@ -40,11 +52,11 @@ hr{
 input{
     width: 100%;
     background-color: transparent;
-    outline-color: transparent;
     border: 0;
     caret-color: var(--colore-testo);
     color: var(--colore-testo);
     font-size: var(--font-size);
+    outline: 0px solid transparent !important;
 }
 
 label{
@@ -72,25 +84,31 @@ ion-icon{
     transition: all .25s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-input:focus-visible{
-    outline: none;
-    border: 0;
+.cont:not(.mockup){
+    input:focus-visible{
+        outline: none;
+        border: 0;
+    }
+    
+    &:hover,
+    &:focus-within{
+        border-color: var(--accento);
+       
+        ion-icon:not(.disabilitato){
+            color: var(--accento);
+        }
+    
+        hr:not(.disabilitato){
+            border-color: var(--accento);        
+        }
+    }
+    
+    &:focus-within{
+        outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
+    }
 }
 
-:host:hover,
-:host:has(input:focus-visible){
-    border-color: var(--accento);
-   
-    ion-icon:not(.disabilitato){
-        color: var(--accento);
-    }
-
-    hr:not(.disabilitato){
-        border-color: var(--accento);        
-    }
-}
-
-:host:has(input:focus-visible),
+:host:focus-within,
 :host:not(:has(input:placeholder-shown)){
     label{
         top: calc(var(--padding) * -2);
@@ -99,14 +117,12 @@ input:focus-visible{
         padding-inline: calc(var(--padding) / 2);
     }
 }
-
-:host(:has(input:focus-visible)){
-    outline-color: color-mix(in srgb, var(--accento) 40%, transparent 60%);
-}
+    
 
 .disabilitato{
     --colore-testo: #4b5563;
     --colore-normale: #d1d5db;
+
     &, label{
         pointer-events: none;
         opacity: .5;
@@ -131,4 +147,46 @@ input:focus-visible{
     25%, 75% { transform: translateX(-5px); }
     50% { transform: translateX(5px); }
 }
-  
+
+:host.abilitato{
+    --colore-normale: #CCC;
+    --br: .5rem;
+
+    label{
+        color: var(--colore-normale);
+    }
+
+    .cont{
+        --colore-testo: #000;
+        --colore-normale: #000;
+
+        label{
+            color: unset;
+        }
+    }
+
+    .cont.errore{
+        --colore-testo: #eb4e4e;
+        --colore-normale: #eb4e4e;
+
+        label{
+            color: var(--colore-normale);
+        }
+    }
+
+    .cont:has(input:focus){
+        outline-color: color-mix(in srgb, 50% var(--accento), transparent 50%);
+    }
+
+    &:hover{
+        border-color: var(--accento);
+
+        ion-icon:not(.disabilitato){
+            color: var(--accento);
+        }
+    
+        hr:not(.disabilitato){
+            border-color: var(--accento);        
+        }
+    }
+}

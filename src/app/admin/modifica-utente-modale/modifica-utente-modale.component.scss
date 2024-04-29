@@ -1,0 +1,256 @@
+dialog{
+    border: 0;
+    padding: 0;
+    min-height: calc(100dvh - 8rem);
+    background-color: #f5f6f8;
+    border-radius: 1rem;
+    padding: 2rem;
+    animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &.chiudi{
+        animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        &::backdrop{
+            animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+    }
+
+    .btn-chiudi{
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        outline-color: transparent;
+    }
+
+}
+
+button{
+    font-size: 1.1rem;
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        font-size: 1.5rem;
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+}
+
+@keyframes appari{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes scompari{
+    from{ opacity: 1; }
+    to{ opacity: 0; }
+}
+#dialogoModifica{
+    padding: 0;
+    // width: calc(100% - 8rem);
+    height: calc(100dvh - 8rem);
+    background-color: #f5f6f8;
+
+    .row-bottoni{
+        gap: 1rem;
+
+        ion-icon{
+            font-size: 1rem;
+        }
+    }
+
+    &::backdrop{
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    h1{
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .nav-dialogo{
+        background-color: #FFF;
+        padding: 2rem;
+        gap: 1rem;
+
+        .opzione{
+            white-space: nowrap;
+            padding: .5rem 1rem;
+            border-radius: .5rem;
+            font-size: 1.35rem;
+            gap: 1rem;
+            align-items: center;
+            cursor: pointer;
+            border-color: transparent;
+            caret-color: transparent;
+
+            &.selezionata{
+                border: 2px solid var(--accento);
+                outline: 4px solid color-mix(in srgb, var(--accento) 50%, transparent 50%);
+            }
+
+            ion-icon{
+                scale: 1.2;
+            }
+        }
+    }
+
+    .pagina-dialogo{
+        padding-left: 1rem;
+        padding: 2rem;
+
+        .wrapper{
+            background-color: #FFF;
+            padding: 2rem;
+            gap: 1rem;
+            border-radius: 1rem;
+            
+            hr{
+                background-color: #CCC;
+                margin-block: 1rem;
+            }
+
+            & > .flex-row{
+                gap: 1rem;
+            }
+    
+            .cambia-immagine{
+                align-items: flex-start;
+                gap: 1rem;
+    
+                p{
+                    color: #AAA;
+                    font-size: .9rem;
+                }
+            }
+    
+            .header-info{
+                justify-content: space-between;
+                margin-bottom: 1rem;
+            
+                h3{
+                    display: grid;
+                    place-items: center;
+                }
+            }
+    
+            .info-utente{
+                padding: 1rem;
+                border-radius: 1rem;
+                border: 1px solid #CCC;
+
+                &.sopra{
+                    z-index: 2;
+                }
+            }
+
+            .elimina-immagine{
+                overflow: clip;
+                border-radius: 100vh;
+                position: relative;
+                aspect-ratio: 1;
+
+                span{
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: opacity .3s cubic-bezier(0.075, 0.82, 0.165, 1);
+                    background-color: #000A;
+                    position: absolute;
+                    inset: 0;
+                    display: grid;
+                    place-items: center;
+                    color: #FFF;
+                    cursor: pointer;
+                    font-size: 2rem;
+                }
+
+                &:hover{
+                    span{
+                        opacity: 1;
+                        pointer-events: unset;
+                    }
+                }
+
+
+            }
+    
+            .cont-utente{
+                display: flex;
+                flex-flow: row wrap;
+                gap: 1rem;
+
+                InputText{
+                    z-index: 0;
+                }
+                
+                InputText, Dropdown, p-calendar{
+                    min-width: 49%;
+                    flex-grow: 1;
+                }
+
+                p-calendar::ng-deep{
+                    .p-calendar::before{
+                        content: 'Assunto Il';
+                    }
+                }
+            }
+        }
+    }
+    
+    ImmagineProfileDefault{
+        aspect-ratio: 1;
+        border-radius: 100vh;
+        background-color: #AAA;
+        caret-color: transparent;
+        overflow: hidden;
+    }
+    
+    .immagine-utente{
+        height: 8rem;
+        aspect-ratio: 1;
+        font-size: 4rem;
+        object-fit: cover;
+        border-radius: 100vh;
+    }
+}
+
+button:not(.caricamento){
+    i{
+        display: none;
+    }
+}
+
+.caricamento{
+    position: relative;
+
+    ion-icon, span{
+        visibility: hidden;
+    }
+
+    i{
+        position: absolute;
+        left: 50%;
+        translate: -50% 0;
+    }
+
+}

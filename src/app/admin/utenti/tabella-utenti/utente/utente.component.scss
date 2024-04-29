@@ -1,0 +1,82 @@
+:host > span{
+    display: grid;
+    grid-template-columns: auto repeat(5, 1fr);
+    gap: 1rem;
+    padding: .5rem .75rem;
+    cursor: pointer;
+    transition: background-color .33s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    & > *{
+        caret-color: transparent;
+    }
+    
+    & > *:not(p-checkbox){
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    &:hover{
+        background-color: #EEE;
+    }
+}
+
+span{
+    display: flex;
+    align-items: center;
+}
+
+.username::before{
+    content: '@';
+}
+
+p, .username{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.flex-col{
+    overflow: hidden;
+}
+
+.flex-row{
+    gap: 1rem;
+}
+
+.username{
+    color: #AAA;
+    font-size: .75rem;
+}
+
+.img, ImmagineProfileDefault{
+    height: 2rem;
+    aspect-ratio: 1;
+    border-radius: 100vh;
+    background-color: #AAA;
+    caret-color: transparent;
+    background-size: cover;
+}
+
+.ruolo{
+    border-radius: .25rem;
+    padding: .25rem;
+    background-color: var(--accento);
+    color: #FFF;
+}
+
+.ruolo[ruolo="Dipendente"]{
+    background-color: #EEE;
+    color: #000;
+}
+
+ion-icon{
+    margin-right: .25rem;
+}
+
+ion-icon[name="close-circle"]{
+    color: #eb4e4e
+}
+
+ion-icon[name="checkmark-circle"]{
+    color: #72db80;
+}

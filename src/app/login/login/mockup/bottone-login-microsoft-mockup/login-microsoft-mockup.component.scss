@@ -1,0 +1,18 @@
+button{
+    --dim: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--dim) / 2);
+    width: 100%;
+    border-radius: 100vh;
+    background-color: #F2F2F2;
+    padding: calc(var(--dim) * .75);
+}
+
+.logo{
+    aspect-ratio: 1;
+    height: calc(var(--dim) * 1);
+}
+

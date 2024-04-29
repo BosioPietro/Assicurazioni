@@ -8,6 +8,9 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { RecuperoCredenzialiFinto } from './recupero-credenziali/mockup/recupero-credenziali-mockup.component';
 import { ResetPasswordFinto } from './reset-password/mockup/reset-password-form-mockup.component';
 import { PlatformLocation } from '@angular/common'
+import { CambioPasswordFinto } from './cambio-password/mockup/cambio-password.component';
+import { BarraLoaderComponent } from '../comuni/barra-loader/barra-loader.component';
+import { VerificaFintoComponent } from './verifica/mockup/verifica-mockup.component';
 
 
 @Component({
@@ -15,11 +18,15 @@ import { PlatformLocation } from '@angular/common'
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, RecuperoCredenzialiFinto, LoginFinto, ResetPasswordFinto]
+  imports: [IonicModule, CommonModule, FormsModule, RecuperoCredenzialiFinto, LoginFinto, ResetPasswordFinto, CambioPasswordFinto, BarraLoaderComponent, VerificaFintoComponent]
 })
 export class LoginPage implements OnInit, AfterViewInit {
 
-  constructor(private transizione: TransizioneService, private router : Router, location: PlatformLocation){
+  constructor(
+    public transizione: TransizioneService, 
+    private router : Router, 
+    location: PlatformLocation
+  ){
     location.onPopState(() => window.location.reload());
   }
   
@@ -39,7 +46,7 @@ export class LoginPage implements OnInit, AfterViewInit {
       else if(e instanceof NavigationEnd && this.transizione.inTransizione)
       {
         this.transizione.routeAttuale = this.router.url;
-        // this.transizione.MostraOverlay();
+        this.transizione.MostraOverlay();
       }
     })
   }
@@ -47,10 +54,5 @@ export class LoginPage implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.transizione.main = this.main.nativeElement;
     this.transizione.overlay = this.overlay.nativeElement;
-
-    window.onhashchange = () => {
-      alert("ciao")
-    }
   }
-
 }

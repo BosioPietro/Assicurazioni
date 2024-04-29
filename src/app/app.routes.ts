@@ -3,9 +3,9 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'utenti',
     pathMatch: 'full',
-  },
+  },  
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
@@ -29,11 +29,24 @@ export const routes: Routes = [
       {
         path: "reset-password",
         loadComponent: () => import("./login/reset-password/form/form-reset-password.component").then((m) => m.ResetPasswordComponent)
+      },
+      {
+        path: "verifica",
+        loadComponent: () => import("./login/verifica/form/verifica.component").then((m) => m.VerificaComponent)
       }
     ]
   },
   {
     path: 'registrazione',
     loadComponent: () => import('./registrazione/registrazione.page').then( m => m.RegistrazionePage)
+  },
+  {
+    path: 'utenti',
+    loadComponent: () => import('./admin/utenti/utenti.page').then( m => m.UtentiPage)
+  },
+  {
+    path: 'perizia/:codice',
+    loadComponent: () => import('./perizia/perizia.page').then( m => m.PeriziaPage)
   }
+
 ];

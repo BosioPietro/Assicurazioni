@@ -1,0 +1,96 @@
+:host{
+    display: flex;
+    flex-direction: column;
+
+    &::ng-deep{
+
+        .p-checkbox .p-checkbox-box.p-highlight{
+            border-color: var(--accento) !important;
+            background: var(--accento) !important;
+        }
+
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover,
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus{
+            border-color: var(--accento) !important;
+        }
+
+        .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus{
+            box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--accento) 40%, transparent 60%) !important;
+        }
+    }
+}
+
+header{
+    display: grid;
+    grid-template-columns: auto repeat(5, 1fr);
+    background-color: #EEE;
+    padding: .5rem .5rem .5rem .75rem;
+    border-left: .25rem solid #EEE;
+    gap: 1rem;
+    border-radius: .5rem .5rem 0 0;
+
+    & > *:not(p-checkbox){
+        flex-grow: 1;
+        text-align: left;
+    }
+
+    .th{
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        user-select: none;
+        cursor: pointer;
+    }
+}
+
+input{
+    background-color: #FFF;
+}
+
+.body-tabella{
+    flex-grow: 1;
+    position: relative;
+    overflow-y: scroll;
+    border-left: .25rem solid #EEE;
+    border-bottom: .25rem solid #EEE;
+    border-radius: 0 0 .5rem .5rem;
+}
+
+.wrapper-utenti{
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    &:has(.no-utenti){
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        .no-utenti{
+            color: var(--accento);
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        p{
+            color: #AAA;
+            font-size: 1rem;
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: .25rem;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    padding-block: 2rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #AAA;
+    border-radius: 100vh;
+}

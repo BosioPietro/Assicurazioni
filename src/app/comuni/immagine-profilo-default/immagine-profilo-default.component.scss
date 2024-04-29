@@ -1,0 +1,16 @@
+:host{
+    overflow: hidden;
+}
+
+
+
+div{
+    height: inherit;
+    width: inherit;    
+    display: grid;
+    place-items: center;
+    flex-grow: 1;
+    background-color: red;
+    font-weight: 500;
+    color: white;
+}

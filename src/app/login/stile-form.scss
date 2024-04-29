@@ -6,10 +6,18 @@
     --gap: 1.5rem;
 }
 
+
+
 form, .form{
     justify-content: center;
     align-items: center;
     gap: var(--gap);
+}
+
+form.misura{
+    position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
 h1{
@@ -59,4 +67,49 @@ label{
     position: absolute;
     top: 0;
     bottom: 0;
+}
+
+button{
+    --dim: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-block: calc(var(--dim) * 0.75);
+    gap: calc(var(--dim) / 2);
+    width: 100%;
+    border-radius: 100vh;
+    background-color: #F2F2F2;
+    color: #000;
+    font-size: var(--dim);
+    transition: all var(--durata-transizione) cubic-bezier(0.22, 0.61, 0.36, 1);
+    cursor: pointer;
+    caret-color: transparent;
+}
+
+button:disabled{
+    filter: saturate(.5);
+    opacity: .5;
+}
+
+button:not(:disabled):active{
+    transform: scale(.95);
+}
+
+button:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--sfondo));
+}
+
+.btn-accento{
+    color: #F2F2F2;
+    background-color: var(--accento);
+}
+
+.btn-accento:not(:disabled):hover{
+    filter: drop-shadow(0 0 5px var(--accento));
+}
+
+
+.btn-accento:not(:disabled):active{
+    background-color: color-mix(in hsl, var(--accento) 95%, #000 5%);
 }

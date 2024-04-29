@@ -11,4 +11,7 @@ export class FintoHrComponent{
   @Input()
   testo! : string;
 
+  @Input()
+  colore: string = "var(--op1)";
+
 }

@@ -3,7 +3,7 @@
 }
 
 div{
-    color: var(--op1);
+    color: var(--colore);
     text-align: center;
     position: relative;
     font-size: .75rem;
@@ -13,7 +13,7 @@ div{
 div::after, div::before{
     content: '';
     height: 1px;
-    background-color: var(--op1);
+    background-color: var(--colore);
     position: absolute;
     top: calc(50% - .75px);
     left: 0;
