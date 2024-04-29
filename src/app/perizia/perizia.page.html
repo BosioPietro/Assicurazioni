@@ -1,62 +1,67 @@
-@if(perizia && mostraHtml){
 <h1>Informazioni Perizia</h1>
- <div class="wrapper" [class.no-immagini]="!perizia.immagini.length">
-      <google-map 
-        [mapId]="'1436edaa72ee3004'"
-        [options]="{
-          'center': perizia.luogo.coordinate,
-          'zoom': 15,
-          'fullscreenControl': false,
-          'zoomControlOptions': {
-            'position': maps.ControlPosition.LEFT_TOP
-          },
-          'streetViewControl': true,
-          'streetViewControlOptions': {
-            'position': maps.ControlPosition.LEFT_TOP
-          }
-        }"
-      >
-      <map-advanced-marker 
-          [position]="perizia.luogo.coordinate"
-          [content]="opzioni.element"
-          />
-      </google-map>
-      @if(perizia.immagini.length){
-        <Carosello 
-          [immagini]="perizia.immagini"
-          [nascondi-tutte]="false"
-          (onVisualizza)="visualizzaImmagini = true" 
+<div class="wrapper" [class.no-immagini]="!perizia || !perizia.immagini.length">
+  @if (perizia) {
+    <google-map 
+      [mapId]="'1436edaa72ee3004'"
+      [options]="{
+        'center': perizia.luogo.coordinate,
+        'zoom': 15,
+        'fullscreenControl': false,
+        'zoomControlOptions': {
+          'position': maps.ControlPosition.LEFT_TOP
+        },
+        'streetViewControl': true,
+        'streetViewControlOptions': {
+          'position': maps.ControlPosition.LEFT_TOP
+        }
+      }"
+    >
+    <map-advanced-marker 
+        [position]="perizia.luogo.coordinate"
+        [content]="opzioni.element"
         />
-      }
- </div>
- <div class="cont-info jc-c">
+    </google-map>
+    @if(perizia.immagini.length){
+      <Carosello 
+        [immagini]="perizia.immagini"
+        [nascondi-tutte]="false"
+        (onVisualizza)="visualizzaImmagini = true" 
+      />
+    }
+  }
+  </div>
+
+
+<div class="cont-info jc-c">
   <main class="flex-col">
-    <div class="flex-col">
-      <p>{{ perizia.luogo.citta }},</p>
-      <p>{{ perizia.luogo.indirizzo }}</p>
-    </div>
-    <div class="flex-col" style="margin-block: auto;">
-      <h1>Perizia #{{ perizia.codice }}</h1>
-      <p>{{ perizia.immagini.length ? perizia.immagini.length + " Foto" : "Nessuna immagine"}} </p>
-    </div>
-    <div class="row-button flex-row">
-      <button class="flex-row jc-c accento" (click)="ApriModifica()">
-        <i class="pi pi-pencil"></i>
-        <span>Modifica</span>
-      </button>
-      <button class="flex-row jc-c" (click)="vuoleEliminare = true">
-        <ion-icon name="trash"></ion-icon>
-        <span>Elimina</span>
-      </button>
-    </div>
+    
+      <div class="flex-col">
+        <p>@if (perizia) {{{ perizia.luogo.citta }}},</p>
+        <p>@if (perizia) {{{ perizia.luogo.indirizzo }}}</p>
+      </div>
+      <div class="flex-col" style="margin-block: auto;">
+        <h1>@if (perizia) {Perizia #{{ perizia.codice }}}</h1>
+        <p>@if (perizia) {{{ perizia.immagini.length ? perizia.immagini.length + " Foto" : "Nessuna immagine"}}} </p>
+      </div>
+      <div class="row-button flex-row">
+        <button class="flex-row jc-c accento" (click)="ApriModifica()" [class.mockup]="!perizia">
+          <i class="pi pi-pencil"></i>
+          <span>Modifica</span>
+        </button>
+        <button class="flex-row jc-c" (click)="vuoleEliminare = true" [class.mockup]="!perizia">
+          <ion-icon name="trash"></ion-icon>
+          <span>Elimina</span>
+        </button>
+      </div>
   </main>
+  <!-- @if(perizia){ -->
   <div class="cella-info flex-col">
     <div class="info flex-col">
       <span class="flex-row al-c">
         <ion-icon name="person"></ion-icon>
         Effettuata Da
       </span>
-      @if(perizia.nomeOperatore){
+      @if(perizia && perizia.nomeOperatore){
         <p>{{ perizia.nomeOperatore }}</p>
       }
       @else {
@@ -69,7 +74,7 @@
         <ion-icon name="calendar"></ion-icon>
         Giorno
       </span>
-      <p>{{ FormattaData(perizia.data) }}</p>
+      <p>@if(perizia){{{ FormattaData(perizia.data) }}}&#8203;</p>
     </div>
     <hr/>
     <div class="info flex-col">
@@ -77,10 +82,15 @@
         <ion-icon name="checkmark-circle"></ion-icon>
         Stato
       </span>
-      <p>{{ StampaStato() }}</p>
+      <p>@if(perizia){{{ StampaStato() }}}&#8203;</p>
     </div>
   </div>
+<!-- } -->
 </div>
+
+
+
+@if(perizia){
   @if(visualizzaImmagini){
     <DialogoImmagini
       #immagini
@@ -114,4 +124,55 @@
       (onPeriziaModificata)="perizia = $event"
     />
   }
+
+}
+
+@if(!perizia || !mostraHtml){
+
+
+  <div class="cont-loader flex-col">
+    <h1>Informazioni Perizia</h1>
+    <div class="mappa-immagini-loader">
+      <div class="loader-mappa" loader></div>
+      <div class="loader-carosello flex-col" loader></div>
+    </div>
+    <div class="controlli-info-loader flex-row">
+      <div class="loader-controlli flex-col">
+        <p loader class="piccolo">AAAAAAAAAA</p>
+        <p loader class="piccolo">AAAAAAAAAAAAAAAAAAAAAAAAA</p>
+        <div class="cont-titolo">
+          <h1 loader>Perizia #11</h1>
+        </div>
+        <div class="row-button flex-row">
+          <button class="piccolo">MModifica</button>
+          <button class="piccolo">EElimina</button>
+        </div>
+      </div>
+      <div class="loader-info flex-col">
+        <div class="info-loader flex-col">
+          <span class="flex-row al-c">
+            <ion-icon name="person"></ion-icon>
+            Effettuata Da
+          </span>
+          <p>AAAAAAAAAAAA</p>
+        </div>
+        <hr/>
+        <div class="info-loader flex-col">
+          <span class="flex-row al-c">
+            <ion-icon name="calendar"></ion-icon>
+            Giorno
+          </span>
+          <p loader class="piccolo">AAAAAAAAAA</p>
+        </div>
+        <hr/>
+        <div class="info-loader flex-col">
+          <span class="flex-row al-c">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            Stato
+          </span>
+          <p loader class="piccolo">AAAAAAAAAAAAA</p>
+        </div>
+      </div>
+    </div>
+  </div>
 }
