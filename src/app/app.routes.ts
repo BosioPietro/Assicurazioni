@@ -38,6 +38,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    loadComponent: () => import('./admin/admin.page').then( m => m.AdminPage),
     children: [
       {
         path: 'utenti',
@@ -62,7 +63,8 @@ export const routes: Routes = [
     path: 'admin',
     pathMatch: 'full',
     redirectTo: 'admin/perizie',
-  },  {
+  },
+  {
     path: 'home',
     loadComponent: () => import('./admin/home/home.page').then( m => m.HomePage)
   }

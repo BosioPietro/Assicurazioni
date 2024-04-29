@@ -23,7 +23,7 @@ import { DataInStringa } from 'src/app/utils/funzioni';
 @Component({
   selector: 'ModificaPeriziaModale',
   templateUrl: './modifica-perizia-modale.component.html',
-  styleUrls: ['./modifica-perizia-modale.component.scss','../../comuni/stile-mappa.scss', '../../comuni/elementi-form/stile-calendario.scss'],
+  styleUrls: ['./modifica-perizia-modale.component.scss', '../../../comuni/elementi-form/stile-mappa.scss', '../../../comuni/elementi-form/stile-calendario.scss'],
   imports: [ImmagineProfiloDefault, IonIcon, ContenitoreNotificheComponent, 
             InputTextComponent, CalendarModule, FormsModule, DropdownComponent, 
             FileUploadComponent, ModaleSiNoComponent, GoogleMap, MapMarker, 

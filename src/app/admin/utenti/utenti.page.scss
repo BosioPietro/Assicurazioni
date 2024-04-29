@@ -2,18 +2,14 @@
     --padding: 2rem;
     display: flex;
     flex-direction: column;
-    margin: 1rem;
     border-radius: 1.5rem;
-    width: 85%;
-    margin-left: auto;
-    height: calc(100dvh - 2rem);
 }
 
 header{
     justify-content: space-between;
     padding: var(--padding);
     border-radius: 1.5rem 1.5rem 0 0;
-    background-color: #FFF;
+    background-color: var(--bianco);
     
     .flex-row{
         gap: 1rem;
@@ -32,7 +28,7 @@ header{
 button{
     font-size: 1.1rem;
     padding: .5rem 1rem;
-    background-color: #FFF;
+    background-color: var(--bianco);
     border: 1px solid #CCC;
     border-radius: .5rem;
     gap: .5rem;
@@ -53,7 +49,7 @@ button{
 
     &.accento{
         background-color: var(--accento);
-        color: #FFF;
+        color: var(--bianco);
         border-color: transparent;
     }
 
@@ -68,7 +64,7 @@ main{
     
     .padding{
         width: var(--padding);
-        background-color: #FFF;
+        background-color: var(--bianco);
     }
 
     .wrapper{
@@ -87,7 +83,7 @@ main{
                 position: absolute;
                 inset: calc(var(--margin) * -1);
                 z-index: -1;
-                background-color: #FFF6;
+                background-color: var(--bianco)6;
             }
 
             .carta{
@@ -120,7 +116,7 @@ main{
             .angolo{
                 height: var(--br-figli);
                 width: var(--br-figli);
-                background-image: radial-gradient(circle at 100% 100%, transparent var(--br-figli), #FFF var(--br-figli));
+                background-image: radial-gradient(circle at 100% 100%, transparent var(--br-figli), var(--bianco) var(--br-figli));
                 position: absolute;
                 top: calc(var(--margin) * -.5);
                 left: calc(var(--margin) * -.5);
@@ -148,7 +144,7 @@ main{
 
             .carta{
                 height: 100%;
-                background-color: #FFF;
+                background-color: var(--bianco);
                 flex-grow: 1;
                 border-radius: calc(var(--br-figli) / 2);
             }
@@ -161,7 +157,7 @@ main{
 
         .cont-utenti{
             flex-grow: 1;
-            background-color: #FFF;
+            background-color: var(--bianco);
             gap: calc(var(--padding) / 2);
             
             .cont-bottoni{
@@ -201,7 +197,7 @@ main{
 
 footer{
     height: var(--padding);
-    background-color: #FFF;
+    background-color: var(--bianco);
     border-radius: 0 0 1.5rem 1.5rem;
 }
 

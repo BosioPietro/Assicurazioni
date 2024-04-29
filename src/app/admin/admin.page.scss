@@ -1,3 +1,17 @@
 :host{
-    margin: 1rem;
+    padding: 1rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    min-height: 100dvh;
+}
+
+AsideComponent{
+    width: 20rem;
+}
+
+.wrapper{
+    position: relative;
+    flex-grow: 1;
 }

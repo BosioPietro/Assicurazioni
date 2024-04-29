@@ -16,7 +16,7 @@ import { ModificaPeriziaComponent } from './modifica-perizia-modale/modifica-per
 @Component({
   selector: 'app-perizia',
   templateUrl: './perizia.page.html',
-  styleUrls: ['./perizia.page.scss', '/src/app/comuni/elementi-form/stile-mappa.scss'],
+  styleUrls: ['./perizia.page.scss', '../../comuni/elementi-form/stile-mappa.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, GoogleMap, MapMarker, 
             MapAdvancedMarker, CaroselloComponent, DialogoImmaginiComponent,

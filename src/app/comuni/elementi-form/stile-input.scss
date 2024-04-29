@@ -29,7 +29,7 @@
     padding: var(--padding) calc(var(--padding) * 1.5);
     border: 1px solid var(--colore-normale);
     border-radius: var(--br);
-    background-color: #FFF;
+    background-color: var(--bianco);
     outline: 3px solid;
     outline-color: transparent;
     transition: all .33s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -67,7 +67,7 @@ label{
     padding-inline: 0;
     pointer-events: none;
     border-radius: var(--padding);
-    background-color: #FFF;
+    background-color: var(--bianco);
     color: color-mix(in srgb, var(--colore-testo) 50%, transparent 50%);
     font-size: var(--font-size);
 }

@@ -1,11 +1,9 @@
 :host{
     --gap: 2rem;
-    width: 85%;
-    margin: 1rem;
     padding: 2rem;
     border-radius: 1.5rem;
     margin-left: auto;
-    background-color: #FFF;
+    background-color: var(--bianco);
     gap: var(--gap);
 
     & > div:not(.cont-loader){
@@ -21,7 +19,7 @@ h1{
 button{
     font-size: 1.1rem;
     padding: .5rem 1rem;
-    background-color: #FFF;
+    background-color: var(--bianco);
     border: 1px solid #CCC;
     border-radius: .5rem;
     gap: .5rem;

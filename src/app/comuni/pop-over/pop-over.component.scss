@@ -31,7 +31,7 @@ h4, .testo{
     --larg: 15rem;
     position: absolute;
     bottom: calc(100% + var(--dim-robo) / 2);
-    background-color: #FFF;
+    background-color: var(--bianco);
     padding: .5rem;
     filter: drop-shadow(0 0 5px rgba(0, 0, 0, .5));
     border-radius: .5rem;
@@ -53,7 +53,7 @@ h4, .testo{
     width: var(--dim-robo);
     height: var(--dim-robo);
     border-radius: .25rem;
-    background-color: #FFF;
+    background-color: var(--bianco);
     transform: rotate(45deg);
     left: calc(50% - var(--dim-robo) / 2);
     z-index: -1;
