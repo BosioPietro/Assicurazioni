@@ -1,13 +1,16 @@
 dialog{
     border: 0;
     margin: 0;
-    padding: 4rem;
+    padding: 0;
+    max-height: unset;
+    max-height: unset;
     animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
     background-color: transparent;
     height: 100dvh;
     width: 100dvw;
-    margin: auto;
+    position: relative;
     border-radius: 1.5rem;
+    overflow: hidden;
     gap: 2rem   ;
 
     &.chiudi{
@@ -33,22 +36,29 @@ dialog{
     }
 }
 
-.img{
-    position: relative;
-    flex-grow: 1;
-    background-image: var(--url);
-    border-radius: 1.5rem;
-    overflow: hidden;
-    background-size: cover;
+.cont-img{
+    --x: 0px;
+    position: absolute;
+    height: 100%;
+    left: calc(50vw - var(--w-immagine) / 2 );
+    padding-block: var(--padding);
+    justify-content: flex-start;
+    gap: var(--gap);
+    transform: translateX(var(--x));
+    
+    img{
+        border-radius: 1.5rem;
+        overflow: hidden;
+        cursor: pointer;
+        width: var(--w-immagine);
+    }
+    
+    &.transizione{
+        transition: transform .5s cubic-bezier(0.22, 0.61, 0.36, 1), scale .5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
 
-    .commento{
-        position: absolute;
-        bottom: 0;
-        padding: 2rem;
-        width: 100%;
-        font-size: 2rem;
-        background-image: linear-gradient(0deg, #000 25%, transparent 100%);
-        color: #FFF;
+    &.selezionata{
+        scale: 1.25;
     }
 }
 

@@ -55,7 +55,10 @@ axios.interceptors["response"].use((response) => {
   {
     localStorage["token"] = token
   }
-  else localStorage.removeItem("token")
+  else{
+    localStorage.removeItem("token")
+    window.location.href = "/login"
+  }
 
   return response;
 });

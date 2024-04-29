@@ -24,6 +24,7 @@
       @if(perizia.immagini.length){
         <Carosello 
           [immagini]="perizia.immagini"
+          [nascondi-tutte]="false"
           (onVisualizza)="visualizzaImmagini = true" 
         />
       }

@@ -1,10 +1,25 @@
-<dialog #modale class="flex-col">
-  <div class="img" [style]="{'--url': 'url(' + immagini[indice].url + ')'}" [@appari]>
-    <div class="commento">
-      {{ immagini[indice].commento }}
-    </div>
+<dialog #modale class="flex-row">
+
+  <div 
+    #cont
+    class="cont-img flex-row al-c"
+    [style]="{
+      '--w-immagine': W_IMMAGINE + 'rem',
+      '--gap': GAP + 'rem',
+      '--padding': '5rem',
+    }"
+  >
+    @for (img of immagini; track $index) {
+      <img
+        [src]="img.url" 
+        style="--w-immagine: 30rem"
+        [attr.commento]="img.commento"
+        (click)="MuoviImmagine($index)"
+      />
+    }
   </div>
-    <div class="flex-row row-bottoni jc-c al-c">
+  <!-- </div> -->
+    <!-- <div class="flex-row row-bottoni jc-c al-c">
       <button [disabled]="indice == 0" (click)="Cambia(false)">
         <ion-icon name="arrow-back"></ion-icon>
       </button>
@@ -15,5 +30,5 @@
       <button [disabled]="indice == immagini.length - 1" (click)="Cambia(true)">
         <ion-icon name="arrow-forward"></ion-icon>
       </button>
-    </div>
+    </div> -->
 </dialog>
