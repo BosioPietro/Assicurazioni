@@ -29,7 +29,7 @@ export class FiltroComponent  implements OnInit {
     this.mapService.pickedDates = Array.isArray(this.rangeDates) ? this.rangeDates : [this.rangeDates];
     console.log(this.mapService.pickedDates);
     console.log(this.rangeDates);
-    this.mapService.creaMappa();
+    // this.mapService.creaMappa();
     if(this.rangeDates.length == 2){
       
     }else{
@@ -44,7 +44,7 @@ export class FiltroComponent  implements OnInit {
   onOptionClicked(option:any){
     this.mapService.selectedOperators.push(option);
     this.utilityService.elencoOperatori.splice(this.utilityService.elencoOperatori.indexOf(option), 1);
-    this.mapService.creaMappa();
+    // this.mapService.creaMappa();
   }
   onMonthClicked(month:any){
     this.utilityService.elencoGiorni = [];

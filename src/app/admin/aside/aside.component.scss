@@ -44,10 +44,10 @@
 
     & > .flex-col{
         flex-grow: 1;
+        min-width: 0;
 
         h6{
             font-size: 1.1rem;
-            max-width: 12ch;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -64,6 +64,10 @@
         border: 1px solid #CCC;
         background-color: #FFF;
         border-radius: .5rem;
+
+        ion-icon{
+            scale: 1.5;
+        }
     }
 }
 

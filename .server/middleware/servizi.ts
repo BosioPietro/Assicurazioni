@@ -119,6 +119,19 @@ const AggiungiUtente = (app: Express, driver: MongoDriver) => {
     })
 }
 
+const PrendiPerizie = (app: Express, driver: MongoDriver) => {
+    app.get("/api/perizie", async (req: Request, res: Response) => {
+        const filtri = req.query || {};
+
+        await driver.SettaCollezione("perizie");
+
+        const perizie = await driver.PrendiMolti(filtri);
+        if(driver.Errore(perizie, res)) return;
+
+        RispondiToken(res, DecifraToken(req.headers.authorization!), perizie)
+    })
+}
+
 const PrendiPerizia = (app: Express, driver: MongoDriver) => {
     app.get("/api/perizia/:idPerizia", async (req: Request, res: Response) => {
         const { idPerizia } = req["params"];
@@ -244,4 +257,4 @@ export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente,
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
-         PrendiOperatori};
+         PrendiOperatori, PrendiPerizie};

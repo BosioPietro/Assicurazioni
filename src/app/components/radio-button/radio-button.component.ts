@@ -21,7 +21,7 @@ export class RadioButtonComponent  implements OnInit {
   radioClicked(label:string){
     console.log("fatto1");
     this.utilityService.flagRadioClicked = label;
-    this.mapService.creaMappa();
+    // this.mapService.creaMappa();
   }
   rc(label:string){
     console.log("fatto2");

@@ -17,6 +17,6 @@ export class SelectionComponent  implements OnInit {
   ngOnInit() {}
   removedSelection(selection:any){
     this.selectionRemoved.emit(selection);
-    this.mapService.creaMappa();
+    // this.mapService.creaMappa();
   }
 }

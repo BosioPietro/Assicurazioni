@@ -1,18 +1,15 @@
-<div>
-  <span><ion-icon name="filter-outline"></ion-icon></span>
-</div>
-<div class="filterDiv" id="filterOperatore">
+<div class="filterDiv flex-col" id="filterOperatore">
   <div>Operatore</div>
   <div id="wrapperFiltriGenere">
-    <div class="lbl"><small>Gender</small></div>
+    <div class="lbl">Gender</div>
     <div>
       @for (gender of elencoGenders; track $index){
         <app-radio-button [width]="'1.3rem'" [label]="gender"></app-radio-button>
       }
     </div>
   </div>
-  <div class="lbl"><small>Name</small></div>
-  <div id="wrapperFiltriOperatore">
+  <div id="wrapperFiltriOperatore" class="flex-col">
+    <div class="lbl">Name</div>
     <app-select [label]="'Operatore'" [options]="utilityService.elencoOperatori" [ngStyle]="{width: '30%'}" (optionClicked)="onOptionClicked($event)"></app-select>
   </div>
   <div id="wrapperOperatoriSelezionati">
@@ -24,7 +21,7 @@
 <div class="filterDiv" id="filterPerizia">
   <div>Perizia</div>
   <div class="lbl">
-    <small>Data</small>
+    Data
   </div>
   <!-- <div id="wrapperInd">
     <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'chevron-back-outline'"></app-radio-button>
@@ -35,6 +32,6 @@
     <!-- <app-select [label]="day" [options]="utilityService.elencoGiorni"></app-select>
     <app-select [label]="month" [options]="utilityService.elencoMesi" (optionClicked)="onMonthClicked($event)"></app-select>
     <app-select [label]="year" [options]="utilityService.elencoAnni"></app-select> -->
-    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="single" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
+    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
   </div>
 </div>

@@ -1,8 +1,26 @@
-  <div id="wrapper">
-    <span>
-      <span id="spanBackground" [ngClass]="{'markerCliccato': this.mapService.flagInfoWindow, 'markerUnclickato': !this.mapService.flagInfoWindow}"></span>
-      <div #mapElement id="mappa"></div>
-      <InfoWindow/>
-    </span>
+  <div id="wrapper" class="flex-col">
+    <h1>Perizie</h1>
+    <google-map id="mappa"
+      [mapId]="'1436edaa72ee3004'"
+      [options]="{
+        'center': mapService.center,
+        'zoom': 7,
+        'fullscreenControl': false,
+        'zoomControlOptions': {
+          'position': maps.ControlPosition.LEFT_TOP
+        },
+        'streetViewControl': true,
+        'streetViewControlOptions': {
+          'position': maps.ControlPosition.LEFT_TOP
+        }
+      }"
+    >
+    @for (p of mapService.perizieFiltrate; track $index) {
+      <map-advanced-marker 
+        [position]="p.luogo.coordinate"
+        [content]="mapService.StileMarker(p)"
+        />
+  }
+  </google-map>
     <Filtri/>
   </div>

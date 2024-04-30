@@ -52,28 +52,28 @@ export class InfoWindowComponent{
     
     this.map = new this.google.maps.Map(this.mapElement.nativeElement, this.mapOptions);
     this.directionsRenderer.setMap(this.map!);
-    this.mapService.markerCoordsObservable.subscribe((marker:any)=>{
-      this.mapService.flagInfoWindow = true;
-      this.lat = marker.coords.lat;
-      this.lng = marker.coords.lng;
-      this.city = marker.città;
-      this.coords = marker.coords;
-      this.user = marker.utente;
-      this.date = marker.data.date;
+    // this.mapService.markerCoordsObservable.subscribe((marker:any)=>{
+    //   this.mapService.flagInfoWindow = true;
+    //   this.lat = marker.coords.lat;
+    //   this.lng = marker.coords.lng;
+    //   this.city = marker.città;
+    //   this.coords = marker.coords;
+    //   this.user = marker.utente;
+    //   this.date = marker.data.date;
 
-      this.directionOptions = {
-        origin: { lat: 44.55577411467918, lng: 7.735974391878129 },
-        destination: this.coords,
-        travelMode: this.google.maps.TravelMode.DRIVING
-      }
+    //   this.directionOptions = {
+    //     origin: { lat: 44.55577411467918, lng: 7.735974391878129 },
+    //     destination: this.coords,
+    //     travelMode: this.google.maps.TravelMode.DRIVING
+    //   }
   
-      this.directionsService.route(this.directionOptions, (result, status: google.maps.DirectionsStatus) => {
-        if (status === 'OK' && result) {
-          this.directionsRenderer.setDirections(result);
-          this.travelDuration = result.routes[0].legs[0].duration?.text;
-        }
-      });
-    })
+    //   this.directionsService.route(this.directionOptions, (result, status: google.maps.DirectionsStatus) => {
+    //     if (status === 'OK' && result) {
+    //       this.directionsRenderer.setDirections(result);
+    //       this.travelDuration = result.routes[0].legs[0].duration?.text;
+    //     }
+    //   });
+    // })
   }
   
   

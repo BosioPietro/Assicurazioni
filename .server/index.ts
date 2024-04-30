@@ -66,6 +66,7 @@ Servizi.IndirizzoDaCoordinate(app);
 Servizi.ModificaPerizia(app, driver);
 Servizi.CaricaImmaginePerizia(app);
 Servizi.PrendiOperatori(app, driver);
+Servizi.PrendiPerizie(app, driver);
 
 // gestione errori
 Errori.LoggingErrori(app);
