@@ -1,18 +1,25 @@
 <div class="filterDiv flex-col" id="filterOperatore">
   <div>Operatore</div>
-  <div id="wrapperFiltriGenere">
+  <div id="wrapperFiltriGenere" class="flex-col">
     <div class="lbl">Gender</div>
-    <div>
-      @for (gender of elencoGenders; track $index){
-        <app-radio-button [width]="'1.3rem'" [label]="gender"></app-radio-button>
+    <div class="cont-radio flex-row">
+      @for (gender of ['Maschio', 'Femmina', 'Tutti']; track $index){
+        <RadioButton [label]="gender" />
       }
     </div>
   </div>
-  <div id="wrapperFiltriOperatore" class="flex-col">
-    <div class="lbl">Name</div>
-    <app-select [label]="'Operatore'" [options]="utilityService.elencoOperatori" [ngStyle]="{width: '30%'}" (optionClicked)="onOptionClicked($event)"></app-select>
+  <hr>
+  <div class="flex-col cont-filtri">
+    <div class="lbl">Utente</div>
+    @if(operatori){
+      <Dropdown 
+        icona="person"
+        [opzioni]="operatori"
+        [(ngModel)]="mapService.utenteFiltrato"
+      />
+    }
   </div>
-  <div id="wrapperOperatoriSelezionati">
+  <div  class="flex-col cont-filtri">
     @for (operatore of mapService.selectedOperators; track $index){
       <app-selection [selection]="operatore" (selectionRemoved)="onSelectionRemoved($event)"></app-selection>
     }

@@ -5,21 +5,20 @@ import { UtilityService } from 'src/app/admin/perizie/shared/utility.service';
 import { IonIcon } from "@ionic/angular/standalone";
 
 @Component({
-  selector: 'app-radio-button',
+  selector: 'RadioButton',
   templateUrl: './radio-button.component.html',
   styleUrls: ['./radio-button.component.scss'],
   standalone: true,
   imports:[NgClass,NgIf,IonIcon,NgStyle]
 })
 export class RadioButtonComponent  implements OnInit {
-  @Input() label!: string;
-  @Input() flag: boolean = false;
-  @Input() width: string = "";
+  @Input() 
+  label!: string;
+
   constructor(public utilityService:UtilityService, public mapService:MapService) { }
 
   ngOnInit() {}
   radioClicked(label:string){
-    console.log("fatto1");
     this.utilityService.flagRadioClicked = label;
     // this.mapService.creaMappa();
   }

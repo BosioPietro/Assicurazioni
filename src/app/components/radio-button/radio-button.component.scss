@@ -13,7 +13,8 @@
 :host > span{
     display: flex;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
+    padding: 1rem;    
 }
 :host:hover{
     box-shadow: 0px 0px 10px 1px hsl(0, 0%, 70%);
@@ -21,5 +22,5 @@
 }
 .radioClicked{
     color: white;
-    background-color: hsl(0, 0%, 20%);
+    background-color: var(--accento);
 }

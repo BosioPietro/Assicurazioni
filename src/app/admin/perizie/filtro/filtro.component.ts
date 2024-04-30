@@ -8,12 +8,17 @@ import { UtilityService } from '../shared/utility.service';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
+import Utente from '../../utenti/tabella-utenti/utente.model';
+import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
+import { DropdownComponent } from 'src/app/comuni/elementi-form/dropdown/dropdown.component';
 
 @Component({
   selector: 'Filtri',
   templateUrl: './filtro.component.html',
   styleUrls: ['./filtro.component.scss'],
-  imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, NgStyle, FormsModule, CalendarModule],
+  imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, 
+            NgStyle, FormsModule, CalendarModule, DropdownComponent],
   standalone: true
 })
 export class FiltroComponent  implements OnInit {
@@ -21,9 +26,37 @@ export class FiltroComponent  implements OnInit {
   month = "Gennaio";
   day = "01";
   year = "2024";
-  constructor(public mapService:MapService, public utilityService:UtilityService) { }
-  elencoGenders:any [] = ["All","M", "F"];
-  ngOnInit() {}
+  operatori?: Opzione[];
+
+  constructor(
+    public mapService:MapService, 
+    public utilityService:UtilityService,
+    public notifiche: NotificheService
+  ) { }
+
+  async ngOnInit() {
+    const aus = await this.mapService.PrendiUtenti();
+
+    if(!aus){
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Qualcosa è andato storto",
+        descrizione: "Non è stato possibile caricare gli operatori"
+      })
+      return;
+    }
+
+    this.operatori = aus.map((utente: Utente) => ({
+      valore: utente["username"],
+      testo: `${utente["cognome"]} ${utente["nome"]}`
+    }));
+
+    this.operatori.unshift({
+      valore: "tutti",
+      testo: "Tutti"
+    
+    })
+  }
 
   datePicked(){
     this.mapService.pickedDates = Array.isArray(this.rangeDates) ? this.rangeDates : [this.rangeDates];

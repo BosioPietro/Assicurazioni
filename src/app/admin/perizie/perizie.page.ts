@@ -26,7 +26,7 @@ export class PeriziePage implements OnInit{
   ) {}
 
   async ngOnInit(){
-    ControllaToken(this.router);
+    // ControllaToken(this.router);
     const aus = await this.mapService.PrendiPerizie();
 
     if(!aus){

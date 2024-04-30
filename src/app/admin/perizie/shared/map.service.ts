@@ -4,6 +4,7 @@ import { UtilityService } from './utility.service';
 import { GestoreServerService } from 'src/app/server/gestore-server.service';
 import { Perizia } from '../../perizia/perizia.model';
 import { Metodi } from 'src/app/utils/TipiSpeciali';
+import Utente from '../../utenti/tabella-utenti/utente.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,6 +20,7 @@ export class MapService {
   perizie:Perizia[] = [];
   perizieFiltrate:Perizia[] = [];
   stiliMarker: Record<string, any>[] = []
+  utenteFiltrato: string = "tutti";
 
   pickedDates:Date[] = [];
   flagInfoWindow:boolean = false;
@@ -73,7 +75,6 @@ export class MapService {
   }
 
   StileMarker(p: Perizia){
-    console.log(this.stiliMarker.find((s) => s["codice"] == p.codice)!)
     return this.stiliMarker.find((s) => s["codice"] == p.codice)!["pin"]["element"]
   }
   
@@ -86,4 +87,11 @@ export class MapService {
     })
   }
   
+  PrendiUtenti(){
+    return new Promise<Utente [] | null>((resolve) => {
+      this.server.InviaRichiesta(Metodi.GET, "/api/utenti")
+      .then((res: Record<string, any>) => resolve(res["data"]))
+      .catch(() => resolve(null))
+    });
+  }
 }
