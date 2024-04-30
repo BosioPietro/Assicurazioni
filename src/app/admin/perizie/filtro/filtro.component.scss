@@ -108,6 +108,33 @@ hr{
     font-weight: bold;
 }
 
+.cella-filtro{
+
+    .flex-row{
+        gap: 1rem;
+
+        p-calendar{
+            flex-grow: 1;
+        }
+
+        button{
+            padding-inline: .75rem;
+            background-color: var(--accento);
+            color: #FFF;
+            font-size: 1.2rem;
+            border-radius: .25rem;
+            display: grid;
+            place-items: center;
+            transition: opacity .3s ease;
+
+            &:disabled{
+                opacity: 0.5;
+            }
+        }
+    }
+}
+
+
 #wrapperFiltriGenere{
     gap: .5rem;
 

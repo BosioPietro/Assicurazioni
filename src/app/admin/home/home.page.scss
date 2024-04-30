@@ -7,13 +7,16 @@
     padding: 2rem;
     gap: 2rem;
     
+    .grid{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+
     & > div{
         width: 100%;
         flex-grow: 1;
         gap: 1rem;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
 
         GraficoLinea{
             min-height: 20rem;
