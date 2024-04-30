@@ -13,6 +13,7 @@ import { DropdownComponent } from 'src/app/comuni/elementi-form/dropdown/dropdow
 import { ModificaUtenteService } from './modifica-utente.service';
 import { FileUploadComponent } from 'src/app/comuni/elementi-form/file-upload/file-upload.component';
 import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
+import { Perizia } from '../../perizia/perizia.model';
 
 @Component({
   selector: 'ModificaUtenteModale',
@@ -91,6 +92,9 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   caricamentoImmagine: boolean = false;
   inCaricamentoElimina: boolean = false;
   vuoleEliminare: boolean = false;
+
+  paginaDialogo: number = 0;
+  perizieUtente?: Perizia[];
 
   ngAfterViewInit() {
     this.modale.nativeElement.showModal();
@@ -221,26 +225,6 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
   }
 
   async AggiornaUtente(tipo: "lavoro" | "personale"){
-    // const utente = this.utenteModificato!;
-    // const info = tipo == "personale" ? this.infoPersonali : this.infoLavoro;
-    
-    // info.caricamento = true;
-    // const res = await this.utenti.ModificaUtente(utente);
-    // info.caricamento = false;
-
-    // if(!res){
-    //   info.modifica = false;
-
-    //   this.notifiche.NuovaNotifica({
-    //     titolo: "Operazione completata",
-    //     descrizione: "Le modifiche sono state apportate con successo",
-    //     tipo: "info"
-    //   })
-
-    //   this.onUtenteModificato.emit(utente);
-    // }
-    // else this.Errore(res);
-
     switch(tipo){
       case "personale":
         {
@@ -376,5 +360,23 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
           break;
       }
     }, 100);
+  }
+
+  async CaricaPerizie(){
+    if(this.perizieUtente) return;
+    const perizie = await this.utenti.PerizieUtente(this.utenteVisualizzato.username);
+
+    if(!perizie){
+      this.notifiche.NuovaNotifica({
+        titolo: "Qualcosa è andato storto",
+        descrizione: "Non è stato possibile caricare le perizie dell'utente",
+        tipo: "errore"
+      })
+    }
+    else this.perizieUtente = perizie;
+  }
+
+  ApriPerizia(p: Perizia){
+    window.open(`/admin/perizie/${p.codice}`, "_blank");
   }
 }

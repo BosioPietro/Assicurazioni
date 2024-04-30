@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     {
       if((e as AxiosError).response?.status == 405)
       {
-        this.router.navigate(["/home"])
+        this.router.navigate(["/admin/home"])
       }
       else this.router.navigate(["/login"])
     }

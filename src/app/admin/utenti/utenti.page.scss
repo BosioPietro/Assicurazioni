@@ -201,3 +201,43 @@ footer{
     border-radius: 0 0 1.5rem 1.5rem;
 }
 
+.loader-statistica{
+    margin-top: .25rem;
+    height: 3rem;
+}
+
+[loader]{
+    --grigio: #EEE;
+    border-radius: .25rem;
+    background-color: var(--grigio);
+    color: transparent !important;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    color: transparent;
+
+    &::before{
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        transform: translateY(-50%) rotateZ(.1turn);
+        top: 1rem;
+        height: 4rem;
+        width: 1rem;
+        background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+        left: -200%;
+        animation: caricamento 1s infinite linear;
+        filter: blur(1rem);
+    }
+}
+
+@keyframes caricamento{
+    0%{
+        left: -200%;
+    }
+    100%{
+        left: 200%;
+    }
+}
+

@@ -14,10 +14,20 @@
   border-radius: 1.5rem;
   padding: 2rem;
 
-  h1{
-    font-size: 3rem;
-    font-weight: 500;
+  header{
     margin-bottom: 1rem;
+
+    h1{
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      margin-bottom: 0;
+    }
+  
+    p{
+      font-size: 0.9rem;
+      color: #CCC;
+    }
   }
 }
 

@@ -77,7 +77,7 @@ export class CambioPasswordComponent implements OnInit{
     {
       await this.servizio.Cambia(this.form.controls["password"].value);
       this.transizione.caricamento = false;  
-      this.router.navigate(["/home"]);
+      this.router.navigate(["/admin/home"]);
     }
     catch(e)
     { 

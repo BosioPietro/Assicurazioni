@@ -1,7 +1,7 @@
 import { Express, Request, Response } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
 import { DecifraToken, ControllaAdmin } from "../encrypt.js";
-import { CaricaImmagine } from "../funzioni.js";
+import { CaricaImmagine, StringaInData } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
 import env from "../ambiente.js";
@@ -17,6 +17,35 @@ const PrendiUtenti = (app: Express) => {
         utenti.forEach((u: any) => { delete u["_id"] })
 
         RispondiToken(res, DecifraToken(req.headers.authorization!), utenti)
+    })
+}
+
+const StatisticheAdmin = (app: Express) => {
+    app.get("/api/statistiche-admin", async (req: Request, res: Response) => {
+        const token = DecifraToken(req.headers.authorization!);
+
+        if(!(await ControllaAdmin(token, res))) return;
+
+        const driverPerizie = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+        const driverUtenti = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
+
+        let [perizie, utenti] : [any, any] = await Promise.all([
+            driverPerizie.PrendiMolti(),
+            driverUtenti.PrendiMolti()
+        ]);
+
+        if(driverPerizie.Errore(perizie, res) || driverUtenti.Errore(utenti, res)) return;
+
+        perizie = perizie.map((p: Record<string, any>) => Object.assign(p, { data: StringaInData(p["data"]) }));
+
+        const statistiche = {
+            perizie : perizie.length,
+            utenti : utenti.length,
+            perizieOggi : perizie.filter((p: Record<string, any>) => p["data"].getDate() == new Date().getDate()).length,
+            utentiAttivi : utenti.filter((u: Record<string, any>) => u["stato"] != "false").length
+        }
+
+        RispondiToken(res, token, statistiche)
     })
 }
 
@@ -266,8 +295,22 @@ const InfoUtente = (app: Express) => {
     });
 }
 
+const PerizieUtente = (app: Express) => {
+    app.get("/api/perizie-utente", async (req: Request, res: Response) => {
+        const { codOperatore } = req.query;
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+
+        const perizie = await driver.PrendiMolti({ codOperatore });
+        if(driver.Errore(perizie, res)) return;
+
+        RispondiToken(res, DecifraToken(req.headers.authorization!), perizie)
+    });
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
-         PrendiOperatori, PrendiPerizie, InfoUtente};
+         PrendiOperatori, PrendiPerizie, InfoUtente, StatisticheAdmin,
+         PerizieUtente};

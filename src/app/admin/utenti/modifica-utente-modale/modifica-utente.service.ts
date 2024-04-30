@@ -3,6 +3,7 @@ import { GestoreServerService } from "src/app/server/gestore-server.service";
 import { Metodi } from "src/app/utils/TipiSpeciali";
 import Utente from "../tabella-utenti/utente.model";
 import { AxiosError } from "axios";
+import { Perizia } from "../../perizia/perizia.model";
 
 @Injectable({
     providedIn: 'root',
@@ -46,6 +47,14 @@ export class ModificaUtenteService {
             this.server.InviaRichiesta(Metodi.GET, "/api/controlla-username", { username })
             .then(() => resolve(true))
             .catch(() => resolve(false));
+        });
+    }
+
+    PerizieUtente(username: string) {
+        return new Promise<Perizia[] | undefined>((resolve) => {
+            this.server.InviaRichiesta(Metodi.GET, "/api/perizie-utente", { "codOperatore": username })
+            .then((e) => resolve(e.data))
+            .catch(() => resolve(undefined));
         });
     }
 }

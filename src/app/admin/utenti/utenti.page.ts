@@ -42,6 +42,8 @@ export class UtentiPage implements OnInit{
   @ViewChild('modaleAggiungi')
   modaleAggiungi!: AggiungiUtenteModaleComponent;
 
+  statistiche?: Record<string, number>
+
   constructor(
     public tabella: TabellaService, 
     private notifiche: NotificheService,
@@ -49,8 +51,18 @@ export class UtentiPage implements OnInit{
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     ControllaToken(this.router);
+
+    this.statistiche = await this.tabella.PrendiStatistiche();
+
+    if(!this.statistiche){
+      this.notifiche.NuovaNotifica({
+        tipo: "errore",
+        titolo: "Qualcosa è andato storto",
+        descrizione: "Non è stato possibile recuperare le statistiche dal server"
+      })
+    }
     
     this.config.setTranslation({
       accept: 'Accept',

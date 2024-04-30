@@ -56,17 +56,17 @@ export const routes: Routes = [
         path: 'perizia',
         pathMatch: 'full',
         redirectTo: 'perizie'
-      }
+      },
+      {
+        path: 'home',
+        loadComponent: () => import('./admin/home/home.page').then( m => m.HomePage)
+      },
     ]
   },
   {
     path: 'admin',
     pathMatch: 'full',
     redirectTo: 'admin/perizie',
-  },
-  {
-    path: 'home',
-    loadComponent: () => import('./admin/home/home.page').then( m => m.HomePage)
   },
   {path: '**', redirectTo: 'home'}
 ];

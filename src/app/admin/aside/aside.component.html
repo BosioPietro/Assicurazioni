@@ -4,7 +4,7 @@
 </div>
 <div id="wrapperAside" class="flex-col" #opzioni>
   <div 
-    class="cella posizione-{{routerLink.indexOf(window.location.pathname)}}"
+    class="cella posizione-{{routerLink.indexOf(RimuoviParametri(window.location.pathname))}}"
   >Home</div>
   @for (voce of elencoVoci; track $index) {
     <VoceAside 

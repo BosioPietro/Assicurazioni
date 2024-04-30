@@ -4,16 +4,17 @@
   </button>
   <ContenitoreNotifiche />
   <div class="nav-dialogo flex-col">
-    <button class="opzione selezionata flex-row">
+    <button class="opzione flex-row" [class.selezionata]="paginaDialogo == 0" (click)="paginaDialogo = 0">
       <ion-icon name="person-circle"></ion-icon>
       <span>Informazioni Personali</span>
     </button>
-    <button class="opzione flex-row">
+    <button class="opzione flex-row"  [class.selezionata]="paginaDialogo == 1"  (click)="paginaDialogo = 1; CaricaPerizie()">
       <ion-icon name="file-tray-full"></ion-icon>
       <span>Perizie</span>
     </button>
   </div>
-  <div class="pagina-dialogo">
+
+  <div class="pagina-dialogo ">
     <h1>Modifica utente</h1>
     <div class="wrapper flex-col">
       <div class="flex-row">
@@ -225,6 +226,40 @@
           <InputText icona="file-tray-full" testo-label="Perizie attive" [mockup]="true" valore="1"/>
         </div>
       </form>
+    </div>
+    
+    <div class="pagina-dialogo abs flex-col" [style]="{'visibility': paginaDialogo != 0 ? 'visible' : 'hidden'}">
+      <div class="flex-row">
+        <h1>Perizie Utente</h1>
+        <button class="btn-chiudi" (click)="ChiudiModale()">
+          <ion-icon name="close" />
+        </button>
+      </div>
+      <span class=" flex-col">
+        <div class="relative">
+          <div class="wrapper flex-row">
+            @if(perizieUtente){
+              @for (p of perizieUtente; track $index) {
+                <div 
+                  class="perizia flex-col" 
+                  [style]="{
+                    '--img': 'url(\'' +  p.immagini[0].url + '\')'
+                }"
+                (click)="ApriPerizia(p)"
+                >
+                  <h1>#{{p["codice"]}}</h1>
+                  <p>{{ p["luogo"]["indirizzo"] }},&nbsp;{{ p["luogo"]["citta"] }}</p>
+                </div>
+              }
+            }
+            @else {
+              @for (i of "aaaaa".split(''); track $index) {
+                <div class="perizia-loader" loader></div>
+              }
+            }
+          </div>
+        </div>
+      </span>
     </div>
   </div>
 </dialog>

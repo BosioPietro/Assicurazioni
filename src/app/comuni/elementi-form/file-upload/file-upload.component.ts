@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { NotificheService } from '../../notifiche/notifiche.service';
 import { ContenitoreNotificheComponent } from '../../notifiche/contenitore-notifiche/contenitore-notifiche.component';

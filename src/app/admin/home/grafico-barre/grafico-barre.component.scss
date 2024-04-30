@@ -1,0 +1,13 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border: 1px solid #CCC;
+    border-radius: 1rem;
+    gap: 1rem;
+}
+
+.chart-container{
+    position: relative;
+    flex-grow: 1;
+}

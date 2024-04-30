@@ -1,4 +1,4 @@
-p-calendar.ng-untouched::ng-deep{
+p-calendar:not([ng-reflect-model])::ng-deep{
     .p-calendar{
     
         &::after{

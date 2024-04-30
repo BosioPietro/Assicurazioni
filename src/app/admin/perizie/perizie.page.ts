@@ -7,6 +7,8 @@ import { GoogleMap, MapMarker, MapAdvancedMarker } from '@angular/google-maps';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import { ControllaToken } from 'src/app/utils/funzioni';
 import { Router } from '@angular/router';
+import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
+import { Perizia } from '../perizia/perizia.model';
 
 @Component({
   selector: 'PeriziePage',
@@ -14,7 +16,8 @@ import { Router } from '@angular/router';
   styleUrls: ['perizie.page.scss', '../../comuni/elementi-form/stile-mappa.scss'],
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, 
-            FiltroComponent, GoogleMap, MapMarker, MapAdvancedMarker],
+            FiltroComponent, GoogleMap, MapMarker, MapAdvancedMarker,
+            ModaleSiNoComponent],
 })
 export class PeriziePage implements OnInit{
   constructor(
@@ -48,4 +51,27 @@ export class PeriziePage implements OnInit{
 
   google = window.google;
   maps = this.google.maps;
+
+  periziaSelezionata?: Perizia;
+
+  ApriPerizia(p: Perizia){
+    this.periziaSelezionata = p;
+  }
+
+  ChiudiElimina(dialogo: ModaleSiNoComponent){
+    const modale = dialogo.modale.nativeElement;
+
+    modale.classList.add("chiudi");
+    setTimeout(() => {
+      modale.close()
+      modale.classList.remove("chiudi");
+      this.periziaSelezionata = undefined;
+    }, 301);
+  }
+
+  NuovaPaginaPerizia(d: ModaleSiNoComponent){
+    window.open(`/admin/perizie/${this.periziaSelezionata!.codice}`, "_blank");
+    this.ChiudiElimina(d)
+  }
+
 }

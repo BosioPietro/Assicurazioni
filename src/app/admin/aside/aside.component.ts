@@ -53,7 +53,9 @@ export class AsideComponent  implements OnInit{
   }
 
   RimuoviParametri(s: string){
-    return s.split("?")[0];
+    const p = s.split("?")[0].split("/");
+    if(p.length > 3) p.pop();
+    return p.join("/");
   }
 
   opzioneLogout: MenuItem = {

@@ -135,7 +135,7 @@ export class PeriziaPage implements OnInit, AfterViewInit {
         descrizione: "La perizia è stata eliminata con successo",
         tipo: "info"
       })
-      this.router.navigate(["/home"]);
+      this.router.navigate(["/admin/home"]);
 
     })
       .catch(() => {

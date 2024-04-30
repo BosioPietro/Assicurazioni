@@ -25,29 +25,49 @@
       <div class="carta">
         <p>Perizie in corso</p>
         <h1>
-          <span>123</span>
-          <ion-icon name="arrow-up"></ion-icon>
+          @if(statistiche){
+            <span>{{ statistiche["perizieOggi"] }}</span>
+          }
+          @else {
+            <div class="loader-statistica" loader>00</div>
+          }
+          <!-- <ion-icon name="arrow-up"></ion-icon> -->
         </h1>
       </div>
       <div class="carta">
-        <p>Perizie completate oggi</p>
+        <p>Perizie totali</p>
         <h1>
-          <span>123</span>
-          <ion-icon name="arrow-down"></ion-icon>
+          @if(statistiche){
+            <span>{{ statistiche["perizie"] }}</span>
+          }
+          @else {
+            <div class="loader-statistica" loader>00</div>
+          }
+          <!-- <ion-icon name="arrow-down"></ion-icon> -->
         </h1>
       </div>
       <div class="carta">
         <p>Dipendenti totali</p>
         <h1>
-          <span>123</span>
-          <ion-icon name="arrow-up"></ion-icon>
+          @if(statistiche){
+            <span>{{ statistiche["utenti"] }}</span>
+          }
+          @else {
+            <div class="loader-statistica" loader>00</div>
+          }
+          <!-- <ion-icon name="arrow-up"></ion-icon> -->
         </h1>
       </div>
       <div class="carta">
-        <p>Dipendenti attivi oggi</p>
+        <p>Dipendenti attivi</p>
         <h1>
-          <span>123</span>
-          <ion-icon name="arrow-up"></ion-icon>
+          @if(statistiche){
+            <span>{{ statistiche["utentiAttivi"] }}</span>
+          }
+          @else {
+            <div class="loader-statistica" loader>00</div>
+          }
+          <!-- <ion-icon name="arrow-up"></ion-icon> -->
         </h1>
       </div>
     </div>

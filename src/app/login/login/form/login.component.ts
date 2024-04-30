@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
       this.servizio.LoginOAuth(user)
-      .then(() => this.router.navigate(["/home"]))
+      .then(() => this.router.navigate(["/admin/home"]))
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
     
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           this.router.navigateByUrl("/login/verifica");
         }, 500);
       }
-      else this.router.navigate(["/home"])
+      else this.router.navigate(["/admin/home"])
     }
     catch(e) {this.GestisciErrore(e as AxiosError)}
   }

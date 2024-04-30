@@ -49,7 +49,7 @@ export class VerificaComponent implements AfterViewInit, OnInit {
       await this.server.VerificaCodice(this.sinc.valori["codice"])
       this.transizione.caricamento = false;
 
-      this.router.navigateByUrl("/home")
+      this.router.navigateByUrl("/admin/home")
     }
     catch(e){
       this.transizione.caricamento = false;

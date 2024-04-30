@@ -131,11 +131,19 @@ export class TabellaService {
     });
   }
 
-  async AggiungiUtente(u: Utente){
+  AggiungiUtente(u: Utente){
     return new Promise<void | number>((resolve) => {
       this.server.InviaRichiesta(Metodi.POST, "/api/utenti", u)
       .then(() => resolve())
       .catch((res: AxiosError) => resolve(res.status!));
+    });
+  }
+
+  PrendiStatistiche(){
+    return new Promise<Record<string, any> | undefined>((resolve) => {
+      this.server.InviaRichiesta(Metodi.GET, "/api/statistiche-admin")
+      .then((res) => resolve(res.data))
+      .catch(() => resolve(undefined));
     });
   }
 

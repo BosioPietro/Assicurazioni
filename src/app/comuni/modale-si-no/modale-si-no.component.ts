@@ -31,6 +31,9 @@ export class ModaleSiNoComponent implements AfterViewInit {
   @Input()
   inCaricamento!: boolean;
 
+  @Input()
+  icona: string = "alert-circle";
+
   @Output()
   onSi = new EventEmitter<void>();
 

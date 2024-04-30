@@ -1,5 +1,8 @@
   <div id="wrapper" class="flex-col">
-    <h1>Perizie</h1>
+    <header class="flex-col">
+      <h1>Perizie</h1>
+      <p>Visualizza e modifica perizie</p>
+    </header>
     <google-map id="mappa"
       [mapId]="'1436edaa72ee3004'"
       [options]="{
@@ -19,8 +22,23 @@
       <map-advanced-marker 
         [position]="p.luogo.coordinate"
         [content]="mapService.StileMarker(p)"
+        (mapClick)="ApriPerizia(p)"
       />
     }
   </google-map>
     <Filtri/>
 </div>
+
+@if(periziaSelezionata){
+  <ModaleSiNo
+    #modaleElimina
+    colore="#245c73"
+    icona="help-circle"
+    si="Continua"
+    messaggio="Si aprirà una nuova pagina"
+    [titolo]="'Visualizzare perizia #' + periziaSelezionata.codice + '?'"
+    [style]="{'position':'absolute'}"
+    (onNo)="ChiudiElimina(modaleElimina)"
+    (onSi)="NuovaPaginaPerizia(modaleElimina)"
+  />
+}

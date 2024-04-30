@@ -68,6 +68,8 @@ Servizi.CaricaImmaginePerizia(app);
 Servizi.PrendiOperatori(app);
 Servizi.PrendiPerizie(app);
 Servizi.InfoUtente(app);
+Servizi.StatisticheAdmin(app);
+Servizi.PerizieUtente(app);
 
 // gestione errori
 Errori.LoggingErrori(app);
