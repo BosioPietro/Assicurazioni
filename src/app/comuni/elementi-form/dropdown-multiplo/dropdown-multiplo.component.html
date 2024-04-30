@@ -4,8 +4,8 @@
     <hr/>
   }
   <div class="flex-row">
-    <label [attr.for]="idInput" [class.haValore]="!!opzioneSelezionata">{{ testoLabel }}</label>
-    <div class="valore">{{  opzioneSelezionata?.testo }}</div>
+    <label [attr.for]="idInput" [class.haValore]="opzioniSelezionate.length">{{ testoLabel }}</label>
+    <div class="valore">{{ Testo() }}</div>
     <div class="abbassa">
       <ion-icon name="chevron-down" class="icona"></ion-icon>
     </div>
@@ -15,7 +15,7 @@
       <div class="wrapper-opzione">
         <div class="cont-opzioni flex-col" #contopzioni>
           @for (opzione of opzioni; track $index) {
-            <div class="opzione" (click)="Seleziona($event)" [class.selezionata]="opzione == opzioneSelezionata">
+            <div class="opzione" (click)="Seleziona($event)" [class.selezionata]="IsSelezionata(opzione)">
               <input type="hidden" [value]="opzione.valore"/>
               <span>{{ opzione.testo }}</span>
               <ion-icon name="checkmark"/>

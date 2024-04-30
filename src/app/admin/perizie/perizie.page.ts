@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
-import { InfoWindowComponent } from './info-window/info-window.component';
 import { MapService } from './shared/map.service';
 import { FiltroComponent } from './filtro/filtro.component';
 import { GoogleMap, MapMarker, MapAdvancedMarker } from '@angular/google-maps';
@@ -15,8 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['perizie.page.scss', '../../comuni/elementi-form/stile-mappa.scss'],
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, 
-            InfoWindowComponent, FiltroComponent, GoogleMap, MapMarker, 
-            MapAdvancedMarker],
+            FiltroComponent, GoogleMap, MapMarker, MapAdvancedMarker],
 })
 export class PeriziePage implements OnInit{
   constructor(
@@ -26,7 +24,7 @@ export class PeriziePage implements OnInit{
   ) {}
 
   async ngOnInit(){
-    // ControllaToken(this.router);
+    ControllaToken(this.router);
     const aus = await this.mapService.PrendiPerizie();
 
     if(!aus){

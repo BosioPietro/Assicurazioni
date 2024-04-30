@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {IonIcon} from "@ionic/angular/standalone";
-import { RadioButtonComponent } from 'src/app/components/radio-button/radio-button.component';
-import { SelectComponent } from 'src/app/components/select/select.component';
-import { SelectionComponent } from 'src/app/components/selection/selection.component';
+import { RadioButtonComponent } from '../components/radio-button/radio-button.component';
+import { SelectComponent } from '../components/select/select.component';
+import { SelectionComponent } from '../components/selection/selection.component';
 import { MapService } from '../shared/map.service';
 import { UtilityService } from '../shared/utility.service';
 import { NgStyle } from '@angular/common';
@@ -11,14 +11,14 @@ import { CalendarModule } from 'primeng/calendar';
 import Utente from '../../utenti/tabella-utenti/utente.model';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
 import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
-import { DropdownComponent } from 'src/app/comuni/elementi-form/dropdown/dropdown.component';
+import { DropdownMultiploComponent } from 'src/app/comuni/elementi-form/dropdown-multiplo/dropdown-multiplo.component';
 
 @Component({
   selector: 'Filtri',
   templateUrl: './filtro.component.html',
-  styleUrls: ['./filtro.component.scss'],
+  styleUrls: ['./filtro.component.scss', '../../../comuni/elementi-form/stile-calendario.scss'],
   imports: [IonIcon, SelectComponent, RadioButtonComponent, SelectionComponent, 
-            NgStyle, FormsModule, CalendarModule, DropdownComponent],
+            NgStyle, FormsModule, CalendarModule, DropdownMultiploComponent],
   standalone: true
 })
 export class FiltroComponent  implements OnInit {
@@ -40,42 +40,46 @@ export class FiltroComponent  implements OnInit {
     if(!aus){
       this.notifiche.NuovaNotifica({
         tipo: "errore",
-        titolo: "Qualcosa è andato storto",
-        descrizione: "Non è stato possibile caricare gli operatori"
+        titolo: "Qualcosa è andato storto1",
+        descrizione: "Non è stato possibile caricare gli operatori1"
       })
       return;
     }
-
+    
     this.operatori = aus.map((utente: Utente) => ({
       valore: utente["username"],
       testo: `${utente["cognome"]} ${utente["nome"]}`
     }));
-
+    
     this.operatori.unshift({
       valore: "tutti",
       testo: "Tutti"
-    
+      
     })
+
+    this.mapService.utenti = aus;
   }
 
   datePicked(){
     this.mapService.pickedDates = Array.isArray(this.rangeDates) ? this.rangeDates : [this.rangeDates];
-    console.log(this.mapService.pickedDates);
-    console.log(this.rangeDates);
-    // this.mapService.creaMappa();
-    if(this.rangeDates.length == 2){
-      
-    }else{
 
+    if(this.rangeDates.length == 2)
+    {
+      this.mapService.FiltraPerizie();
     }
   }
 
-  onSelectionRemoved(selection:any){
-    this.mapService.selectedOperators.splice(this.mapService.selectedOperators.indexOf(selection), 1);
-    this.utilityService.elencoOperatori.push(selection);
+  onSelectionRemoved(opzione:Opzione){
+    this.mapService.utentiFiltrati = this.mapService.utentiFiltrati.filter((utente) => utente["valore"] != opzione["valore"]);
+    
+    if(this.mapService.utentiFiltrati.some((v) => v.valore.startsWith("tutti"))){
+      this.mapService.utentiFiltrati = this.mapService.utentiFiltrati.filter((utente) => utente["valore"] != "tutti");
+    }
+
+    this.mapService.FiltraPerizie();
   }
   onOptionClicked(option:any){
-    this.mapService.selectedOperators.push(option);
+    this.mapService.utentiFiltrati.push(option);
     this.utilityService.elencoOperatori.splice(this.utilityService.elencoOperatori.indexOf(option), 1);
     // this.mapService.creaMappa();
   }
@@ -90,5 +94,9 @@ export class FiltroComponent  implements OnInit {
       }
     }
     this.day = "01";
+  }
+
+  UtentiSelezionati(){
+    return this.mapService.utentiFiltrati.filter((utente) => utente["valore"] != "tutti");
   }
 }

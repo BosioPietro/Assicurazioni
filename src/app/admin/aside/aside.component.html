@@ -2,22 +2,50 @@
   <img src="https://t3.ftcdn.net/jpg/03/68/95/08/360_F_368950850_aMW6C9P5SV7udFGHWgz97fvgNVsnOvpp.jpg">
   Assicurazioni
 </div>
-<div id="wrapperAside" class="flex-col">
+<div id="wrapperAside" class="flex-col" #opzioni>
+  <div 
+    class="cella posizione-{{routerLink.indexOf(window.location.pathname)}}"
+  >Home</div>
   @for (voce of elencoVoci; track $index) {
     <VoceAside 
+      routerLinkActive="selezionata"
+      [routerLink]="routerLink[$index]"
       [voce]="voce" 
       [icon]="elencoIcons[$index]" 
-      [notification]="elencoNotifications[$index]" 
+      [notification]="elencoNotifications[$index]"
     />
   }
 </div>
 <div class="wrapper-logout flex-row">
-  <div class="img"></div>
+  @if(utente)
+  {
+    @if(utente.pfp){
+      <img [src]="utente.pfp">
+    }
+    @else {
+      <ImmagineProfileDefault [nome]="utente.cognome"/>
+    }
+  }
+  @else {
+    <div class="img" loader></div>
+  }
   <div class="flex-col jc-c">
-    <h6>Nome Cognome</h6>
-    <p>&commat;nome_utente</p>
+    @if(utente){
+      <h6>{{ utente["nome"] }} {{ utente["cognome"] }}</h6>
+      <p>&commat;{{ utente["username"] }}</p>
+    }
+    @else {
+      <h6 loader style="margin-bottom: .25rem;">Nome Cognome</h6>
+      <p loader style="width: 50%;">&commat;nome_utente</p>
+    }
   </div>
-  <button type="button" (click)="menu.toggle($event)" class="flex-row al-c jc-c" [@appari]>
+  <button 
+    type="button" 
+    class="flex-row al-c jc-c"
+    [style]="{'pointer-events' : utente ? 'all' : 'none'}" 
+    (click)="menu.toggle($event)" 
+    [@appari]
+  >
     <p-menu 
     #menu 
     [model]="[opzioneLogout]" 
@@ -28,3 +56,16 @@
     <ion-icon name="ellipsis-vertical"></ion-icon>
   </button>
 </div>
+@if(vuoleUscire){
+  <ModaleSiNo
+    #modaleElimina
+    colore="#eb4e4e"
+    si="Esci"
+    titolo="Uscire dall'account?"
+    messaggio="Dovrai effettuare nuovamente il login"
+    [style]="{'position':'absolute'}"
+    [inCaricamento]="inCaricamento"
+    (onNo)="ChiudiElimina(modaleElimina)"
+    (onSi)="Logout()"
+  />
+}

@@ -8,10 +8,9 @@
     padding-inline: 1rem;
     border-radius: .5rem;
 
-    &:hover{
+    &:not(.selezionata):hover{
         box-shadow: 0px 0px 10px 1px lightgray;
         color: black;
-        background-color: white;
     }
 }
 

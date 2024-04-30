@@ -5,6 +5,8 @@ import { GestoreServerService } from 'src/app/server/gestore-server.service';
 import { Perizia } from '../../perizia/perizia.model';
 import { Metodi } from 'src/app/utils/TipiSpeciali';
 import Utente from '../../utenti/tabella-utenti/utente.model';
+import Opzione from 'src/app/comuni/elementi-form/dropdown/opzione.model';
+import { StringaInData } from 'src/app/utils/funzioni';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,11 +22,11 @@ export class MapService {
   perizie:Perizia[] = [];
   perizieFiltrate:Perizia[] = [];
   stiliMarker: Record<string, any>[] = []
-  utenteFiltrato: string = "tutti";
+  utentiFiltrati: Opzione[] = [{valore: "tutti", testo: "Tutti"}];
+  utenti:Utente[] = [];
 
   pickedDates:Date[] = [];
   flagInfoWindow:boolean = false;
-  selectedOperators:any []= [];
   markers: google.maps.Marker[] = [];
   markerCoords:any;
   newMarker:any;
@@ -35,25 +37,36 @@ export class MapService {
   google = window.google;
   maps = this.google.maps;
 
-  filterMarkers(){
-    // this.filteredMarkers = this.markerList;
-    // this.filteredMarkers = this.markerList.filter(marker =>{
-    //   return ((marker.utente.genere == this.utilityService.flagRadioClicked && this.utilityService.flagRadioClicked != "All") || this.utilityService.flagRadioClicked == "All");
-    // })
-    // this.filteredMarkers = this.filteredMarkers.filter(marker =>{
-    //   return ((this.selectedOperators.includes(marker.utente.nome) && this.selectedOperators.length != 0) || this.selectedOperators.length == 0);
-    // })
-    // this.filteredMarkers = this.filteredMarkers.filter(marker=>{
-    //   if(this.pickedDates.length == 2 && this.pickedDates[1] == undefined){
-    //     // return (new Date(marker.data.date) >= new Date(this.pickedDates[0]));
-    //     return true;
-    //   }else if(this.pickedDates.length == 2 && this.pickedDates[1] != undefined){
-    //     return (new Date(marker.data.date) >= new Date(this.pickedDates[0]) && new Date(marker.data.date) <= new Date(this.pickedDates[1]));
-    //   }else if(this.pickedDates.length == 1){
-    //     return (new Date(marker.data.date) >= new Date(this.pickedDates[0]));
-    //   }
-    //   else return true;
-    // })
+  FiltraPerizie(){
+    this.perizieFiltrate = structuredClone(this.perizie);
+    
+    // GENERE
+    const genere = this.utilityService.flagRadioClicked.charAt(0);
+
+    this.perizieFiltrate = this.perizieFiltrate.filter((p) =>{
+      let utentiFiltrati = this.utenti.filter((u) => this.utentiFiltrati.map((u) => u.valore).includes(u.username));
+      utentiFiltrati = utentiFiltrati.filter((u) => u.genere == genere || genere == "T");
+
+      return utentiFiltrati.map((u) => u.username).includes(p.codOperatore);
+    })
+
+    // UTENTI
+    this.perizieFiltrate = this.perizieFiltrate.filter((p) => this.utentiFiltrati.map((u) => u.valore).includes(p.codOperatore));
+
+    // DATE
+    this.perizieFiltrate = this.perizieFiltrate.filter((p) =>{
+      if(this.pickedDates.length == 2 && this.pickedDates[1] == undefined){
+        // return (new Date(marker.data.date) >= new Date(this.pickedDates[0]));
+        return true;
+      }else if(this.pickedDates.length == 2 && this.pickedDates[1] != undefined){
+        return (StringaInData(p.data) >= new Date(this.pickedDates[0]) && StringaInData(p.data) <= new Date(this.pickedDates[1]));
+      }else if(this.pickedDates.length == 1){
+        return (StringaInData(p.data) >= new Date(this.pickedDates[0]));
+      }
+      else return true;
+    })
+
+    console.log(this.perizieFiltrate)
   }
 
   async PrendiStili(aus: Perizia[]){

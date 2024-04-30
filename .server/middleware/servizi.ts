@@ -4,13 +4,12 @@ import { DecifraToken, ControllaAdmin } from "../encrypt.js";
 import { CaricaImmagine } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
-import { env } from "process";
+import env from "../ambiente.js";
 
-const PrendiUtenti = (app: Express, driver: MongoDriver) => {
+const PrendiUtenti = (app: Express) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
         const filtri = req.query || {};
-
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const utenti = await driver.PrendiMolti(filtri);
         if(driver.Errore(utenti, res)) return;
@@ -21,14 +20,27 @@ const PrendiUtenti = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const EliminaUtenti = (app: Express, driver: MongoDriver) => {
+const PrendiPerizie = (app: Express) => {
+    app.get("/api/perizie", async (req: Request, res: Response) => {
+        const filtri = req.query || {};
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+
+        const perizie = await driver.PrendiMolti(filtri);
+        if(driver.Errore(perizie, res)) return;
+
+        RispondiToken(res, DecifraToken(req.headers.authorization!), perizie)
+    })
+}
+
+const EliminaUtenti = (app: Express) => {
     app.delete("/api/utenti", async (req: Request, res: Response) => {
         const { utenti } = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        if(!(await ControllaAdmin(token, driver, res))) return;
+        if(!(await ControllaAdmin(token, res))) return;
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const eliminati = await driver.Elimina({ username : { $in : utenti } });
         if(driver.Errore(eliminati, res)) return;
@@ -37,14 +49,14 @@ const EliminaUtenti = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const AggiornaUtente = (app: Express, driver: MongoDriver) => {
+const AggiornaUtente = (app: Express) => {
     app.patch("/api/aggiorna-utente", async (req: Request, res: Response) => {
         const utente = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        if(!(await ControllaAdmin(token, driver, res))) return;
+        if(!(await ControllaAdmin(token, res))) return;
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         delete utente["_id"];
 
@@ -55,14 +67,14 @@ const AggiornaUtente = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const CaricaImmagineProfilo = (app: Express, driver: MongoDriver) => {
+const CaricaImmagineProfilo = (app: Express) => {
     app.post("/api/carica-immagine-profilo", async (req: Request, res: Response) => {
         const { username } = req.body;
         const immagine: File = (req as any).files["immagine"];
 
         const token = DecifraToken(req.headers.authorization!)
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const utente = await driver.PrendiUno({ username });
         if(driver.Errore(utente, res)) return;
@@ -84,12 +96,12 @@ const CaricaImmagineProfilo = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const ResetImmagineProfilo = (app: Express, driver: MongoDriver) => {
+const ResetImmagineProfilo = (app: Express) => {
     app.patch("/api/reset-immagine", async (req: Request, res: Response) => {
         const { username } = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const utente = await driver.PrendiUno({ username });
         if(driver.Errore(utente, res)) return;
@@ -103,14 +115,14 @@ const ResetImmagineProfilo = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const AggiungiUtente = (app: Express, driver: MongoDriver) => {
+const AggiungiUtente = (app: Express) => {
     app.post("/api/utenti", async (req: Request, res: Response) => {
         const utente = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        if(!(await ControllaAdmin(token, driver, res))) return;
+        if(!(await ControllaAdmin(token, res))) return;
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const aggiunto = await driver.Inserisci(utente);
         if(driver.Errore(aggiunto, res)) return;
@@ -119,24 +131,11 @@ const AggiungiUtente = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const PrendiPerizie = (app: Express, driver: MongoDriver) => {
-    app.get("/api/perizie", async (req: Request, res: Response) => {
-        const filtri = req.query || {};
-
-        await driver.SettaCollezione("perizie");
-
-        const perizie = await driver.PrendiMolti(filtri);
-        if(driver.Errore(perizie, res)) return;
-
-        RispondiToken(res, DecifraToken(req.headers.authorization!), perizie)
-    })
-}
-
-const PrendiPerizia = (app: Express, driver: MongoDriver) => {
+const PrendiPerizia = (app: Express) => {
     app.get("/api/perizia/:idPerizia", async (req: Request, res: Response) => {
         const { idPerizia } = req["params"];
 
-        await driver.SettaCollezione("perizie");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
 
         const perizia = await driver.PrendiUno({ codice : +idPerizia });
         if(driver.Errore(perizia, res)) return;
@@ -145,11 +144,11 @@ const PrendiPerizia = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const PrendiOperatore = (app: Express, driver: MongoDriver) => {
+const PrendiOperatore = (app: Express) => {
     app.get("/api/operatore/:codOperatore", async (req: Request, res: Response) => {
         const { codOperatore } = req["params"];
 
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const operatore = await driver.PrendiUno({ username : codOperatore });
         if(driver.Errore(operatore, res)) return;
@@ -158,9 +157,10 @@ const PrendiOperatore = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const PrendiOperatori = (app: Express, driver: MongoDriver) => {
+const PrendiOperatori = (app: Express) => {
     app.get("/api/operatori", async (req: Request, res: Response) => {
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
+
 
         const operatori = await driver.PrendiMolti({ ruolo : { $in : [new RegExp("admin", "i"), new RegExp("dipendente", "i")]} });
         if(driver.Errore(operatori, res)) return;
@@ -170,14 +170,14 @@ const PrendiOperatori = (app: Express, driver: MongoDriver) => {
 
 }
 
-const EliminaPerizia = (app: Express, driver: MongoDriver) => {
+const EliminaPerizia = (app: Express) => {
     app.delete("/api/perizia/:idPerizia", async (req: Request, res: Response) => {
         const { idPerizia } = req["params"];
         const token = DecifraToken(req.headers.authorization!);
 
-        if(!(await ControllaAdmin(token, driver, res))) return;
+        if(!(await ControllaAdmin(token, res))) return;
 
-        await driver.SettaCollezione("perizie");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
 
         const eliminata = await driver.Elimina({ codice : +idPerizia });
         if(driver.Errore(eliminata, res)) return;
@@ -219,14 +219,14 @@ const IndirizzoDaCoordinate = (app: Express) => {
     })
 }
 
-const ModificaPerizia = (app: Express, driver: MongoDriver) => {
+const ModificaPerizia = (app: Express) => {
     app.patch("/api/perizia", async (req: Request, res: Response) => {
         const perizia = req.body;
         const token = DecifraToken(req.headers.authorization!);
 
-        if(!(await ControllaAdmin(token, driver, res))) return;
+        if(!(await ControllaAdmin(token, res))) return;
 
-        await driver.SettaCollezione("perizie");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
 
         delete perizia["_id"];
         delete perizia["nomeOperatore"];
@@ -253,8 +253,21 @@ const CaricaImmaginePerizia = (app: Express) => {
 
 }
 
+const InfoUtente = (app: Express) => {
+    app.get("/api/info-utente", async (req: Request, res: Response) => {
+        const token = DecifraToken(req.headers.authorization!);
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
+
+        const utente = await driver.PrendiUno({ username : token["username"] });
+        if(driver.Errore(utente, res)) return;
+
+        RispondiToken(res, token, utente)
+    });
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
-         PrendiOperatori, PrendiPerizie};
+         PrendiOperatori, PrendiPerizie, InfoUtente};

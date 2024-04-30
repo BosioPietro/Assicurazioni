@@ -1,0 +1,33 @@
+:host{
+    background-color: #f2f2f2;
+    color: #000;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: box-shadow 0.3s;
+
+    &:hover{
+        --colore: color-mix(in srgb, var(--accento) 50%, #FFF 50%);
+        box-shadow: 0 0 1rem var(--colore);
+        color: var(--accento);
+    }
+}
+
+:host > span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.radioClicked{
+    color: white;
+    background-color: var(--accento);
+}

@@ -8,9 +8,43 @@
     border-radius: 1.5rem;
 }
 
+VoceAside{
+    transition: color .3s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    user-select: none;
+    &.selezionata{
+        color: #FFF;
+    }
+}
+
+.cella{
+    position: absolute;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.25rem;
+    color: transparent;
+    user-select: none;
+    border-radius: .5rem;
+    background-color: var(--accento);
+    transition: top .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    &.posizione-0{
+        top: 0;
+    }
+
+    &.posizione-1{
+        top: calc(2 * (1.25rem + 1rem));
+    }
+
+    &.posizione-2{
+        top: calc(4 * (1.25rem + 1rem));
+    }
+}
+
 #wrapperAside{
     align-items: center;
     flex-grow: 1;
+    position: relative;
+    gap: 1rem;
 }
 
 #wrapperHead{
@@ -32,15 +66,6 @@
     border: 1px solid #CCC;
     border-radius: 1rem;
     gap: 1rem;
-
-    .img, ImmagineProfileDefault{
-        height: 3rem;
-        aspect-ratio: 1;
-        border-radius: 100vh;
-        background-color: #AAA;
-        caret-color: transparent;
-        background-size: cover;
-    }
 
     & > .flex-col{
         flex-grow: 1;
@@ -71,28 +96,52 @@
     }
 }
 
-// #wrapperHead > div{
-//     width: 100%;
-//     height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-around;
-//     flex-direction: row;
-//     gap: 0.2rem;
-//     padding: 0.5rem;
-// }
-// img{
-//     max-width: 35px;
-//     max-height: 35px;
-// }
+.img, ImmagineProfileDefault{
+    height: 3rem;
+    aspect-ratio: 1;
+    border-radius: 100vh !important;
+    background-color: #AAA;
+    caret-color: transparent;
+    background-size: cover;
+}
 
-// #wrapperHead > div > span:nth-child(2){
-//     font-size: 1.3rem;
-//     font-weight: bold;
-//     color: hsl(0, 0%, 20%);
-//     width: 90%;
-//     height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-// }
+ImmagineProfileDefault::ng-deep{
+    div{
+        scale: 1.5;
+    }
+}
+
+[loader]{
+    --grigio: #EEE;
+    border-radius: .25rem;
+    background-color: var(--grigio);
+    color: transparent !important;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    color: transparent;
+
+    &::before{
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        transform: translateY(-50%) rotateZ(.1turn);
+        top: 1rem;
+        height: 4rem;
+        width: 1rem;
+        background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+        left: -200%;
+        animation: caricamento 1s infinite linear;
+        filter: blur(1rem);
+    }
+}
+
+@keyframes caricamento{
+    0%{
+        left: -200%;
+    }
+    100%{
+        left: 200%;
+    }
+}

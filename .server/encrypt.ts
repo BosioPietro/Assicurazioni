@@ -28,9 +28,10 @@ const CreaToken = (utente : {username : string, _id? : string, iat? : number, "2
     return jwt.sign(payload, env["ENCRYPTION_KEY"]);
 }
 
-const ControllaToken = (driver : MongoDriver, req : Request, res : Response, next? : NextFunction) => {
+const ControllaToken = (req : Request, res : Response, next? : NextFunction) => {
     if(!req.headers["authorization"]) return res.status(403).send("Token non fornito");
-
+    
+    const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
     const token = req.headers["authorization"];
 
     jwt.verify(token, env["ENCRYPTION_KEY"], async (err : VerifyErrors | null, payload : any) => {
@@ -44,7 +45,6 @@ const ControllaToken = (driver : MongoDriver, req : Request, res : Response, nex
         
         if(!next)
         {
-            await driver.SettaCollezione("utenti")
             const tipo = payload["username"].includes("@") ? "email" : "username";
             const utente = await driver.PrendiUno({ [tipo] : payload["username"] }, { cambioPwd : 1, dataCreazione : 1 })
             if(!driver.Errore(utente))
@@ -81,8 +81,8 @@ const GeneraCodice = () => {
     return new Array(6).fill('').reduce((acc) => acc + Carattere(), "");
 }
 
-const ControllaAdmin = async (u: Token, driver: MongoDriver, res: Response) : Promise<boolean | null> => {
-    await driver.SettaCollezione("utenti");
+const ControllaAdmin = async (u: Token, res: Response) : Promise<boolean | null> => {
+    const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
     const admin = await driver.PrendiUno({ username: u.username });
     if(driver.Errore(admin, res)) return false;

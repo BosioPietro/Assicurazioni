@@ -9,7 +9,8 @@ type Utente = {
     email: string,
     "2FA": boolean,
     attivo: boolean,
-    telefono: string
+    telefono: string,
+    genere: "M" | "F",
 }
 
 export default Utente;

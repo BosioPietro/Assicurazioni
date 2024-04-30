@@ -1,3 +1,17 @@
+p-calendar.ng-untouched::ng-deep{
+    .p-calendar{
+    
+        &::after{
+            content: '\00a0Inserisci una data...';
+            position: absolute;
+            padding: .5rem;
+            padding-left: 2.5rem;
+            color: #AAA;
+            pointer-events: none;
+        }
+    }
+}
+
 p-calendar::ng-deep{
     --colore-testo: #4b5563;
 
@@ -43,7 +57,6 @@ p-calendar::ng-deep{
             color: #CCC;
             font-size: .75rem;
         }
-
     }
 
     .p-calendar:not(.p-calendar-disabled).p-focus > .p-inputtext {

@@ -4,8 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UtilityService {
-  flagRadioClicked:string = "All";
-  flagRcClicked:string = "";
+  flagRadioClicked:string = "Tutti";
   elencoOperatori:any [] = ["Franco", "Giovanna", "Guglielmo", "Piero"];
   elencoMesi = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"];
   elencoNGiorni = [31,28,31,30,31,30,31,31,30,31,30,31];

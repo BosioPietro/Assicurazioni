@@ -20,6 +20,7 @@
     }
 }
 
+
 .disabilitato{
     pointer-events: none;
     cursor: not-allowed;
@@ -113,11 +114,11 @@ label.haValore{
     top: calc(100% + .5rem);
     left: 0;
     right: 0;
-    overflow: hidden;
     border-radius: .5rem;
+    overflow: hidden;
     background-color: #FFF;
     filter: drop-shadow(0 0 1rem rgba(0, 0, 0, .1));
-    
+
     &:not(.aperto){
         & > div{
             border-color: transparent;
@@ -127,15 +128,18 @@ label.haValore{
     & > div{
         position: relative;
         border-radius: .5rem;
-        outline: 1px solid var(--colore-normale);
+        border: 1px solid;
+        border-color: #CCC;
         max-height: 10rem;
         overflow-y: scroll;
         direction: rtl;
+        box-sizing: content-box;
         
         & > .wrapper-perizia{
             position: absolute;
         }
         *{
+            box-sizing: border-box;
             direction: ltr;
         }
     }
@@ -153,8 +157,7 @@ label.haValore{
 }
 
 .cont-opzioni{
-    overflow: hidden;
-    
+
     .opzione{
         padding: .6rem;
         display: flex;

@@ -55,7 +55,8 @@ export class AggiungiUtenteModaleComponent implements AfterViewInit {
     "2FA": false,
     nPerizie: 0,
     assuntoIl: this.DataInStringa(new Date()),
-    attivo: false
+    attivo: false,
+    genere: "M"
   }
 
   infoPersonali = {

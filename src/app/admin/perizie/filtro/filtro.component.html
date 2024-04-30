@@ -1,44 +1,64 @@
-<div class="filterDiv flex-col" id="filterOperatore">
-  <div>Operatore</div>
-  <div id="wrapperFiltriGenere" class="flex-col">
-    <div class="lbl">Gender</div>
-    <div class="cont-radio flex-row">
-      @for (gender of ['Maschio', 'Femmina', 'Tutti']; track $index){
-        <RadioButton [label]="gender" />
-      }
+
+<h1>Filtri</h1>
+    
+<div class="wrapper flex-row">
+
+  <div class="flex-col">
+
+    <div class="cella-filtro flex-col">
+      <div class="lbl">
+        Data
+      </div>
+      <p-calendar 
+        class="abilitato"
+        dateFormat="dd/mm/yy" 
+        selectionMode="range" 
+        [(ngModel)]="rangeDates" 
+        [iconDisplay]="'input'" 
+        [showIcon]="true" 
+        (onClose)="datePicked()">
+      </p-calendar>
     </div>
+  
+    <div class="cella-filtro flex-col">
+      <div class="lbl">Gender</div>
+      <div class="cont-radio flex-row">
+        @for (gender of ['Maschio', 'Femmina', 'Tutti']; track $index){
+          <RadioButton [label]="gender" />
+        }
+      </div>
+    </div>
+
   </div>
-  <hr>
-  <div class="flex-col cont-filtri">
+
+  <div class="cella-filtro flex-col">
     <div class="lbl">Utente</div>
     @if(operatori){
-      <Dropdown 
+      <DropdownMultiplo
+        class="abilitato"
         icona="person"
         [opzioni]="operatori"
-        [(ngModel)]="mapService.utenteFiltrato"
+        [(ngModel)]="mapService.utentiFiltrati"
+        (ngModelChange)="mapService.FiltraPerizie()"
       />
     }
-  </div>
-  <div  class="flex-col cont-filtri">
-    @for (operatore of mapService.selectedOperators; track $index){
-      <app-selection [selection]="operatore" (selectionRemoved)="onSelectionRemoved($event)"></app-selection>
+    @else {
+      <div class="loader-dropdown"></div>
     }
-  </div>
-</div>
-<div class="filterDiv" id="filterPerizia">
-  <div>Perizia</div>
-  <div class="lbl">
-    Data
-  </div>
-  <!-- <div id="wrapperInd">
-    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'chevron-back-outline'"></app-radio-button>
-    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'reorder-two-outline'"></app-radio-button>
-    <app-radio-button [width]="'1.3rem'" [flag]="true" [label]="'chevron-forward-outline'"></app-radio-button>
-  </div> -->
-  <div id="wrapperFiltroData">
-    <!-- <app-select [label]="day" [options]="utilityService.elencoGiorni"></app-select>
-    <app-select [label]="month" [options]="utilityService.elencoMesi" (optionClicked)="onMonthClicked($event)"></app-select>
-    <app-select [label]="year" [options]="utilityService.elencoAnni"></app-select> -->
-    <p-calendar [(ngModel)]="rangeDates" [iconDisplay]="'input'" [showIcon]="true" selectionMode="range" dateFormat="dd/mm/yy" (onClose)="datePicked()"></p-calendar>
+    <div id="wrapperOperatoriSelezionati">
+      <div class="wrapper flex-row">
+        @if(UtentiSelezionati().length){
+          @for (operatore of UtentiSelezionati(); track $index){
+            <UtenteSelezionato 
+              [selection]="operatore" 
+              (selectionRemoved)="onSelectionRemoved(operatore)"
+            ></UtenteSelezionato>
+          }
+        }
+        @else{
+          <div class="no-utente">Nessun utente selzionato</div>
+        }
+      </div>
+    </div>
   </div>
 </div>

@@ -10,11 +10,10 @@ import Twilio from "twilio";
 
 const smsClient = Twilio(env.TWILIO_API_SID, env.TWILIO_API_SECRET)
 
-const RegistraUtente = async (app : Express, driver : MongoDriver) => {
+const RegistraUtente = async (app : Express) => {
     app.post("/api/registrazione", async (req : Request, res : Response) => {
         const { username, email } = req["body"];
-    
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const [userUtente, userEmail] = await Promise.all([
             driver.PrendiUno({ username }), 
@@ -44,11 +43,10 @@ const RegistraUtente = async (app : Express, driver : MongoDriver) => {
     })
 }
 
-const LoginUtente = async (app : Express, driver : MongoDriver) => {
+const LoginUtente = async (app : Express) => {
     app.post("/api/login", async (req : Request, res : Response) => {
         const { username: utente, password } = req["body"];
-    
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         
         const tipo = utente.includes("@") ? "email" : "username";
         const user = await driver.PrendiUno({ [tipo] : utente })
@@ -75,12 +73,12 @@ const LoginUtente = async (app : Express, driver : MongoDriver) => {
     });   
 }
 
-const LoginOAuth = async (app : Express, driver : MongoDriver) => {
+const LoginOAuth = async (app : Express) => {
     app.post("/api/login-oauth", async (req : Request, res : Response) => {
         const { email } = req["body"];
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         
         const regex = new RegExp(`^${email}$`, "i");
-        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ email : regex });
 
@@ -102,14 +100,12 @@ const LoginOAuth = async (app : Express, driver : MongoDriver) => {
     });
 }
 
-const CambiaPassword = (app: Express, driver : MongoDriver) => {
+const CambiaPassword = (app: Express) => {
     app.post("/api/cambio-password", async (req : Request, res : Response) => {
-
         const { password } = req["body"];
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
-
-        await driver.SettaCollezione("utenti");
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
         const user : any = await driver.PrendiUno({ username })
         if(driver.Errore(user, res)) return;
@@ -131,11 +127,10 @@ const CambiaPassword = (app: Express, driver : MongoDriver) => {
     })
 }
 
-const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
+const RecuperoCredenziali = (app: Express) =>{
     app.post("/api/recupero-credenziali", async (req: Request, res: Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const { email } = req["body"];
-
-        await driver.SettaCollezione("utenti");
         
         const user = await driver.PrendiUno({ email });
         if(driver.Errore(user, res)) return;
@@ -164,12 +159,11 @@ const RecuperoCredenziali = (app: Express, driver: MongoDriver) =>{
     })
 }
 
-const VerificaRecupero = (app: Express, driver: MongoDriver) => {
+const VerificaRecupero = (app: Express) => {
     app.get("/api/verifica-recupero", async (req: Request, res: Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!)
         const { username } = payload;
-
-        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
@@ -182,8 +176,9 @@ const VerificaRecupero = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const VerificaCodice = (app: Express, driver: MongoDriver) => {
+const VerificaCodice = (app: Express) => {
     app.post("/api/verifica-codice", async (req: Request, res: Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
         const { codice } = req["body"]
@@ -218,8 +213,9 @@ const VerificaCodice = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
+const InviaCodiceTelefono = (app: Express) => {
     app.post("/api/invia-codice-verifica", async (req: Request, res: Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
 
@@ -258,8 +254,9 @@ const InviaCodiceTelefono = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
+const VerificaCodiceTelefono = (app: Express) => {
     app.post("/api/verifica-codice-telefono", async (req: Request, res: Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
         const { codice } = req["body"];
@@ -284,11 +281,10 @@ const VerificaCodiceTelefono = (app: Express, driver: MongoDriver) => {
     })
 }
 
-const ControllaUsername = async (app: Express, driver : MongoDriver) => {
+const ControllaUsername = async (app: Express) => {
     app.get("/api/controlla-username", async (req : Request, res : Response) => {
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const { username } = req.query;
-        
-        await driver.SettaCollezione("utenti");
 
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
@@ -305,12 +301,12 @@ const LogoutUtente = (app : Express) => {
     });
 }
 
-const ControlloToken = (app : Express, driver : MongoDriver) => {
-    app.get("/api/controllo-token", (req : Request, res : Response) => ControllaToken(driver, req, res));
+const ControlloToken = (app : Express) => {
+    app.get("/api/controllo-token", (req : Request, res : Response) => ControllaToken(req, res));
 }
 
-const ControlloTokenMiddleware = (app : Express, driver : MongoDriver) => {
-    app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(driver, req, res, next));
+const ControlloTokenMiddleware = (app : Express) => {
+    app.use("/api/", (req : Request, res : Response, next : NextFunction) => ControllaToken(req, res, next));
 }
 
 export { 

@@ -13,11 +13,11 @@ import * as Servizi from "./middleware/servizi.js";
 // APERTURA SERVER
 const app : Express = express();
 
-const [cert, key, driver] = await Promise.all([
+const [cert, key] = await Promise.all([
     ReadFileAsync("./keys/certificate.crt"),
-    ReadFileAsync("./keys/private_key.pem"),
-    MongoDriver.CreaDatabase(env["STR_CONN"], env["DB_NAME"], "utenti")
+    ReadFileAsync("./keys/private_key.pem")
 ]);
+
 
 const server = https.createServer({key, cert}, app);
 
@@ -37,36 +37,37 @@ Richieste.MiddlewareFormData(app);
 Cors.MiddlewareCors(app);
 
 // gestione autenticazione
-Autenticazione.RegistraUtente(app, driver);
-Autenticazione.LoginUtente(app, driver);
-Autenticazione.LoginOAuth(app, driver);
+Autenticazione.RegistraUtente(app);
+Autenticazione.LoginUtente(app);
+Autenticazione.LoginOAuth(app);
 Autenticazione.LogoutUtente(app);
-Autenticazione.CambiaPassword(app, driver);
-Autenticazione.RecuperoCredenziali(app, driver);
-Autenticazione.VerificaCodice(app, driver);
-Autenticazione.ControllaUsername(app, driver);
-Autenticazione.ControlloToken(app, driver);
-Autenticazione.ControlloTokenMiddleware(app, driver);
-Autenticazione.VerificaRecupero(app, driver);
-Autenticazione.InviaCodiceTelefono(app, driver);
-Autenticazione.VerificaCodiceTelefono(app, driver);
+Autenticazione.CambiaPassword(app);
+Autenticazione.RecuperoCredenziali(app);
+Autenticazione.VerificaCodice(app);
+Autenticazione.ControllaUsername(app);
+Autenticazione.ControlloToken(app);
+Autenticazione.ControlloTokenMiddleware(app);
+Autenticazione.VerificaRecupero(app);
+Autenticazione.InviaCodiceTelefono(app);
+Autenticazione.VerificaCodiceTelefono(app);
 
 // gestione servizi
-Servizi.PrendiUtenti(app, driver);
-Servizi.EliminaUtenti(app, driver);
-Servizi.AggiornaUtente(app, driver);
-Servizi.CaricaImmagineProfilo(app, driver);
-Servizi.ResetImmagineProfilo(app, driver);
-Servizi.AggiungiUtente(app, driver);
-Servizi.PrendiPerizia(app, driver);
-Servizi.PrendiOperatore(app, driver);
-Servizi.EliminaPerizia(app, driver);
+Servizi.PrendiUtenti(app);
+Servizi.EliminaUtenti(app);
+Servizi.AggiornaUtente(app);
+Servizi.CaricaImmagineProfilo(app);
+Servizi.ResetImmagineProfilo(app);
+Servizi.AggiungiUtente(app);
+Servizi.PrendiPerizia(app);
+Servizi.PrendiOperatore(app);
+Servizi.EliminaPerizia(app);
 Servizi.PrendiIndirizzi(app);
 Servizi.IndirizzoDaCoordinate(app);
-Servizi.ModificaPerizia(app, driver);
+Servizi.ModificaPerizia(app);
 Servizi.CaricaImmaginePerizia(app);
-Servizi.PrendiOperatori(app, driver);
-Servizi.PrendiPerizie(app, driver);
+Servizi.PrendiOperatori(app);
+Servizi.PrendiPerizie(app);
+Servizi.InfoUtente(app);
 
 // gestione errori
 Errori.LoggingErrori(app);
