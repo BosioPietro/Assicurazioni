@@ -188,4 +188,17 @@ export class AggiungiUtenteModaleComponent implements AfterViewInit {
       setTimeout(() => this.utente.ruolo = "Dipendente");
     }
   }
+
+  CreaUtente(){
+    if(this.infoPersonali.valide){
+      this.onAggiungi.emit(this.utente);
+      this.ChiudiModale();
+    } else {
+      this.notifiche.NuovaNotifica({
+        "titolo": "Dati non validi",
+        "descrizione": "Controlla i dati inseriti",
+        "tipo": "errore"
+      })
+    }
+  }
 }

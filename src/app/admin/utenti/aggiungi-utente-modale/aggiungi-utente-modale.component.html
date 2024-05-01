@@ -112,7 +112,7 @@
         <button 
           class="accento" 
           [disabled]="!infoPersonali.valide" 
-          (click)="onAggiungi.emit(utente)"
+          (click)="CreaUtente()"
           [class.caricamento]="caricamento" 
         >                
         <ion-icon name="checkmark"></ion-icon>

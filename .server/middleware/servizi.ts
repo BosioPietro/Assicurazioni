@@ -1,10 +1,11 @@
 import { Express, Request, Response } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { DecifraToken, ControllaAdmin } from "../encrypt.js";
+import { DecifraToken, ControllaAdmin, GeneraPassword } from "../encrypt.js";
 import { CaricaImmagine, DataInStringa, StringaInData } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
 import env from "../ambiente.js";
+import { InviaMailNuovaPassword } from "./mail.js";
 
 const PrendiUtenti = (app: Express) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
@@ -155,6 +156,20 @@ const AggiungiUtente = (app: Express) => {
 
         const aggiunto = await driver.Inserisci(utente);
         if(driver.Errore(aggiunto, res)) return;
+
+        const password = GeneraPassword();
+
+        console.log(utente["username"], utente["email"], password)
+
+        InviaMailNuovaPassword(utente["username"], password, utente["email"])
+        .then(() => {
+            RispondiToken(res, token, aggiunto)
+            console.log("mail inviata")
+        })
+        .catch((err: any) => {
+            console.log(err)
+            RispondiToken(res, token, aggiunto, 500)
+        })
 
         RispondiToken(res, token, aggiunto)
     })

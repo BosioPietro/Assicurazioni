@@ -58,6 +58,7 @@ const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve,
     transporter.sendMail(opzioni, (err : Error | null) => {
         if (err)
         {
+            console.log(err);
             reject(err);
         }
         else resolve("Mail inviata");
