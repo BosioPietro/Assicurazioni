@@ -8,6 +8,9 @@ import { CalendarioComponent } from './calendario/calendario.component';
 import { AdminService } from '../admin.service';
 import { HomeService } from './home.service';
 import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { UtentiComponent } from './utenti/utenti.component';
+import { ControllaToken } from 'src/app/utils/funzioni';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -15,19 +18,22 @@ import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
   styleUrls: ['./home.page.scss'],
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule, GraficoLineaComponent, 
-            GraficoBarreComponent, CalendarioComponent]
+            GraficoBarreComponent, CalendarioComponent, UtentiComponent]
 })
 export class HomePage implements OnInit{
 
   constructor(
     public admin: AdminService,
     public home: HomeService,
-    public notifiche: NotificheService
+    public notifiche: NotificheService,
+    private router: Router
   ) { }
 
   configGrafici?: Record<string, any>;
+  
 
   async ngOnInit(){
+    ControllaToken(this.router)
     const aus = await this.home.ConfigurazioniGrafici();
 
     if(!aus){
@@ -43,6 +49,17 @@ export class HomePage implements OnInit{
       perizie: aus.map((p) => p["perizie"].length),
       utenti: aus.map((p) => p["utenti"].length)
     }
+
+    window.addEventListener('resize', () => {
+      this.configGrafici = undefined;
+
+      setTimeout(() => {
+        this.configGrafici = {
+          perizie: aus.map((p) => p["perizie"].length),
+          utenti: aus.map((p) => p["utenti"].length)
+        } 
+      }, 1);
+    });
   }
 
 }

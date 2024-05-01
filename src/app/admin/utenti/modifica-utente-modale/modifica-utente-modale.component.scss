@@ -379,3 +379,23 @@ button:not(.caricamento){
     border-radius: 100vh;
     background-color: var(--accento);
 }
+
+@media screen and (max-aspect-ratio: 1){
+    :host{
+        // display: none !important;
+        dialog{
+            flex-direction: column !important;
+
+            .nav-dialogo button{
+                width: calc(100% - 4rem);
+            }
+        
+            .pagina-dialogo.abs{
+                button{
+                    visibility: hidden;
+                }
+            }
+        
+        }
+    }
+}

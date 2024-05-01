@@ -203,7 +203,7 @@ footer{
 
 .loader-statistica{
     margin-top: .25rem;
-    height: 3rem;
+    height: 3.33rem;
 }
 
 [loader]{
@@ -241,3 +241,27 @@ footer{
     }
 }
 
+@media screen and (max-aspect-ratio: 1){
+    
+    :host{
+       .cont-utenti > .flex-row{
+            flex-direction: column !important;
+        }
+
+        BottoniOpzione::ng-deep{
+           
+            width: 100%;
+
+            .overlay{
+                width: 100%;
+                padding: .25rem;
+                top: 0;
+                right: 0;
+            }
+            
+            button{
+                flex-grow: 1;
+            }
+        }
+    }
+}

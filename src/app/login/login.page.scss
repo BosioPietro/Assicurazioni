@@ -99,4 +99,16 @@ LoaderBarra{
     z-index: 3;
 }
 
-// :host:has(.overlay.visibile){}
+
+@media screen and (max-aspect-ratio: .8) {
+    :host{
+        // display: none !important;
+        & > div{
+            flex-direction: column !important;
+        }
+
+        form{
+            padding: 2rem ;
+        }
+    }  
+}

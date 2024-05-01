@@ -81,6 +81,9 @@ VoceAside{
         p{
             color: #AAA;
             font-size: .8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
@@ -98,7 +101,7 @@ VoceAside{
 
 .img, ImmagineProfileDefault{
     height: 3rem;
-    aspect-ratio: 1;
+    width: 3rem;
     border-radius: 100vh !important;
     background-color: #AAA;
     caret-color: transparent;
@@ -143,5 +146,82 @@ ImmagineProfileDefault::ng-deep{
     }
     100%{
         left: 200%;
+    }
+}
+
+
+@media screen and (max-aspect-ratio: 1.4){
+    :host{
+        width: auto !important;
+
+        #wrapperHead{
+            flex-direction: column;
+        
+            span{
+                font-size: 1rem;
+            }
+        }
+
+        .wrapper-logout{
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            align-items: center;
+
+            .flex-col{
+                display: none;
+            }
+
+            button{
+                position: absolute;
+                inset: 0;
+                opacity: 0 !important;
+                aspect-ratio: initial;
+            }
+        }
+    }
+
+}
+
+@media screen and (max-aspect-ratio: 1){
+    :host{
+        span{
+            display: none;
+        }
+
+        .wrapper-logout{
+            padding: 0;
+            border: 0;
+        }
+    }
+}
+
+@media screen and (max-aspect-ratio: 0.6){
+    :host{ 
+        flex-direction: row !important;
+        gap: 1rem;
+        justify-content: space-between;
+        padding: 1rem;
+        border-radius: 1rem;
+
+        #wrapperHead{
+            padding: 0;
+            margin-block: auto;
+        }
+
+        #wrapperAside{
+            flex-direction: row;
+            gap: 1rem;
+            align-items: flex-start;
+            justify-content: center;
+
+            .cella{
+                display: none;
+            }
+        }
+
+        .img, ImmagineProfileDefault{
+            margin-block: auto;
+        }
     }
 }

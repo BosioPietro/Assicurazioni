@@ -146,16 +146,20 @@ const RecuperoCredenziali = (app: Express) =>{
 
         const codice = GeneraCodice();
         const recupero = {
-            data: DataInStringa(new Date()),
+            data: DataInStringa(new Date(), true),
             codice
         }
 
+        console.log(user, recupero)
+
         const data = await driver.Replace({ email }, { ...user, recupero })
+        console.log(data)
         if(driver.Errore(data, res)) return;
 
-        InviaMailRecupero(email, user["username"], codice)
-        .then(() => RispondiToken(res, dataToken, { "ok" : "Password Cambiata" }))
-        .catch(() => RispondiToken(res, dataToken, `Errore nell'invio della mail`, 500))
+        RispondiToken(res, dataToken, { "ok" : "Recupero effettuato" })
+        // InviaMailRecupero(email, user["username"], codice)
+        // .then(() => RispondiToken(res, dataToken, { "ok" : "Email inviata" }))
+        // .catch(() => RispondiToken(res, dataToken, `Errore nell'invio della mail`, 500))
     })
 }
 
@@ -183,12 +187,15 @@ const VerificaCodice = (app: Express) => {
         const { username } = payload;
         const { codice } = req["body"]
 
+        console.log(username, codice)
         const user = await driver.PrendiUno({ username });
         if(driver.Errore(user, res)) return;
 
         if(!user) return RispondiToken(res, payload, `Utente non esistente`, 400)
 
         if(!user["recupero"]) return RispondiToken(res, payload, `Recupero non richiesto`, 400)
+
+        console.log(user)
 
         const { recupero } = user;
         const oggi = new Date();
@@ -234,17 +241,11 @@ const InviaCodiceTelefono = (app: Express) => {
             return;
         }
 
-        //const id = await smsClient.verify.v2.services(env.TWILIO_API_KEY).verifications
-        //.create({to: '+393318233661', channel: 'sms'})
-        // const ris: any = await vonage.sms.send({
-        //     from: "Vonage APIs",
-        //     to: "393318233661",
-        //     text: 'A text message sent using the Vonage SMS API',
-        // })
-        // .catch(err => RispondiToken(res, CreaToken(payload), `Errore interno ${err.message || err.toString()}`, 500))
-        // if(!ris) return;
+        await smsClient.verify.v2.services('VA6fa29582cf50c72a6659a369a38ea1fc')
+                .verifications
+                .create({to: `+39${user["telefono"]}`, channel: 'sms'})
 
-        user["Codice2FA"] = 111111;
+        user["Codice2FA"] = true;
         delete user["_id"]
 
         const data = await driver.Replace({ username }, user)
@@ -272,12 +273,21 @@ const VerificaCodiceTelefono = (app: Express) => {
             return;
         }
 
-        if(user["Codice2FA"] == codice)
-        {
-            payload["2FA"] = true;
-            RispondiToken(res, payload, { ris : "ok"})
-        }
-        else RispondiToken(res, payload, "Codice errato", 401);
+        smsClient.verify.v2.services('VA6fa29582cf50c72a6659a369a38ea1fc')
+        .verificationChecks
+        .create({to: `+39${user["telefono"]}`, code: codice})
+        .then((verification_check) => {
+            if(verification_check.status == "approved")
+            {
+                delete user["Codice2FA"]
+                delete user["_id"]
+
+                driver.Replace({ username }, user)
+                .then(() => RispondiToken(res, payload, { ris : "ok"}))
+                .catch(() => RispondiToken(res, payload, "Errore nel salvataggio", 500))
+            }
+            else RispondiToken(res, payload, "Codice errato", 401)
+        })
     })
 }
 

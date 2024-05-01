@@ -243,3 +243,24 @@ hr{
     color: #AAA;
     font-size: 1;
 }
+
+@media screen and (max-aspect-ratio: .5){
+    :host{
+        & > .wrapper{
+            flex-direction: column !important;
+        
+            .cont-radio{
+                flex-wrap: nowrap;
+
+                & > RadioButton:last-child{
+                    width: unset !important;
+                }
+            }
+
+            #wrapperOperatoriSelezionati{
+                padding: 0.5rem;
+            }
+        }
+    }
+
+}

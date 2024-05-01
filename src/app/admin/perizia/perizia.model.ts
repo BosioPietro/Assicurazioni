@@ -20,6 +20,7 @@ type Perizia = {
     nomeOperatore?: string,
     data: string,
     completata?: boolean,
+    descrizione: string,
 }
 
 export { Perizia, Immagine };

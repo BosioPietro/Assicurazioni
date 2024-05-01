@@ -8,3 +8,13 @@ form{
     background-color: #FFF;
     width: var(--max-width);
 }
+
+@media screen and (max-aspect-ratio: .8) {
+    :host{
+
+        form{
+            padding: 2rem;
+    
+        }
+    }  
+}

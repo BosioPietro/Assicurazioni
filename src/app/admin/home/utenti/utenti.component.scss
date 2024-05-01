@@ -1,0 +1,185 @@
+:host{
+    border: 1px solid #CCC;
+    border-radius: 1rem;
+    position: relative;
+    
+    .wrapper{
+        position: absolute;
+        inset: 0;
+        gap: 1rem;
+        padding: 2rem;
+        flex-wrap: wrap;
+        overflow: hidden;
+        max-height: 100%;
+        column-gap: 10rem;
+    }
+
+}
+
+.carta-utente{
+    background-color: #F2F2F2;
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: .5rem;
+    flex-grow: 1;
+    width: 100%;
+    flex: 1 1 auto;
+
+    .img, ImmagineProfileDefault{
+        height: 2rem;
+        aspect-ratio: 1;
+        border-radius: 100vh;
+        background-color: #AAA;
+        caret-color: transparent;
+        background-size: cover;
+    }
+
+    p{
+        font-size: .8rem;
+        color: #AAA;
+    }
+
+    .spia{
+        margin-left: auto;
+        height: .7rem;
+        aspect-ratio: 1;
+        border-radius: 100vh;
+        background-color: var(--colore);
+        position: relative;
+
+        &.attivo{
+            --colore: #72db80;
+            &::before{
+                animation: spia 1s linear infinite;
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: 100vh;
+                background-color: color-mix(in srgb, var(--colore) 50%, transparent 50%);
+                transform: scale(2);
+            }
+
+            @keyframes spia{
+                from{
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                to{
+                    transform: scale(3);
+                    opacity: 0;
+                }
+            }
+        }
+
+        &:not(.attivo){
+            --colore: #dd4444;
+        }
+    }
+
+}
+
+[loader]{
+    --grigio: #EEE;
+    border-radius: .25rem;
+    background-color: var(--grigio);
+    color: transparent !important;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+    color: transparent;
+
+    & *{
+        opacity: 0;
+    }
+
+    &::before{
+        content: ' ';
+        position: absolute;
+        z-index: 1;
+        transform: translateY(-50%) rotateZ(.1turn);
+        top: 1rem;
+        height: 200%;
+        width: 1rem;
+        background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+        left: -200%;
+        animation: caricamento 1s infinite linear;
+        filter: blur(1rem);
+    }
+
+}
+
+@keyframes caricamento{
+    0%{
+        left: -200%;
+    }
+    100%{
+        left: 200%;
+    }
+}
+
+@media screen and (max-aspect-ratio: 1.2){
+    :host{
+        .carta-utente{
+            height: 10rem;
+            flex-direction: column !important;
+            position: relative;
+            justify-content: center;
+            min-width: 0;
+
+            .flex-col{
+                min-width: 0;
+
+                *{
+                    text-align: center;
+                }
+            }
+
+
+            .spia{
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-aspect-ratio: 1){
+    :host{
+        flex-grow: 1;
+
+        .wrapper{
+            flex-direction: row;
+            column-gap: 1rem;
+
+            [loader]{
+                margin-bottom: 5rem;
+            }
+
+            h3{
+                width: 100%;
+            }
+
+            .carta-utente{
+                width: auto;
+                margin-bottom: 10rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-aspect-ratio: 1){
+    :host{
+        .wrapper{
+            padding: 1rem;
+            position: relative;
+
+            .carta-utente{
+                margin-bottom: 0;
+            }
+        }
+
+        
+    }
+}

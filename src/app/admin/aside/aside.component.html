@@ -1,11 +1,14 @@
 <div id="wrapperHead" class="flex-row jc-c al-c">
   <img src="https://t3.ftcdn.net/jpg/03/68/95/08/360_F_368950850_aMW6C9P5SV7udFGHWgz97fvgNVsnOvpp.jpg">
-  Assicurazioni
+  <span>Assicurazioni</span>
 </div>
 <div id="wrapperAside" class="flex-col" #opzioni>
   <div 
     class="cella posizione-{{routerLink.indexOf(RimuoviParametri(window.location.pathname))}}"
-  >Home</div>
+  >
+    <ion-icon name="person" />
+    <span>Home</span>
+  </div>
   @for (voce of elencoVoci; track $index) {
     <VoceAside 
       routerLinkActive="selezionata"

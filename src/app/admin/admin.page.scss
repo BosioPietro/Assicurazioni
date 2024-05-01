@@ -15,3 +15,10 @@ AsideComponent{
     position: relative;
     flex-grow: 1;
 }
+
+
+@media screen and (max-aspect-ratio: 0.6){
+    :host{ 
+        flex-direction: column !important;
+    }
+}

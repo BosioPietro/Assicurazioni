@@ -42,7 +42,7 @@ const StatisticheAdmin = (app: Express) => {
             perizie : perizie.length,
             utenti : utenti.length,
             perizieOggi : perizie.filter((p: Record<string, any>) => p["data"].getDate() == new Date().getDate()).length,
-            utentiAttivi : utenti.filter((u: Record<string, any>) => u["stato"] != "false").length
+            utentiAttivi : utenti.filter((u: Record<string, any>) => u["attivo"] != "false").length
         }
 
         RispondiToken(res, token, statistiche)

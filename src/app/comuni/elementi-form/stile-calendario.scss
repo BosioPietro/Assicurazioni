@@ -3,6 +3,9 @@ p-calendar:not([ng-reflect-model])::ng-deep{
     
         &::after{
             content: '\00a0Inserisci una data...';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             position: absolute;
             padding: .5rem;
             padding-left: 2.5rem;
@@ -124,3 +127,18 @@ p-calendar::ng-deep{
     }
 }
 
+
+@media screen and (max-aspect-ratio: 1){
+    p-calendar:not([ng-reflect-model])::ng-deep{
+        .p-calendar{
+        
+            &::after{
+                font-size: .75rem;
+                line-height: 1.5rem;
+                left: 0;
+                right: 0;
+                overflow: hidden;
+            }
+        }
+    }
+}

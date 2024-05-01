@@ -23,6 +23,13 @@
 span{
     display: flex;
     align-items: center;
+    
+    &, *{
+        white-space: nowrap;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .username::before{
@@ -79,4 +86,10 @@ ion-icon[name="close-circle"]{
 
 ion-icon[name="checkmark-circle"]{
     color: #72db80;
+}
+
+@media screen and (max-aspect-ratio: 1){
+    :host > span{
+        grid-template-columns: auto repeat(5, 1fr);
+    }
 }

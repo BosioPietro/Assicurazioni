@@ -1,0 +1,40 @@
+<div class="wrapper flex-col">
+  <h3>Utenti</h3>
+
+    @if(utenti){
+
+      @for (u of utenti; track $index) {
+        <div class="flex-row carta-utente al-c">
+          @if(u.pfp){
+            <img [src]="u.pfp"/>
+          }
+          @else {
+            <ImmagineProfileDefault [nome]="u.cognome" />
+          }
+
+          <div class="flex-col">
+            <h4>{{ u.cognome }} {{ u.nome }}</h4>
+            <p>&commat;{{ u.username }}</p>
+          </div>
+
+          <div class="spia" [class.attivo]="u.attivo" ></div>
+        </div>
+      }
+
+    }
+    @else {
+      @for(x of "aaaaaaaa".split(""); track $index){
+        <div class="flex-row carta-utente al-c" loader>
+          <ImmagineProfileDefault nome="immagine" />
+
+          <div class="flex-col">
+            <h4>Nome Cognome</h4>
+            <p>&commat;username</p>
+          </div>
+
+          <div class="spia"></div>
+        </div>
+      }
+    }
+
+</div>

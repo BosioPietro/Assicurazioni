@@ -24,34 +24,36 @@
     .voce{
         flex-grow: 1;
     }
-    // width: 100%;
-    // height: 100%;
 
-    // & > span:nth-child(1){
-    //     width: 3rem;
-    //     height: 100%;
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: center;    
-    // }
-    // & > span:nth-child(2){
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: flex-start ;
-    //     width: 70%;
-    //     height: 100%;
-    // }
+    .cella{
+        ion-icon{
+            display: none;
+        }
+    }
+}
 
-    // & > span:nth-child(3){
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: center;
-    //     width: 10%;
-    //     height: 40%;
-    //     background-color: hsl(0, 0%, 20%);
-    //     border-radius: 0.5rem;
-    //     margin-right: 1rem;
-    //     color: lightgray;
-    // }
-    
+@media screen and (max-aspect-ratio: 1){
+    .wrapperVoce{
+        justify-content: center;
+
+        span{
+            display: none;
+        }
+
+        ion-icon{
+            display: block;
+        }
+    }
+}
+
+@media screen and (max-aspect-ratio: 0.6){
+    :host{
+        width: auto;
+        transition: color .3s ease, background-color .3s ease, box-shadow .3s ease;
+
+        &.selezionata{
+            background-color: var(--accento);
+            color: #FFF;
+        }
+    }
 }

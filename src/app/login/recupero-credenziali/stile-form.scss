@@ -18,3 +18,12 @@ form{
     position: absolute;
     width: auto;
 }
+
+@media screen and (max-aspect-ratio: .8) {
+    :host{
+
+        form, .form{
+            padding: 2rem !important; 
+        }
+    }  
+}

@@ -81,3 +81,13 @@ span{
 .btn-accento{
     margin-bottom: 0;
 }
+
+@media screen and (max-aspect-ratio: .8) {
+    :host{
+
+        form{
+            padding: 2rem;
+    
+        }
+    }  
+}

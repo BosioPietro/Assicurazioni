@@ -96,15 +96,17 @@ export class TabellaService {
       this.tutti = this.utenti = this.selezionati = [];
       
       let fallimento = false;
-      const utenti = await this.PrendiUtenti().catch(() => {
+      let utenti = await this.PrendiUtenti().catch(() => {
         resolve(false);
         fallimento = true;
-      }) as { data: Utente[] };
+      }) as any;
+
       
       if(fallimento)return;
-      
+      utenti = utenti["data"].map((u: Record<string, any>) => Object.assign(u, { attivo: u["attivo"] == "true" }));
+
       this.inCaricamento = false;
-      this.tutti = this.utenti = utenti["data"].map((u: Record<string, any>) => {
+      this.tutti = this.utenti = utenti.map((u: Record<string, any>) => {
         if(!("2FA" in u))
         {
           u["2FA"] = false; 

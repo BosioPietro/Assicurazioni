@@ -25,3 +25,14 @@ a{
     gap: calc(var(--gap) / 2);
     justify-content: center;
 }
+
+
+@media screen and (max-aspect-ratio: .8) {
+    :host{
+
+        form{
+            padding: 2rem;
+    
+        }
+    }  
+}

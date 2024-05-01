@@ -20,79 +20,79 @@ export class GraficoLineaComponent implements AfterViewInit{
   public chart: any;
 
   ngAfterViewInit(): void {
-    this.chart = new Chart("linea", {
-      type: 'line',
-
-      data: {
-        labels: this.PrendiSettimane(6), 
-	       datasets: [
-          {
-            data: [...this.dati],
-            fill: true,
-            borderColor: 'hsla(197, 52%, 30%, .75)',
-            backgroundColor: this.CreaGradient(),
-            tension: .5,
-            
-          }
-        ]
-      },
-      options: {
-        animation: {
-          duration: 2000,
-          easing: 'easeInOutQuint'
+    setTimeout(() => {
+      this.chart = new Chart("linea", {
+        type: 'line',
+  
+        data: {
+          labels: this.PrendiSettimane(6), 
+           datasets: [
+            {
+              data: [...this.dati],
+              fill: true,
+              borderColor: 'hsla(197, 52%, 30%, .75)',
+              backgroundColor: this.CreaGradient(),
+              tension: .5,
+              
+            }
+          ]
         },
-        responsive: true,
-        // aspectRatio:2.5,
-        maintainAspectRatio: false,
-        elements: {
-          "point": {
-            "radius": 0
+        options: {
+          animation: {
+            duration: 2000,
+            easing: 'easeInOutQuint'
           },
-          line: {
-            "borderWidth": 1
-          }
-        },
-        scales: {
-          "x" : {
-            "grid" : {
-              "display" : false,
+          responsive: true,
+          // aspectRatio:2.5,
+          maintainAspectRatio: false,
+          elements: {
+            "point": {
+              "radius": 0
             },
-            "border" : {
-              "display" : false,
+            line: {
+              "borderWidth": 1
+            }
+          },
+          scales: {
+            "x" : {
+              "grid" : {
+                "display" : false,
+              },
+              "border" : {
+                "display" : false,
+              },
+              "ticks" : {
+                "color" : "#AAA",
+                "font" : {
+                  "size" : 14,
+                  "family" : "Inter var",
+                }
+              }
             },
-            "ticks" : {
-              "color" : "#AAA",
-              "font" : {
-                "size" : 14,
-                "family" : "Inter var",
+            "y" : {
+              "beginAtZero" : true,
+              "grid" : {
+                "display" : false
+              },
+              "border" : {
+                "display" : false,
+              },
+              "ticks" : {
+                "color" : "#AAA",
+                "font" : {
+                  "size" : 14,
+                  "family" : "Inter var",
+                }
               }
             }
           },
-          "y" : {
-            "beginAtZero" : true,
-            "grid" : {
-              "display" : false
-            },
-            "border" : {
-              "display" : false,
-            },
-            "ticks" : {
-              "color" : "#AAA",
-              "font" : {
-                "size" : 14,
-                "family" : "Inter var",
-              }
+          plugins: {
+            legend: {
+              display: false
             }
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          }
-        },
-      },
-      
-      
+          },
+        }
+      });
     });
   }
 

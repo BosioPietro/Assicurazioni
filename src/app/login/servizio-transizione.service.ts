@@ -95,11 +95,7 @@ export class TransizioneService {
       }, 0)
       return;
     }
-
-    console.log(formAtt)
-    console.log(formPrec)
     
-
     this.MuoviLogo(formPrec, formAtt);
     this.NascondiFigli(formPrec);
     this.NascondiFigli(formAtt, false)
