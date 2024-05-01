@@ -1,12 +1,41 @@
-<header class="flex-col">
-  <h1>Utenti</h1>
-  <p>Visualizza e modifica utenti</p>
-</header>
-<div class="grid">
-  <div class="cella"></div>
-  <GraficoLinea/>
-  <GraficoBarre/>
-  <div class="cella">
-   
+<div class="wrapper flex-col">
+  <header class="flex-col">
+    <h1>Home</h1>
+    <p>Pagina principale</p>
+  </header>
+  <div class="grid">
+    <div class="cella flex-col jc-c">
+      <h1>
+        <span style="color: var(--accento);">
+          Bentornato,
+        </span>
+        <br/> 
+          @if(admin.utente){
+            {{ admin.utente.nome }}
+          }
+          @else{ <div loader>NomeUser</div>}
+        </h1>
+      <p> Portale admin Rilievi & Perizie</p>
+    </div>
+    @if(configGrafici){
+      <GraficoBarre [dati]="configGrafici['utenti']"/>
+      <GraficoLinea [dati]="configGrafici['perizie']"/>
+    }
+    <!-- <Calendario/> -->
   </div>
+
+  @if(!configGrafici){
+    <div class="overlay-loader flex-col">
+      <header class="flex-col">
+        <h1>Home</h1>
+        <p>Pagina principale</p>
+      </header>
+      <div class="grid">
+        <div class="cella"></div>
+        <div class="cella" loader grande></div>
+        <div class="cella" loader grande></div>
+        <div class="cella"></div>
+      </div>
+    </div>
+  }
 </div>

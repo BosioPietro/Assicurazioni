@@ -1,15 +1,13 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AsideComponentComponent } from './aside-component/voce-aside.component';
-import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
-import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
-import { GestoreServerService } from 'src/app/server/gestore-server.service';
-import { Metodi } from 'src/app/utils/TipiSpeciali';
-import Utente from '../utenti/tabella-utenti/utente.model';
-import { NotificheService } from 'src/app/comuni/notifiche/notifiche.service';
+import { MenuItem } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { animazione } from 'src/app/comuni/animazioni/appari-disappari';
 import { ImmagineProfiloDefault } from 'src/app/comuni/immagine-profilo-default/immagine-profilo-default.component';
 import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
+import Utente from '../utenti/tabella-utenti/utente.model';
+import { AsideComponentComponent } from './aside-component/voce-aside.component';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'AsideComponent',
@@ -19,12 +17,9 @@ import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.co
   animations: [animazione],
   standalone: true
 })
-export class AsideComponent  implements OnInit{
+export class AsideComponent{
 
-  constructor(
-    private server: GestoreServerService,
-    private notifiche: NotificheService
-  ) { }
+  constructor(public admin: AdminService) { }
 
   routerLink = ["/admin/home" ,"/admin/perizie", "/admin/utenti"]
   elencoVoci:any[] = ["Home", "Perizie","Utenti"]
@@ -38,19 +33,6 @@ export class AsideComponent  implements OnInit{
 
   @ViewChild("opzioni")
   wrapper!: ElementRef<HTMLElement>
-
-  utente?: Utente
-  async ngOnInit() {
-    this.utente = await this.PrendiInfoUtente()
-
-    if(!this.utente){
-      this.notifiche.NuovaNotifica({
-        titolo: "Errore",
-        descrizione: "Errore nel caricamento delle informazioni utente",
-        tipo: "errore"
-      })
-    }
-  }
 
   RimuoviParametri(s: string){
     const p = s.split("?")[0].split("/");
@@ -73,14 +55,6 @@ export class AsideComponent  implements OnInit{
       localStorage.removeItem("token");
       window.location.href = "/login";
     }, 500);
-  }
-
-  PrendiInfoUtente(){
-    return new Promise<Utente | undefined>((resolve, reject) => {
-      this.server.InviaRichiesta(Metodi.GET, "/api/info-utente")
-      .then((res: any) => resolve(res["data"] as Utente))
-      .catch((err: any) => reject(undefined))
-    })
   }
 
   

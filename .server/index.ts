@@ -70,6 +70,7 @@ Servizi.PrendiPerizie(app);
 Servizi.InfoUtente(app);
 Servizi.StatisticheAdmin(app);
 Servizi.PerizieUtente(app);
+Servizi.PrendiConfigGrafici(app);
 
 // gestione errori
 Errori.LoggingErrori(app);

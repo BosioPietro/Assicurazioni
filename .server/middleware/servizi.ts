@@ -1,7 +1,7 @@
 import { Express, Request, Response } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
 import { DecifraToken, ControllaAdmin } from "../encrypt.js";
-import { CaricaImmagine, StringaInData } from "../funzioni.js";
+import { CaricaImmagine, DataInStringa, StringaInData } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
 import env from "../ambiente.js";
@@ -308,9 +308,46 @@ const PerizieUtente = (app: Express) => {
     });
 }
 
+const PrendiConfigGrafici = (app: Express) => {
+    app.get("/api/configurazioni-grafici", async (req: Request, res: Response) => {
+        const token = DecifraToken(req.headers.authorization!);
+
+        if(!(await ControllaAdmin(token, res))) return;
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+        const driver1 = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
+
+        let [perizie, utenti] : [any, any] = await Promise.all([
+            driver.PrendiMolti(),
+            driver1.PrendiMolti()
+        ]);
+
+        if(driver.Errore(perizie, res) || driver1.Errore(utenti, res)) return;
+
+        perizie = perizie.map((p: Record<string, any>) => Object.assign(p, { data: StringaInData(p["data"]) }));
+        perizie = perizie.filter((p: Record<string, any>) => (new Date().getTime() - p["data"].getTime()) < 40 * 24 * 60 * 60 * 1000);
+
+        const settimane = [];
+        for(let i = 0; i < 5; i++){
+            const inizio = new Date(new Date().getTime() - i * 7 * 24 * 60 * 60 * 1000);
+            const fine = new Date(inizio.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+
+            const perizieSettimana = perizie.filter((p: Record<string, any>) => p["data"] >= fine && p["data"] <= inizio);
+
+            const utentiPerizie = utenti.filter((u: Record<string, any>) => perizieSettimana.map((p: Record<string, any>) => p["codOperatore"]).includes(u["username"]));
+
+            settimane.push({ data: DataInStringa(inizio), perizie : perizieSettimana, utenti : [...new Set(utentiPerizie)] });
+        }
+
+        RispondiToken(res, token, settimane)
+    })
+
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
          PrendiOperatori, PrendiPerizie, InfoUtente, StatisticheAdmin,
-         PerizieUtente};
+         PerizieUtente, PrendiConfigGrafici};

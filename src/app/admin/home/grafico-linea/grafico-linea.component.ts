@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
 import { DataInStringa } from 'src/app/utils/funzioni';
 
@@ -14,8 +14,8 @@ export class GraficoLineaComponent implements AfterViewInit{
   @ViewChild('linea') 
   canvas!: ElementRef<HTMLCanvasElement>;
 
-
-  constructor() { }
+  @Input()
+  dati!: any[]
 
   public chart: any;
 
@@ -27,7 +27,7 @@ export class GraficoLineaComponent implements AfterViewInit{
         labels: this.PrendiSettimane(6), 
 	       datasets: [
           {
-            data: ['14','20', '25', '19', '18','30', '27', '20'],
+            data: [...this.dati],
             fill: true,
             borderColor: 'hsla(197, 52%, 30%, .75)',
             backgroundColor: this.CreaGradient(),

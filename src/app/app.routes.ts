@@ -68,5 +68,5 @@ export const routes: Routes = [
     pathMatch: 'full',
     redirectTo: 'admin/perizie',
   },
-  {path: '**', redirectTo: 'home'}
+  {path: '**', redirectTo: 'admin/home'}
 ];

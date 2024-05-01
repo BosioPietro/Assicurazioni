@@ -116,7 +116,7 @@ main{
             .angolo{
                 height: var(--br-figli);
                 width: var(--br-figli);
-                background-image: radial-gradient(circle at 100% 100%, transparent var(--br-figli), var(--bianco) var(--br-figli));
+                background-image: radial-gradient(circle at 100% 100%, transparent var(--br-figli), #FFF var(--br-figli));
                 position: absolute;
                 top: calc(var(--margin) * -.5);
                 left: calc(var(--margin) * -.5);

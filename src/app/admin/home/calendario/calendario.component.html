@@ -1,3 +1,22 @@
-<p>
-  calendario works!
-</p>
+<h3>Perizie in 
+  <span style="text-transform: lowercase;">{{ mesi[indiceMese] }}</span>
+</h3>
+<div class="cont-giorni">
+  @for(g of ultimiGiorniMesePrecedente; track $index) {
+    <div 
+      class="giorno scarto"
+    >{{ g }}</div>
+  }
+
+  @for (g of giorniMeseCorrente; track $index) {
+    <div 
+      class="giorno"
+    >{{ g }}</div>
+  }
+
+  @for(g of giorniMeseSuccessivo; track $index) {
+    <div 
+      class="giorno scarto"
+    >{{ g }}</div>
+  }
+</div>
