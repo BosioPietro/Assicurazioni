@@ -58,13 +58,13 @@ const LoginUtente = async (app : Express) => {
         {
             const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
             if(user["ruolo"] == "Admin" || user["2FA"]){
-                dataToken["2FA"] = false;   
+                dataToken["2FA"] = true;   
             }
 
             const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
             if(user["ruolo"] == "Admin" || user["2FA"])
             {
-                risposta["2FA"] = false;   
+                risposta["2FA"] = true;   
             }
 
             RispondiToken(res, dataToken, risposta)
@@ -87,13 +87,13 @@ const LoginOAuth = async (app : Express) => {
 
         const dataToken: any = { username: user["username"], _id : user["_id"].toString() }
         if(user["ruolo"] == "Admin" || user["2FA"]){
-            dataToken["2FA"] = false;   
+            dataToken["2FA"] = true;   
         }
 
         const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
         if(user["ruolo"] == "Admin" || user["2FA"])
         {
-            risposta["2FA"] = false;   
+            risposta["2FA"] = true;   
         }
 
         RispondiToken(res, dataToken, risposta)
@@ -156,10 +156,9 @@ const RecuperoCredenziali = (app: Express) =>{
         console.log(data)
         if(driver.Errore(data, res)) return;
 
-        RispondiToken(res, dataToken, { "ok" : "Recupero effettuato" })
-        // InviaMailRecupero(email, user["username"], codice)
-        // .then(() => RispondiToken(res, dataToken, { "ok" : "Email inviata" }))
-        // .catch(() => RispondiToken(res, dataToken, `Errore nell'invio della mail`, 500))
+        InviaMailRecupero(email, user["username"], codice)
+        .then(() => RispondiToken(res, dataToken, { "ok" : "Email inviata" }))
+        .catch(() => RispondiToken(res, dataToken, `Errore nell'invio della mail`, 500))
     })
 }
 
@@ -236,12 +235,14 @@ const InviaCodiceTelefono = (app: Express) => {
             return;
         }
 
-        if(user["telefono"]){
+        console.log(user)
+
+        if(!user["telefono"]){
             RispondiToken(res, payload, `Numero di telefono non fornito`, 401)
             return;
         }
 
-        await smsClient.verify.v2.services('VA6fa29582cf50c72a6659a369a38ea1fc')
+        smsClient.verify.v2.services('VA6fa29582cf50c72a6659a369a38ea1fc')
                 .verifications
                 .create({to: `+39${user["telefono"]}`, channel: 'sms'})
 

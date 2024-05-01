@@ -33,7 +33,7 @@ bootstrapApplication(AppComponent, {
             },
             {
               id: MicrosoftLoginProvider.PROVIDER_ID,
-              provider: new MicrosoftLoginProvider(environment.MICROSOFT_CLIENT_ID, {
+              provider: new MicrosoftLoginProvider("ddf02bea-3992-4c06-b39f-c67c0d4126ce", {
                 authority: `https://login.microsoftonline.com/consumers`,
                 redirect_uri: "http://localhost:8100/admin/home",
               })
