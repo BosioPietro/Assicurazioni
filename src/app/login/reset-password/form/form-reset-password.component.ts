@@ -64,8 +64,10 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
   }
 
   async CambiaPassword(){
+    this.transizione.caricamento = true
     try
     {  
+      this.transizione.caricamento = false
       await this.servizio.CambiaPassword(this.form.controls["password"].value);
       this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login");
       setTimeout(() => {
@@ -74,6 +76,7 @@ export class ResetPasswordComponent implements OnInit, AfterViewInit{
     }
     catch(e)
     {
+      this.transizione.caricamento = false
       this.notifiche.NuovaNotifica({
         "tipo": "errore",
         "titolo": "Qualcosa è andato storto"

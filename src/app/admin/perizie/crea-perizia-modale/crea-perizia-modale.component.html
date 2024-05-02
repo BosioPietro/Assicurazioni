@@ -1,0 +1,111 @@
+<dialog #modaleUtente id="dialogoModifica" class="flex-row">
+  <div class="flex-row chiudi" style="gap: 1rem;">
+    <button (click)="ChiudiModale()" >
+      <ion-icon  name="close" />
+    </button>
+    <button 
+      class="accento"
+      [class.caricamento]="caricamento"
+      [disabled]=" !periziaCreata.luogo?.coordinate || !periziaCreata.codOperatore"
+      (click)="Aggiungi()"
+    >
+      @if(caricamento)
+      {
+        <i class="pi pi-spin pi-spinner"></i>
+      }
+      @else {
+        <ion-icon name="checkmark"></ion-icon>
+      }
+    </button>
+  </div>
+  <ContenitoreNotifiche />
+  <div class="pagina-dialogo flex-col">
+    <h1>Modifica Perizia</h1>
+    <div class="wrapper flex-col">
+      <div class="info-utente flex-col">
+        <div class="flex-row header-info">
+          <h3>Informazioni Generali</h3>
+        </div>
+        <form class="cont-utente generali">
+          <p-calendar 
+            [(ngModel)]="periziaCreata.data" dateFormat="yy-mm-dd"
+            name="lavoro-assuntoIl"
+            [firstDayOfWeek]="1"
+            [iconDisplay]="'input'" 
+            [showIcon]="true"
+          >
+          </p-calendar>
+          @if(operatori.length){
+            <Dropdown 
+              testo-label="Operatore Perizia"
+              name="info-2FA"
+              id-input="info-2FA"
+              icona="lock-closed" 
+              [opzioni]="PrendiOpzioniOperatori()"
+              [(ngModel)]="periziaCreata.codOperatore"
+            />
+          }
+          @else{
+            <div class="loader"></div>
+          }
+        </form>
+      </div>
+      <div class="info-utente sopra flex-col">
+        <div class="flex-row header-info">
+          <h3>Informazioni Luogo</h3>
+        </div>
+        <form class="cont-utente flex-col" #cercaIndirizzo>
+          @if(opzioni){
+            <google-map 
+              [mapId]="'1436edaa72ee3004'"
+              [options]="{
+                'center': periziaCreata.luogo?.coordinate || coordinateVallauri,
+                'zoom': 12,
+                'mapTypeControl': false,
+                'fullscreenControl': false,
+                'zoomControlOptions': {
+                  'position': maps.ControlPosition.LEFT_TOP
+                },
+                'streetViewControl': false,
+                'streetViewControlOptions': {
+                  'position': maps.ControlPosition.LEFT_TOP
+                }
+                }"
+              >
+              @if(periziaCreata.luogo?.coordinate){
+                <map-advanced-marker 
+                  [position]="periziaCreata.luogo.coordinate"
+                  [content]="opzioni.element"
+                />
+              }
+            </google-map>
+          }
+          <Ricerca 
+            icona="home" 
+            name="cerca-indirizzo"
+            id-input="cerca-indirizzo"
+            testo-label="Cerca Indirizzo"
+            [caricamento]="ricercaInCaricamento"
+            [opzioni]="opzioniRicerca"
+            (onInput)="CercaIndirizzi($event)"
+            (onSelezionato)="CambiaIndirizzo($event)"
+            
+          />
+          <FintoHr testo="Oppure" /> 
+          @if(navigator["geolocation"]){
+            <button class="accento" (click)="CoordinateLocali()">
+              @if(caricamentoLocali)
+              {
+                <i class="pi pi-spin pi-spinner"></i>
+              }
+              @else {
+                <ion-icon name="navigate" style="transform: translateX(-.25rem);"></ion-icon>
+                <span>Usa la mia posizione</span>
+              }
+            </button>
+          }
+        </form>
+      </div>
+    </div>
+  </div>
+</dialog>

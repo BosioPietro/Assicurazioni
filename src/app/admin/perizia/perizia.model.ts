@@ -4,7 +4,7 @@ type Immagine = {
 }
 
 type Perizia = {
-    _id: number,
+    _id?: number,
     immagini: Immagine[],
     luogo: {
         provincia: string,

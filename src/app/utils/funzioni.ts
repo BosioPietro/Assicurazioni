@@ -18,9 +18,10 @@ const GiorniMancanti = (creazione : string) => {
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0)
 
+    console.log(creazione, PrendiData(creazione), AggiungiGiorni(PrendiData(creazione), GIORNI_CAMBIO_PWD))
     const scadenza = AggiungiGiorni(PrendiData(creazione), GIORNI_CAMBIO_PWD)
 
-    return SottraiGiorni(scadenza, oggi)
+    return SottraiGiorni(oggi, scadenza)
 }
 
 const AggiungiGiorni = (data: Date, giorni: number) => {
@@ -44,7 +45,7 @@ const SottraiGiorni = (data1: Date, data2: Date) => {
   
 
 const PrendiData = (dateString: string) => {
-    const [giorno, mese, anno] = dateString.split("-");
+    const [anno, mese, giorno] = dateString.split("-");
     return new Date(+anno, +mese - 1, +giorno, 0, 0, 0, 0);
 }
   
@@ -85,7 +86,8 @@ const ControllaToken = async (r : Router) : Promise<any> => {
     switch(pagina)
     {
         case "login/cambio-password":
-            if(!info["deveCambiare"])
+            console.log(info)
+            if(info["deveCambiare"] != true && info["deveCambiare"] != "true")
             {
                 r.navigate(["/login"]);
             }

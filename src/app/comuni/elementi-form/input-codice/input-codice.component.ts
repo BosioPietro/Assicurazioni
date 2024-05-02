@@ -23,6 +23,9 @@ export class InputCodiceComponent{
   @Output()
   CodiceCambiato = new EventEmitter<[boolean, string]>()
 
+  @Output()
+  conferma = new EventEmitter<string>()
+
   @ViewChild("n0")
   n0!: ElementRef<HTMLInputElement>
 
@@ -140,5 +143,18 @@ export class InputCodiceComponent{
       input.focus();
     }
     else ultimoInput?.focus();
+  }
+
+  InviaCodice(){
+
+    let codice = ""
+    for(let i = 0; i < 6; ++i){
+      const input = this.PrendiInput(i as any)
+      codice += input.value;
+    }
+
+    if(codice.length == 6){
+      this.conferma.emit(codice)
+    }
   }
 }

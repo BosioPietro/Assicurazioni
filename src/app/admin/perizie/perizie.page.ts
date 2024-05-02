@@ -9,6 +9,8 @@ import { ControllaToken } from 'src/app/utils/funzioni';
 import { Router } from '@angular/router';
 import { ModaleSiNoComponent } from 'src/app/comuni/modale-si-no/modale-si-no.component';
 import { Perizia } from '../perizia/perizia.model';
+import { IonIcon } from '@ionic/angular/standalone';
+import { CreaPeriziaComponent } from './crea-perizia-modale/crea-perizia-modale.component';
 
 @Component({
   selector: 'PeriziePage',
@@ -17,11 +19,11 @@ import { Perizia } from '../perizia/perizia.model';
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, GoogleMapsModule, 
             FiltroComponent, GoogleMap, MapMarker, MapAdvancedMarker,
-            ModaleSiNoComponent],
+            ModaleSiNoComponent, IonIcon, CreaPeriziaComponent],
 })
 export class PeriziePage implements OnInit{
   constructor(
-    public mapService:MapService, 
+    public mapService: MapService, 
     private notifiche: NotificheService,
     private router: Router
   ) {}
@@ -72,6 +74,37 @@ export class PeriziePage implements OnInit{
   NuovaPaginaPerizia(d: ModaleSiNoComponent){
     window.open(`/admin/perizie/${this.periziaSelezionata!.codice}`, "_blank");
     this.ChiudiElimina(d)
+  }
+
+  vuoleCrearePerizia: boolean = false;
+
+  caricamentoAggiungi: boolean = false;
+  async AggiungiPerizia(p: Perizia){
+    this.caricamentoAggiungi = true;
+    const caricamento = await this.mapService.CaricaPerizia(p);
+    this.caricamentoAggiungi = false;
+    this.mapService.perizie.push(p);
+    await this.mapService.PrendiStili(this.mapService.perizie);
+
+    this.mapService.FiltraPerizie();
+    console.clear()
+
+
+    if(!caricamento){
+      this.notifiche.NuovaNotifica({
+        titolo: "Errore",
+        descrizione: "Errore nel caricamento della perizia",
+        tipo: "errore"
+      });
+    }
+    else{
+      this.notifiche.NuovaNotifica({
+        titolo: "Operazione completata",
+        descrizione: "Perizia caricata con successo",
+        tipo: "info"
+      });
+      this.vuoleCrearePerizia = false;
+    }
   }
 
 }

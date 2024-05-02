@@ -1,13 +1,18 @@
   <div id="wrapper" class="flex-col">
-    <header class="flex-col">
-      <h1>Perizie</h1>
-      <p>Visualizza e modifica perizie</p>
+    <header class="flex-row">
+      <div class="flex-col">
+        <h1>Perizie</h1>
+        <p>Visualizza e modifica perizie</p>
+      </div>
+      <button class="accento flex-row jc-c al-c" (click)="vuoleCrearePerizia = true">
+        <ion-icon name="add"></ion-icon>
+      </button>
     </header>
     <google-map id="mappa"
       [mapId]="'1436edaa72ee3004'"
       [options]="{
         'center': mapService.center,
-        'zoom': 7,
+        'zoom': 10,
         'fullscreenControl': false,
         'zoomControlOptions': {
           'position': maps.ControlPosition.LEFT_TOP
@@ -40,5 +45,15 @@
     [style]="{'position':'absolute'}"
     (onNo)="ChiudiElimina(modaleElimina)"
     (onSi)="NuovaPaginaPerizia(modaleElimina)"
+  />
+}
+
+@if(vuoleCrearePerizia){
+  <CreaPeriziaModale
+    [operatori]="mapService.utenti"
+    [perizie]="mapService.perizie"
+    [caricamento]="caricamentoAggiungi"
+    (onChiudi)="vuoleCrearePerizia = false"
+    (onAggiungi)="AggiungiPerizia($event)"
   />
 }

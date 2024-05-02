@@ -1,0 +1,315 @@
+dialog{
+    border: 0;
+    padding: 0;
+    min-height: calc(100dvh - 8rem);
+    max-width: calc(100dvw - 8rem);
+    width: 100%;
+    background-color: #f5f6f8;
+    border-radius: 1rem;
+    padding: 2rem;
+    animation: appari .3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    margin: 4rem;
+
+
+    &.chiudi{
+        animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        &::backdrop{
+            animation: scompari .3s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+    }
+
+    .chiudi{
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        
+        button{
+            outline-color: transparent;
+
+            &:disabled{
+                opacity: .5;
+                pointer-events: none;
+            }
+        }
+    }
+
+}
+
+button{
+    padding: .5rem 1rem;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+    border-radius: .5rem;
+    gap: .5rem;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    caret-color: transparent;
+    transition: opacity .3s;
+    font-size: 1rem;
+
+    &:disabled{
+        opacity: .5;
+    }
+
+    ion-icon{
+        scale: 1.2;
+    }
+
+    &.accento{
+        background-color: var(--accento);
+        color: #FFF;
+        border-color: transparent;
+    }
+
+    *{
+        color: inherit;
+    }
+}
+
+@keyframes appari{
+    from{ opacity: 0; }
+    to{ opacity: 1; }
+}
+
+@keyframes scompari{
+    from{ opacity: 1; }
+    to{ opacity: 0; }
+}
+#dialogoModifica{
+    padding: 0;
+    height: calc(100dvh - 8rem);
+    background-color: #f5f6f8;
+    overflow: visible;
+
+    &::backdrop{
+        background-color: rgba(0, 0, 0, .5);
+    }
+
+    h1{
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .pagina-dialogo{
+        padding-left: 1rem;
+        padding: 2rem;
+        flex-grow: 1;
+
+        .wrapper{
+            background-color: #FFF;
+            padding: 2rem;
+            gap: 1rem;
+            flex-grow: 1;
+            border-radius: 1rem;
+            
+            hr{
+                background-color: #CCC;
+                margin-block: 1rem;
+            }
+
+            & > .flex-row, & > .flex-col{
+                gap: 1rem;
+            }
+    
+            .header-info{
+                justify-content: space-between;
+                gap: 1rem;
+            
+                h3{
+                    display: grid;
+                    place-items: center;
+                }
+            }
+    
+            .info-utente{
+                padding: 1rem;
+                border-radius: 1rem;
+                border: 1px solid #CCC;
+                gap: 1rem;
+
+                &.sopra{
+                    z-index: 2;
+                    flex-grow: 1;
+                }
+            }
+    
+            .cont-utente{
+                display: flex;
+                flex-wrap: wrap;
+                flex-grow: 1;
+                gap: 1rem;
+
+                &.generali{
+                    InputText::ng-deep{
+                        --colore-testo: #4b5563;
+                    }
+
+                    p-calendar{
+                        flex-grow: 1;
+                    }
+                }
+
+                google-map{
+                    width: 100%;
+                    border: 1.5px solid #AAA;
+                    border-radius: 1rem;
+                    overflow: clip;
+                }
+
+                Ricerca{
+                    width: 100%;
+                }
+
+                button{
+                    width: 100%;
+                }
+                
+                InputText::ng-deep, Dropdown::ng-deep{
+                    
+                    --colore-testo: #000;
+                    --colore-normale: #CCC;
+                    --br: .5rem;
+
+                    min-width: 49%;
+                    flex-grow: 1;
+
+                    label{
+                        color: var(--colore-normale);
+                    }
+
+                    .cont:not(.mockup){
+                        --colore-testo: #000;
+                        --colore-normale: #000;
+
+                        label{
+                            color: unset;
+                        }
+                    }
+
+                    .cont.errore{
+                        --colore-testo: #eb4e4e;
+                        --colore-normale: #eb4e4e;
+
+                        label{
+                            color: var(--colore-normale);
+                        }
+                    }
+
+                    .cont:has(input:focus){
+                        outline-color: color-mix(in srgb, 50% var(--accento), transparent 50%);
+                    }
+
+                    &:hover{
+                        border-color: var(--accento);
+
+                        ion-icon:not(.disabilitato){
+                            color: var(--accento);
+                        }
+                    
+                        hr:not(.disabilitato){
+                            border-color: var(--accento);        
+                        }
+                    }
+                }
+
+                ComponenteTextarea{
+                    width: 100%;
+                    flex-grow: 1;
+                }
+            }
+        }
+    }
+}
+
+button:not(.caricamento){
+    i{
+        display: none;
+    }
+}
+
+.caricamento{
+    position: relative;
+
+    ion-icon, span{
+        visibility: hidden;
+    }
+
+    i{
+        position: absolute;
+        left: 50%;
+        translate: -50% 0;
+    }
+}
+
+//stili mappa brutti brutti
+google-map::ng-deep{
+    flex-grow: 1;
+
+    & > div{
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+.loader{
+    --grigio: #EEE;
+    border-radius: .25rem;
+    padding: .25rem;
+    height: 2.25rem;
+    flex-grow: 1;
+    min-width: 50%;
+    background-color: var(--grigio);
+    color: #FFF;
+    position: relative;
+    overflow: hidden;
+}
+
+.loader::before{
+    content: ' ';
+    position: absolute;
+    z-index: 1;
+    transform: translateY(-50%) rotateZ(.1turn);
+    top: 1rem;
+    height: 4rem;
+    width: 1rem;
+    background-color: color-mix(in srgb, var(--grigio) 75%, #000 25%);
+    left: -200%;
+    animation: caricamento 1s infinite linear;
+    filter: blur(1rem);
+}
+
+@keyframes caricamento{
+    0%{
+        left: -200%;
+    }
+    100%{
+        left: 200%;
+    }
+}
+
+::-webkit-scrollbar {
+    width: .75rem;
+}
+
+::-webkit-scrollbar-thumb {
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    border-radius: 100vh;
+    background-color: var(--accento);
+}
+
+@media screen and (max-aspect-ratio: 1){
+    :host{
+
+        .wrapper{
+            flex-direction: column !important;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        google-map{
+            height: 20rem;
+        }
+    }
+}

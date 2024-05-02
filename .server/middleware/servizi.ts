@@ -1,6 +1,6 @@
 import { Express, Request, Response } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { DecifraToken, ControllaAdmin, GeneraPassword } from "../encrypt.js";
+import { DecifraToken, ControllaAdmin, GeneraPassword, CifraPwd } from "../encrypt.js";
 import { CaricaImmagine, DataInStringa, StringaInData } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
@@ -11,7 +11,7 @@ const PrendiUtenti = (app: Express) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
         const filtri = req.query || {};
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
-
+        
         const utenti = await driver.PrendiMolti(filtri);
         if(driver.Errore(utenti, res)) return;
 
@@ -154,12 +154,16 @@ const AggiungiUtente = (app: Express) => {
 
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
 
+        const password = GeneraPassword();
+
+        utente["cambioPwd"] = "true";
+        utente["password"] = CifraPwd(password);
+
         const aggiunto = await driver.Inserisci(utente);
         if(driver.Errore(aggiunto, res)) return;
 
-        const password = GeneraPassword();
 
-        console.log(utente["username"], utente["email"], password)
+        console.log(utente)
 
         InviaMailNuovaPassword(utente["username"], password, utente["email"])
         .then(() => {
@@ -339,6 +343,7 @@ const PrendiConfigGrafici = (app: Express) => {
 
         if(driver.Errore(perizie, res) || driver1.Errore(utenti, res)) return;
 
+        console.log(perizie.map((p: Record<string, any>) => p["data"]))
         perizie = perizie.map((p: Record<string, any>) => Object.assign(p, { data: StringaInData(p["data"]) }));
         perizie = perizie.filter((p: Record<string, any>) => (new Date().getTime() - p["data"].getTime()) < 40 * 24 * 60 * 60 * 1000);
 
@@ -349,7 +354,6 @@ const PrendiConfigGrafici = (app: Express) => {
 
 
             const perizieSettimana = perizie.filter((p: Record<string, any>) => p["data"] >= fine && p["data"] <= inizio);
-
             const utentiPerizie = utenti.filter((u: Record<string, any>) => perizieSettimana.map((p: Record<string, any>) => p["codOperatore"]).includes(u["username"]));
 
             settimane.push({ data: DataInStringa(inizio), perizie : perizieSettimana, utenti : [...new Set(utentiPerizie)] });
@@ -360,9 +364,26 @@ const PrendiConfigGrafici = (app: Express) => {
 
 }
 
+const NuovaPerizia = (app: Express) => {
+    app.post("/api/nuova-perizia", async (req: Request, res: Response) => {
+        const perizia = req.body;
+        const token = DecifraToken(req.headers.authorization!);
+
+        if(!(await ControllaAdmin(token, res))) return;
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+
+        const aggiunta = await driver.Inserisci(perizia);
+        if(driver.Errore(aggiunta, res)) return;
+
+        RispondiToken(res, token, aggiunta)
+    })
+
+}
+
 export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente, 
          CaricaImmagineProfilo, ResetImmagineProfilo, AggiungiUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
          PrendiOperatori, PrendiPerizie, InfoUtente, StatisticheAdmin,
-         PerizieUtente, PrendiConfigGrafici};
+         PerizieUtente, PrendiConfigGrafici, NuovaPerizia};

@@ -17,6 +17,7 @@
       id="codice-mail" 
       (CodiceCambiato)="ControllaCodice($event); sinc.errori['codice'] = ''" 
       [messaggio-errore]="sinc.errori['codice']"
+      (conferma)="Conferma($event)"
     />
   </div>
   <div class="form-item">

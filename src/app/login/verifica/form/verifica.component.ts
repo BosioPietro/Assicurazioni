@@ -110,4 +110,9 @@ export class VerificaComponent implements AfterViewInit, OnInit {
         this.router.navigateByUrl("/login");
       }, 500);
   }
+
+  Conferma(s: string){
+    this.sinc.valori["codice"] = s;
+    this.VerificaCodice();
+  }
 }

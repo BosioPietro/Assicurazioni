@@ -93,13 +93,13 @@ export class RecuperoCredenzialiComponent implements AfterViewInit{
   private GestisciErroreCodice(err : AxiosError){
     const { status } = err.response!;
 
-    if(status == 403)
+    if(status == 411)
     {
       this.sinc.errori["codice"] = "Codice incoretto"
       return;
     }
 
-    if(status == 402)
+    if(status == 410)
     {
       this.notifiche.NuovaNotifica({
         tipo: "errore",

@@ -48,6 +48,8 @@ export class CambioPasswordComponent implements OnInit{
     const info : any = await ControllaToken(this.router);
     this.sinc.giorniMancanti = info["giorniMancanti"]
 
+    console.log(this.sinc.giorniMancanti)
+
     this.form.addValidators(
       ConfrontaPassword(this.form.get("password")!, this.form.get("conferma")!)
     )

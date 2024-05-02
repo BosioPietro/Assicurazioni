@@ -66,7 +66,7 @@ export class MapService {
       else return true;
     })
 
-    console.log(this.perizieFiltrate)
+    console.log(this.perizieFiltrate.length, this.stiliMarker.length)
   }
 
   async PrendiStili(aus: Perizia[]){
@@ -76,7 +76,7 @@ export class MapService {
 
     this.stiliMarker = locale.map((p: Perizia) => {
       return {
-        codice: p["codice"],
+        codice: +p["codice"],
         pin: new PinElement({
           "background": "#245c73",
           "borderColor": "#f2f3f5",
@@ -88,7 +88,7 @@ export class MapService {
   }
 
   StileMarker(p: Perizia){
-    return this.stiliMarker.find((s) => s["codice"] == p.codice)!["pin"]["element"]
+    return this.stiliMarker.find((s) => +s["codice"] == +p.codice)!["pin"]["element"]
   }
   
 
@@ -106,5 +106,15 @@ export class MapService {
       .then((res: Record<string, any>) => resolve(res["data"]))
       .catch(() => resolve(null))
     });
+  }
+
+  CaricaPerizia(p: Perizia){
+    return new Promise<boolean>((resolve) => {
+      this.server.InviaRichiesta(Metodi.POST, `/api/nuova-perizia`, Object.assign(p, { elaborata: false }))
+      .then((res: Record<string, any>) => {
+        resolve(true)
+      })
+      .catch(() => resolve(false))
+    })
   }
 }

@@ -56,6 +56,9 @@ label{
     transform: translate(var(--x), var(--y));
     user-select: none;
     caret-color: transparent;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 100vh;
 }
 
 .piccolo{
@@ -78,7 +81,7 @@ button{
     padding-block: calc(var(--dim) * 0.75);
     gap: calc(var(--dim) / 2);
     width: 100%;
-    border-radius: 100vh;
+    border-radius: .5rem;
     background-color: #F2F2F2;
     color: #000;
     font-size: var(--dim);
