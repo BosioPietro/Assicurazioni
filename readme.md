@@ -1,7 +1,6 @@
 # Descrizione Progetto
 Il progetto consiste in un'applicazione web che permette di visualizzare e gestire i dati relativi a rilievi e perizie di un'azienda. Le perizie vengono assegnate dall'admin tramite l'applicazione web a un tecnico, che può visualizzarle e modificarle. 
 Il tecnico, tramite un'applicazione Android, può visualizzare le perizie assegnate e completarle, inserendo i dati relativi al rilievo effettuato. Questo include la possibilità di inserire foto e note.
-
 # Struttura Progetto
 <div>
   <h2>Realizzato con:</h2>
@@ -97,6 +96,59 @@ Il tecnico, tramite un'applicazione Android, può visualizzare le perizie assegn
      <td style="width: 50%;">
       La pagina di dettagli di un tecnico permette di visualizzare tutte le informazioni relative a un tecnico. Inoltre, è possibile modificare le informazioni del tecnico e attivarlo/disattivarlo.
     </td>
-
   </tr>
 <table>
+<h1>Parte Operatore</h1>
+<h2>Login</h2>
+<table>
+  <tr>
+     <td style="width: 50%;">
+      La pagina di login permette ad un operatore di accedere all'applicazione tramite una username e password, in maniera tale da utilizzare il proprio telefono per scattare le foto delle perizie
+    </td>
+     <td style="width: 50%;">
+      <img src="https://res.cloudinary.com/dm2daxjrh/image/upload/v1716498577/lviub5wyjjxqebo5l1si.png" alt="Gestione Tecnici" style="max-width: 100%;">
+    </td>
+  </tr>
+</table>
+<h2>Home</h2>
+<table>
+  <tr>
+     <td style="width: 50%;">
+      Nella pagina Home, è possibile vedere il numero di perizie assegnate dall'admin ed ancora da svolgere. E' possibile visualizzare il numero totale di perizie mancanti e il numero di perizie aggiunte il giorno stesso, a cui dare minore o maggiore priorità a scelta sua. Esse sono poi visualizzate con degli appositi marker rossi sulla mappa.
+    </td>
+     <td style="width: 50%;">
+      <img src="https://res.cloudinary.com/dm2daxjrh/image/upload/v1716501578/llkvbefxvsslo3wa0pkc.png" alt="Gestione Tecnici" style="max-width: 100%;">
+    </td>
+  </tr>
+    <tr>
+     <td style="width: 50%;">
+      In corrispondenza del click su uno dei marker sulla mappa, rappresentante una delle perizie da eseguire, vengono mostrati i due bottoni, i quali rispettivamente consentono di visualizzare il tragitto dalla posizione attuale del GPS dell'operatore alla destinazione finale della perizia, e di aggiungere foto e commenti ad essa.
+    </td>
+     <td style="width: 50%;">
+      <img src="https://res.cloudinary.com/dm2daxjrh/image/upload/v1716501834/vgxi7n9htg4qzbczywbv.png" alt="Gestione Tecnici" style="max-width: 100%;">
+    </td>
+  </tr>
+</table>
+<h2>Percorso</h2>
+<table>
+  <tr>
+     <td style="width: 50%;">
+      Cliccando su percorso si viene indirizzati su una pagina di google maps, la quale mostra il tragitto da compiere
+    </td>
+     <td style="width: 50%;">
+      <img src="https://res.cloudinary.com/dm2daxjrh/image/upload/v1716502183/ah2y4l6yqq8qiuxsshmg.png" alt="Gestione Tecnici" style="max-width: 100%;">
+    </td>
+  </tr>
+</table>
+<h2>Aggiunta</h2>
+<table>
+  <tr>
+     <td style="width: 50%;">
+      Cliccando invece sul bottone Aggiungi, viene mostrata una nuova pagina di aggiunta foto, nella quale è visualizzata in alto la posizione su mappa della perizia, e sotto si possono scattare o aggiungere foto dalla galleria tramite appositi pulsanti, e visualizzare tutte le immagini in un carosello a scorrimento grazie al bottone. E' inoltre possibile eliminare o aggiungere commenti per ogni foto e infine inviare le modifiche fatte alla perizia al server, salvando immagini e commenti definitivamente su database.
+    </td>
+     <td style="width: 50%;">
+      <img src="https://res.cloudinary.com/dm2daxjrh/image/upload/v1716502284/frtwmgeuayc8wnkopepg.png" alt="Gestione Tecnici" style="max-width: 100%;">
+    </td>
+  </tr>
+</table>
+
