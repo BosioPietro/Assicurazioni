@@ -210,7 +210,7 @@ export class CreaPeriziaComponent implements AfterViewInit, OnInit{
 
     this.onAggiungi.emit({
       codice,
-      data: this.periziaCreata.data,
+      data: typeof this.periziaCreata.data == "string" ? this.periziaCreata.data : DataInStringa(this.periziaCreata.data),
       codOperatore: this.periziaCreata.codOperatore,
       luogo: this.periziaCreata.luogo,
       immagini: [],

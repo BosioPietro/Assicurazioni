@@ -110,7 +110,7 @@ export class MapService {
 
   CaricaPerizia(p: Perizia){
     return new Promise<boolean>((resolve) => {
-      this.server.InviaRichiesta(Metodi.POST, `/api/nuova-perizia`, Object.assign(p, { elaborata: false }))
+      this.server.InviaRichiesta(Metodi.POST, `/api/nuova-perizia`, Object.assign(p, { elaborata: StringaInData(p["data"]).getTime() < new Date().getTime()}))
       .then((res: Record<string, any>) => {
         resolve(true)
       })

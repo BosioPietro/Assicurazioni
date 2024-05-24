@@ -1,19 +1,19 @@
-p-calendar:not([ng-reflect-model])::ng-deep{
-    .p-calendar{
+// p-calendar:not([ng-reflect-model])::ng-deep{
+//     .p-calendar{
     
-        &::after{
-            content: '\00a0Inserisci una data...';
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            position: absolute;
-            padding: .5rem;
-            padding-left: 2.5rem;
-            color: #AAA;
-            pointer-events: none;
-        }
-    }
-}
+//         &::after{
+//             content: '\00a0Inserisci una data...';
+//             white-space: nowrap;
+//             overflow: hidden;
+//             text-overflow: ellipsis;
+//             position: absolute;
+//             padding: .5rem;
+//             padding-left: 2.5rem;
+//             color: #AAA;
+//             pointer-events: none;
+//         }
+//     }
+// }
 
 p-calendar::ng-deep{
     --colore-testo: #4b5563;

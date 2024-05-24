@@ -14,32 +14,32 @@ declare global {
 })
 export class LoginGoogleComponent {
 
-  @Output() 
-  loginWithGoogle: EventEmitter<any> = new EventEmitter<any>();
+    @Output() 
+    loginWithGoogle: EventEmitter<any> = new EventEmitter<any>();
 
-  handleGoogleLogin() {
-    this.loginWithGoogle.emit(this.createFakeGoogleWrapper());
-  }
+    handleGoogleLogin() {
+      this.loginWithGoogle.emit(this.createFakeGoogleWrapper());
+    }
 
-  createFakeGoogleWrapper = () => {
-    const googleLoginWrapper = document.createElement('div');
-    googleLoginWrapper.style.display = 'none';
-    googleLoginWrapper.classList.add('custom-google-button');
-    document.body.appendChild(googleLoginWrapper);
-    window.google.accounts.id.renderButton(googleLoginWrapper, {
-      type: "standard",
-      width: 200,
-    });
-  
-    const googleLoginWrapperButton = googleLoginWrapper.querySelector(
-      'div[role=button]'
-    ) as HTMLElement;
-  
-    return {
-      click: () => {
-        googleLoginWrapperButton?.click();
-      },
+    createFakeGoogleWrapper = () => {
+      const googleLoginWrapper = document.createElement('div');
+      googleLoginWrapper.style.display = 'none';
+      googleLoginWrapper.classList.add('custom-google-button');
+      document.body.appendChild(googleLoginWrapper);
+      window.google.accounts.id.renderButton(googleLoginWrapper, {
+        type: "standard",
+        width: 200,
+      });
+    
+      const googleLoginWrapperButton = googleLoginWrapper.querySelector(
+        'div[role=button]'
+      ) as HTMLElement;
+    
+      return {
+        click: () => {
+          googleLoginWrapperButton?.click();
+        },
+      };
     };
-  };
 
 }

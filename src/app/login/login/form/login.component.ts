@@ -51,7 +51,25 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     this.authSubscription = this.authService.authState.subscribe((user : SocialUser) => {
       this.servizio.LoginOAuth(user)
-      .then(() => this.router.navigate(["/admin/home"]))
+      .then((info) => {
+        info = info["data"];
+        
+        if("deveCambiare" in info)
+        {
+          this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+          setTimeout(() => {
+            this.router.navigateByUrl("/login/cambio-password");
+          }, 500);
+        }
+        else if("2FA" in info && !info["2FA"])
+        {
+          this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
+          setTimeout(() => {
+            this.router.navigateByUrl("/login/verifica");
+          }, 500);
+        }
+        else this.router.navigate(["/admin/home"])
+      })
       .catch((e : AxiosError) => this.GestisciErrore(e))
     });
     
