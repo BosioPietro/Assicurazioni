@@ -23,7 +23,7 @@
     </div>
   </span>
   <span>{{utente.nPerizie}}</span>
-  <span>{{utente.assuntoIl}}</span>
+  <span>{{ this.utente.assuntoIl.split("T")[0]}}</span>
   <span>
     @if (utente.attivo) {
       <ion-icon name="checkmark-circle"></ion-icon>

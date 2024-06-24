@@ -1,8 +1,5 @@
-import https from "https";
-import { MongoDriver } from "@bosio/mongodriver";
+import http from "http";
 import express, { Express } from "express";
-import env from "./ambiente.js";
-import { ReadFileAsync } from "./strumenti.js";
 
 import * as Richieste from "./middleware/base.js";
 import * as Cors from "./middleware/cors.js";
@@ -13,16 +10,9 @@ import * as Servizi from "./middleware/servizi.js";
 // APERTURA SERVER
 const app : Express = express();
 
-const [cert, key] = await Promise.all([
-    ReadFileAsync("./keys/certificate.crt"),
-    ReadFileAsync("./keys/private_key.pem")
-]);
+const server = http.createServer( app);
 
-
-const server = https.createServer({key, cert}, app);
-
-server.listen(env["PORTA"], () => console.log("Server Avviato"));
-
+server.listen(process.env.PORT || 3000, () => console.log("Server Avviato"));
 
 /* MIDDLEWARE */
 
@@ -48,8 +38,8 @@ Autenticazione.ControllaUsername(app);
 Autenticazione.ControlloToken(app);
 Autenticazione.ControlloTokenMiddleware(app);
 Autenticazione.VerificaRecupero(app);
-Autenticazione.InviaCodiceTelefono(app);
-Autenticazione.VerificaCodiceTelefono(app);
+Autenticazione.InviaCodiceEmail(app);
+Autenticazione.VerificaCodiceLogin(app);
 
 // gestione servizi
 Servizi.PrendiUtenti(app);
@@ -71,7 +61,10 @@ Servizi.InfoUtente(app);
 Servizi.StatisticheAdmin(app);
 Servizi.PerizieUtente(app);
 Servizi.PrendiConfigGrafici(app);
+Servizi.CaricaImmagineBase64string(app);
+Servizi.CaricaPerizieDB(app);
 Servizi.NuovaPerizia(app);
+Servizi.CalcolaDistanza(app);
 
 // gestione errori
 Errori.LoggingErrori(app);

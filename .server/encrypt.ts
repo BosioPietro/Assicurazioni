@@ -24,7 +24,6 @@ const CreaToken = (utente : {username : string, _id? : string, iat? : number, "2
     {
         payload["2FA"] = utente["2FA"];   
     }
-
     if(utente["assuntoIl"] != undefined)
     {
         payload["dataCreazione"] = utente["assuntoIl"];
@@ -35,6 +34,7 @@ const CreaToken = (utente : {username : string, _id? : string, iat? : number, "2
         payload["deveCambiare"] = utente["deveCambiare"];
     }
     
+
     return jwt.sign(payload, env["ENCRYPTION_KEY"]);
 }
 
@@ -45,7 +45,7 @@ const ControllaToken = (req : Request, res : Response, next? : NextFunction) => 
     const token = req.headers["authorization"];
 
     jwt.verify(token, env["ENCRYPTION_KEY"], async (err : VerifyErrors | null, payload : any) => {
-        if(err) return res.status(500).send("Errore nella verifica del token: " + err["message"]);
+        if(err) return res.status(403).send("Errore nella verifica del token: " + err["message"]);
 
         const token = CreaToken(payload);
 

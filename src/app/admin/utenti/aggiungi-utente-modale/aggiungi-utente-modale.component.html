@@ -66,11 +66,12 @@
             name="info-2FA"
             id-input="info-2FA"
             icona="lock-closed" 
-            [disabilitato]="!regexInput['telefono'].test(utente['telefono'])" 
+            [disabilitato]="!regexInput['email'].test(utente['email'])" 
             [opzioni]="opzioniSiNo"
             [(ngModel)]="utente['2FA']"
             (onChange)="VerificaInputPersonali($event)"
             (onInput)="infoPersonali.errori['info-2FA']=''; ControllaErroriPersonali()"
+            (ngModelChange)=" ControllaAdmin()"
           />
         </form>
       </div>

@@ -41,10 +41,12 @@ const AccessToken = async () => {
 
 //#endregion
 
-const [nuovaPassword, passwordCambiata, recuperoCredenziali] = await Promise.all([
+const [nuovaPassword, passwordCambiata, recuperoCredenziali, nuovoUtente, codice2FA] = await Promise.all([
     ReadFileAsync("./mail/nuovaPassword.html"), 
     ReadFileAsync("./mail/passwordCambiata.html"),
-    ReadFileAsync("./mail/recuperoCredenziali.html")
+    ReadFileAsync("./mail/recuperoCredenziali.html"),
+    ReadFileAsync("./mail/nuovoUtente.html"),
+    ReadFileAsync("./mail/codice2FA.html")
 ]);
 
 const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve, reject) => {
@@ -58,7 +60,6 @@ const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve,
     transporter.sendMail(opzioni, (err : Error | null) => {
         if (err)
         {
-            console.log(err);
             reject(err);
         }
         else resolve("Mail inviata");
@@ -96,4 +97,25 @@ const InviaMailRecupero = (email: string, username: string, codice: string) =>{
     return InviaMail(opzioni);
 }
 
-export { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero }
+const InviaMail2FA = (email: string, username: string, codice: string) => {
+    const opzioni: MailOptions = {
+        from: env["EMAIL"],
+        to: email,
+        subject: "Codice di verifica",
+        html: codice2FA.replace("${username}", username).replace("${codice}", codice)
+    }
+    return InviaMail(opzioni);
+
+}
+
+const InviaMailNuovoUtente = (username: string, email: string, password: string) => {
+    const opzioni: MailOptions = {
+        from: env["EMAIL"],
+        to: email,
+        subject: "Registrazione effettuata",
+        html: nuovoUtente.replace("${username}", username).replace("${password}", password)
+    }
+    return InviaMail(opzioni);
+}
+
+export { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero, InviaMailNuovoUtente, InviaMail2FA }

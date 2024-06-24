@@ -20,6 +20,9 @@ export class GraficoLineaComponent implements AfterViewInit{
   public chart: any;
 
   ngAfterViewInit(): void {
+    if(this.dati.length < 6){
+      this.dati = [...this.dati, ...Array(6 - this.dati.length).fill(1)]
+    }
     setTimeout(() => {
       this.chart = new Chart("linea", {
         type: 'line',

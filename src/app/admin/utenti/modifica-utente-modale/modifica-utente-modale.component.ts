@@ -374,6 +374,7 @@ export class ModificaUtenteModaleComponent implements AfterViewInit{
       })
     }
     else this.perizieUtente = perizie;
+    console.log(this.perizieUtente)
   }
 
   ApriPerizia(p: Perizia){

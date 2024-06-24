@@ -25,11 +25,9 @@
 }
 
 main{
-    --max-width: auto;
     height: var(--altezza-form);
     position: relative;
     display: flex;
-    width: var(--max-width);
     z-index: 0;
 
     &:has(PopOver .messaggio-popover.visibile){
@@ -102,7 +100,6 @@ LoaderBarra{
 
 @media screen and (max-aspect-ratio: .8) {
     :host{
-        // display: none !important;
         & > div{
             flex-direction: column !important;
         }

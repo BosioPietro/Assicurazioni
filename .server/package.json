@@ -7,18 +7,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "bun --watch index.ts",
-    "dev": "nodemon index.ts"
+    "start": "bun  --watch index.ts",
+    "dev": "bun --watch index.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bosio/mongodriver": "^1.4.1",
+    "@bosio/mongodriver": "^1.4.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/express-form-data": "^2.0.5",
     "@types/jsonwebtoken": "^9.0.6",
-    "@vonage/server-sdk": "^3.14.0",
     "bcryptjs": "^2.4.3",
+    "bun": "^1.1.6",
     "cloudinary": "^2.2.0",
     "cors": "^2.8.5",
     "dot": "^1.1.3",

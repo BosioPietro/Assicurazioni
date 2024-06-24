@@ -91,9 +91,9 @@ export class PeriziaPage implements OnInit, AfterViewInit {
     const data = StringaInData(this.perizia!.data);
     const giorni = Math.floor((oggi.getTime() - data.getTime()) / (1000 * 3600 * 24));
 
-    if(this.perizia!.completata)
+    if(this.perizia!.elaborata)
     {
-      return "Completata";
+      return "Elaborata";
     }
     else if(giorni == 0)
     {
@@ -130,6 +130,7 @@ export class PeriziaPage implements OnInit, AfterViewInit {
     this.periziaService.EliminaPerizia(this.perizia!.codice)
     .then(() => {
       this.inCaricamentoElimina = false;
+      this.vuoleEliminare = false;
       this.notifiche.NuovaNotifica({
         titolo: "Perizia eliminata",
         descrizione: "La perizia è stata eliminata con successo",

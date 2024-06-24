@@ -13,6 +13,6 @@ export class VerificaService {
     }
 
     public VerificaCodice(codice: string){
-        return this.server.InviaRichiesta(Metodi.POST, "/api/verifica-codice-telefono", { codice })
+        return this.server.InviaRichiesta(Metodi.POST, "/api/verifica-codice-login", { codice })
     }
 }

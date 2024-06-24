@@ -9,8 +9,8 @@ export class GestoreServerService{
 
 async InviaRichiesta(method : Metodi, url : string, parameters : object = {}) {
     const indirizzo = {
-      baseURL: "https://server-perizie.onrender.com",
-      // baseURL: "http://localhost:3000",
+      // baseURL: "https://server-perizie.onrender.com",
+      baseURL: "http://localhost:3000",
       url: url
     }
 

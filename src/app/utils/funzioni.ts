@@ -17,8 +17,6 @@ const GiorniMancanti = (creazione : string) => {
     const GIORNI_CAMBIO_PWD = 7;
     const oggi = new Date();
     oggi.setHours(0, 0, 0, 0)
-
-    console.log(creazione, PrendiData(creazione), AggiungiGiorni(PrendiData(creazione), GIORNI_CAMBIO_PWD))
     const scadenza = AggiungiGiorni(PrendiData(creazione), GIORNI_CAMBIO_PWD)
 
     return SottraiGiorni(oggi, scadenza)
@@ -100,10 +98,11 @@ const ControllaToken = async (r : Router) : Promise<any> => {
             }
             break;
         default:
-            if(!DeveCambiare(info, r))
+            if(Loggato2Fattori(info, r))
             {
-                Loggato2Fattori(info, r);   
+                DeveCambiare(info, r)
             }
+
         break
     }
 
@@ -111,16 +110,21 @@ const ControllaToken = async (r : Router) : Promise<any> => {
 } 
 
 const Loggato2Fattori = (info: Record<string, any>, r: Router) => {
+
     if("2FA" in info && !info["2FA"])
     {
-        r.navigate(["/login/verifica"])   
-    }
+        r.navigate(["/login/verifica"]);
+        return false;
+    }  
+    return true;
 }
 
 const DeveCambiare = (info: Record<string, any>, r: Router) => {
+
     const deveCambiare = info["deveCambiare"]
     if(!deveCambiare)return;
 
+    console.log(info)
     const giorniRimanenti = GiorniMancanti(info["dataCreazione"]); 
     if(giorniRimanenti <= 0)
     {

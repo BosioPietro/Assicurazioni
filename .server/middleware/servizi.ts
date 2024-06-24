@@ -1,23 +1,51 @@
 import { Express, Request, Response } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
-import { DecifraToken, ControllaAdmin, GeneraPassword, CifraPwd } from "../encrypt.js";
-import { CaricaImmagine, DataInStringa, StringaInData } from "../funzioni.js";
+import { DecifraToken, ControllaAdmin, GeneraPassword, CifraPwd, ConfrontaPwd } from "../encrypt.js";
+import { CaricaImmagine, DataInStringa, StringaInData, CaricaImmagineBase64 } from "../funzioni.js";
 import { RispondiToken } from "../strumenti.js";
 import { UploadApiResponse } from "cloudinary";
 import env from "../ambiente.js";
-import { InviaMailNuovaPassword } from "./mail.js";
+import { InviaMailNuovoUtente } from "./mail.js";
 
 const PrendiUtenti = (app: Express) => {
     app.get("/api/utenti", async (req: Request, res: Response) => {
         const filtri = req.query || {};
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
-        
+
         const utenti = await driver.PrendiMolti(filtri);
         if(driver.Errore(utenti, res)) return;
 
         utenti.forEach((u: any) => { delete u["_id"] })
 
         RispondiToken(res, DecifraToken(req.headers.authorization!), utenti)
+    })
+}
+
+const CaricaPerizieDB = (app: Express) => {
+    app.post("/api/carica-perizie-db", async (req: Request, res: Response) => {
+        const perizia = req.body.perizia;
+        console.log(perizia);
+        const token = DecifraToken(req.headers.authorization!);
+
+        if(!(await ControllaAdmin(token, res))) return;
+
+        const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
+
+        const _id = perizia["_id"];
+        delete perizia["_id"];
+
+        const aggiunte = await driver.UpdateUno(
+            { _id : driver.ID(_id) },
+            { $set: 
+                { 
+                    "immagini" : perizia["immagini"], 
+                    "elaborata" : true ,
+                    "verificata": !("sospetta" in perizia)
+                }}
+        );
+        if(driver.Errore(aggiunte, res)) return;
+
+        RispondiToken(res, token, aggiunte)
     })
 }
 
@@ -126,6 +154,21 @@ const CaricaImmagineProfilo = (app: Express) => {
     })
 }
 
+const CaricaImmagineBase64string = (app: Express) => {
+    app.post("/api/carica-immagine-perizia-base64", async (req: Request, res: Response) => {
+        const immagine: string = req["body"].img;
+        console.log(immagine);
+        const caricata = await CaricaImmagineBase64(immagine);
+
+        if(caricata["errore"]){
+            res.status(500).send(caricata["errore"]);
+            return;
+        }
+        else res.send(caricata)
+    })
+
+}
+
 const ResetImmagineProfilo = (app: Express) => {
     app.patch("/api/reset-immagine", async (req: Request, res: Response) => {
         const { username } = req.body;
@@ -156,26 +199,21 @@ const AggiungiUtente = (app: Express) => {
 
         const password = GeneraPassword();
 
+        console.log(password)
+        // const CifraPwd = (password: string): string => bcrypt.hashSync(password, 10);
+        
         utente["cambioPwd"] = "true";
         utente["password"] = CifraPwd(password);
+
+        console.log(password);
+        console.log(ConfrontaPwd(password, utente["password"]));
 
         const aggiunto = await driver.Inserisci(utente);
         if(driver.Errore(aggiunto, res)) return;
 
-
-        console.log(utente)
-
-        InviaMailNuovaPassword(utente["username"], password, utente["email"])
-        .then(() => {
-            RispondiToken(res, token, aggiunto)
-            console.log("mail inviata")
-        })
-        .catch((err: any) => {
-            console.log(err)
-            RispondiToken(res, token, aggiunto, 500)
-        })
-
-        RispondiToken(res, token, aggiunto)
+        InviaMailNuovoUtente(utente["username"], utente["email"], password)
+        .then(() => RispondiToken(res, token, aggiunto))
+        .catch((err) => RispondiToken(res, token, err, 500))
     })
 }
 
@@ -250,6 +288,23 @@ const PrendiIndirizzi = (app: Express) => {
 
         res.send(dati)
     })
+}
+
+const CalcolaDistanza = (app: Express) => {
+    app.get("/api/calcola-distanza", async (req: Request, res: Response) => {
+        const { lat1, lng1, lat2, lng2 } = req.query;
+
+        const richiesta = `https://maps.googleapis.com/maps/api/directions/json` +
+                          `?origin=${lat1},${lng1}` +
+                          `&destination=${lat2},${lng2}` +
+                          `&key=${env["GOOGLE_PLACES_API_KEY"]}` +
+                          `&mode=driving`;
+
+        const risposta = await fetch(richiesta);
+        const dati = await risposta.json();
+        const distanza = dati["routes"][0]["legs"][0]["distance"]["value"];
+        res.send({ distanza })
+    });
 }
 
 const IndirizzoDaCoordinate = (app: Express) => {
@@ -343,7 +398,7 @@ const PrendiConfigGrafici = (app: Express) => {
 
         if(driver.Errore(perizie, res) || driver1.Errore(utenti, res)) return;
 
-        console.log(perizie.map((p: Record<string, any>) => p["data"]))
+        perizie = perizie.filter((p: Record<string, any>) => p["data"])
         perizie = perizie.map((p: Record<string, any>) => Object.assign(p, { data: StringaInData(p["data"]) }));
         perizie = perizie.filter((p: Record<string, any>) => (new Date().getTime() - p["data"].getTime()) < 40 * 24 * 60 * 60 * 1000);
 
@@ -354,6 +409,7 @@ const PrendiConfigGrafici = (app: Express) => {
 
 
             const perizieSettimana = perizie.filter((p: Record<string, any>) => p["data"] >= fine && p["data"] <= inizio);
+
             const utentiPerizie = utenti.filter((u: Record<string, any>) => perizieSettimana.map((p: Record<string, any>) => p["codOperatore"]).includes(u["username"]));
 
             settimane.push({ data: DataInStringa(inizio), perizie : perizieSettimana, utenti : [...new Set(utentiPerizie)] });
@@ -386,4 +442,5 @@ export { PrendiUtenti, EliminaUtenti, ControllaAdmin, AggiornaUtente,
          PrendiPerizia, PrendiOperatore, EliminaPerizia, PrendiIndirizzi,
          IndirizzoDaCoordinate, ModificaPerizia, CaricaImmaginePerizia,
          PrendiOperatori, PrendiPerizie, InfoUtente, StatisticheAdmin,
-         PerizieUtente, PrendiConfigGrafici, NuovaPerizia};
+         PerizieUtente, PrendiConfigGrafici, CaricaImmagineBase64string,
+         CaricaPerizieDB, NuovaPerizia, CalcolaDistanza };

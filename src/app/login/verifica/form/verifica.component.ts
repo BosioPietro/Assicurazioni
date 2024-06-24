@@ -46,8 +46,16 @@ export class VerificaComponent implements AfterViewInit, OnInit {
     try
     {
       this.transizione.caricamento = true;
-      await this.server.VerificaCodice(this.sinc.valori["codice"])
+      const info: {data: {deveCambiare: boolean}} = await this.server.VerificaCodice(this.sinc.valori["codice"]);
       this.transizione.caricamento = false;
+
+      if(info["data"]["deveCambiare"]){
+        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
+        setTimeout(() => {
+          this.router.navigateByUrl("/login/cambio-password");
+        }, 500);
+        return;
+      }
 
       this.router.navigateByUrl("/admin/home")
     }

@@ -101,14 +101,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
       info = info["data"];
       
-      if("deveCambiare" in info)
-      {
-        this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/cambio-password");
-        setTimeout(() => {
-          this.router.navigateByUrl("/login/cambio-password");
-        }, 500);
-      }
-      else if("2FA" in info && !info["2FA"])
+      if("2FA" in info && !info["2FA"])
       {
         this.transizione.TransizioneUscita(this.formHtml.nativeElement, "/login/verifica");
         setTimeout(() => {

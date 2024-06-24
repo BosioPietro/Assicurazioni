@@ -11,10 +11,10 @@ export class LoginService {
   constructor(private server : GestoreServerService) { }
 
   public Login(username : string, password : string) {
-    return this.server.InviaRichiesta(Metodi.POST, '/api/login', {username, password});
+    return this.server.InviaRichiesta(Metodi.POST, '/api/login', {username, password, web: true});
   }
 
   public LoginOAuth(user : SocialUser) {
-    return this.server.InviaRichiesta(Metodi.POST, '/api/login-oauth', user);
+    return this.server.InviaRichiesta(Metodi.POST, '/api/login-oauth', {...user, web: true});
   }
 }

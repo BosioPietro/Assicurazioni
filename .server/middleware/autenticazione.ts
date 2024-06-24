@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { MongoDriver } from "@bosio/mongodriver";
 import { ConfrontaPwd, ControllaToken, GeneraPassword, GeneraCodice, CifraPwd, DecifraToken } from "../encrypt.js";
-import { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero } from "./mail.js";
+import { InviaMailNuovaPassword, InviaMailPasswordCambiata, InviaMailRecupero, InviaMail2FA } from "./mail.js";
 import { RispondiToken } from "../strumenti.js";
 import { DataInStringa, StringaInData } from "../funzioni.js";
 import env from "../ambiente.js"
@@ -43,14 +43,18 @@ const RegistraUtente = async (app : Express) => {
 const LoginUtente = async (app : Express) => {
     app.post("/api/login", async (req : Request, res : Response) => {
         const { username: utente, password } = req["body"];
+        const web = req["body"]["web"] || false;
+
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
-        
+
         const tipo = utente.includes("@") ? "email" : "username";
         const user = await driver.PrendiUno({ [tipo] : utente })
     
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Username non esistente") 
-    
+
+        if(web && user["ruolo"] != "Admin") return res.status(411).send("L'utente non è un amministratore");
+        
         if(ConfrontaPwd(password, user["password"]))
         {
             const dataToken: any = { 
@@ -76,9 +80,11 @@ const LoginUtente = async (app : Express) => {
     });   
 }
 
+
 const LoginOAuth = async (app : Express) => {
     app.post("/api/login-oauth", async (req : Request, res : Response) => {
         const { email } = req["body"];
+        const web = req["body"]["web"] || false;
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         
         const regex = new RegExp(`^${email}$`, "i");
@@ -88,18 +94,23 @@ const LoginOAuth = async (app : Express) => {
         if(driver.Errore(user, res)) return;
         if(!user) return res.status(400).send("Utente non autorizzato");
 
-        const dataToken: any = { username: user["username"], _id : user["_id"].toString(), "dataCreazione" : user["assuntoIl"]}
+        if(web && user["ruolo"] != "Admin") return res.status(411).send("L'utente non è un amministratore");
+
+        const dataToken: any = { 
+            username: user["username"], 
+            _id : user["_id"].toString(), 
+            assuntoIl : user["assuntoIl"],
+            deveCambiare : user["cambioPwd"] 
+        }
+        
         if(user["ruolo"] == "Admin" || user["2FA"]){
-            dataToken["2FA"] = false;
-            dataToken["2FA"] = true;   
+            dataToken["2FA"] = !false;   
         }
 
         const risposta: Record<string, any> = { "deveCambiare" : user["cambioPwd"] }
         if(user["ruolo"] == "Admin" || user["2FA"])
         {
-            risposta["2FA"] = false;
-            dataToken["2FA"] = true;   
-
+            risposta["2FA"] = !false;   
         }
 
         RispondiToken(res, dataToken, risposta)
@@ -157,8 +168,6 @@ const RecuperoCredenziali = (app: Express) =>{
             data: DataInStringa(new Date(), true),
             codice
         }
-
-        console.log(user, recupero)
 
         const data = await driver.Replace({ email }, { ...user, recupero })
         console.log(data)
@@ -225,7 +234,7 @@ const VerificaCodice = (app: Express) => {
     })
 }
 
-const InviaCodiceTelefono = (app: Express) => {
+const InviaCodiceEmail = (app: Express) => {
     app.post("/api/invia-codice-verifica", async (req: Request, res: Response) => {
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!);
@@ -241,43 +250,19 @@ const InviaCodiceTelefono = (app: Express) => {
             return;
         }  
 
-        if(!user["telefono"]){
-            RispondiToken(res, payload, `Numero di telefono non fornito`, 401)
-            return;
-        }
+        const codice = GeneraCodice();
 
-        const url = `https://verify.twilio.com/v2/Services/VA9774fb566b94ad1bccbb6f7a7ae94698/Verifications`;
-        const options = {
-            method: 'POST',
-            headers: {
-                Authorization: `Basic ${btoa(env["TWILIO_API_SID"] + ':' + env["TWILIO_API_SECRET"])}`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams({
-                To: '+39' + user["telefono"],
-                Channel: 'sms'
-            })
-        };
+        const data = await driver.Replace({ username }, { ...user, login2FA : { codice, data : DataInStringa(new Date(), true) }})
+        if(driver.Errore(data, res)) return;
 
-        fetch(url, options)
-        .then((response) => response.json())
-        .then(async (verification) => {
-            user["recupero"] = {
-                data: verification["date_created"],
-                sid: verification["sid"]
-            }
-            
-            const data = await driver.Replace({ username }, user)
-            if(driver.Errore(data, res)) return;
-    
-            RispondiToken(res, payload, { ris : "ok"})
-        })
-        .catch(() => RispondiToken(res, payload, `Errore nell'invio del codice`, 500))
+        InviaMail2FA(user["email"], user["username"], codice)
+        .then(() => RispondiToken(res, payload, { ris : "ok"}))
+        .catch(() => RispondiToken(res, payload, `Errore nell'invio della mail`, 500))
     })
 }
 
-const VerificaCodiceTelefono = (app: Express) => {
-    app.post("/api/verifica-codice-telefono", async (req: Request, res: Response) => {
+const VerificaCodiceLogin = (app: Express) => {
+    app.post("/api/verifica-codice-login", async (req: Request, res: Response) => {
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "utenti");
         const payload = DecifraToken(req.headers["authorization"]!);
         const { username } = payload;
@@ -289,42 +274,36 @@ const VerificaCodiceTelefono = (app: Express) => {
 
         if(!user) return RispondiToken(res, payload, "Utente non esiste", 400);
 
-        if(!user["recupero"]){
-            RispondiToken(res, payload, "Utente non ha richiesto la verifica", 400);
+        if(!user) return RispondiToken(res, payload, "Utente non esiste", 400);
+
+        if(!user["login2FA"]){
+            RispondiToken(res, payload, "Utente non ha richiesto il 2FA", 400);
             return;
         }
 
-        const url = `https://verify.twilio.com/v2/Services/VA9774fb566b94ad1bccbb6f7a7ae94698/VerificationCheck`;
+        const { login2FA } = user;
+        const oggi = new Date();
+        const dataRichiesta = StringaInData(login2FA["data"]);
 
-        const options = {
-        method: 'POST',
-        headers: {
-            Authorization: `Basic ${btoa(env["TWILIO_API_SID"] + ':' + env["TWILIO_API_SECRET"])}`,
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            To: '+39' + user["telefono"],
-            Code: codice
-        })
-        };
+        if((oggi.getTime() - dataRichiesta.getTime()) > 5 * 60 * 1000){
+            RispondiToken(res, payload, "Tempo scaduto", 410);
+            return;
+        }
 
-        fetch(url, options)
-        .then(response => response.json())
-        .then(verification_check => {
-            console.log(verification_check)
-            if(verification_check.status == "approved")
-            {
-                delete user["recupero"]
-                delete user["_id"]
-                payload["2FA"] = true;
-            
-                driver.Replace({ username }, user)
-                .then(() => RispondiToken(res, payload, { ris : "ok"}))
-                .catch(() => RispondiToken(res, payload, "Errore nel salvataggio", 500))
-            }
-            else RispondiToken(res, payload, "Codice errato", 401)
-        })
-        .catch(() => RispondiToken(res, payload, "Errore nella verifica", 500));
+        if(codice !== login2FA["codice"]){
+            RispondiToken(res, payload, "Codice errato", 411);
+            return;
+        }
+
+        payload["2FA"] = true;
+        payload["assuntoIl"] = user["assuntoIl"];
+        delete user["recupero"]
+        delete user["_id"]
+        delete user["login2FA"];
+        const data = await driver.Replace({ username }, user);
+        if(driver.Errore(data, res)) return;
+
+        RispondiToken(res, payload, { deveCambiare : user["cambioPwd"] })
     })
 }
 
@@ -359,5 +338,5 @@ const ControlloTokenMiddleware = (app : Express) => {
 export { 
     RegistraUtente, LoginUtente, LogoutUtente, ControlloToken, ControlloTokenMiddleware, 
     LoginOAuth, CambiaPassword, RecuperoCredenziali, VerificaCodice, 
-    VerificaRecupero, InviaCodiceTelefono, VerificaCodiceTelefono, ControllaUsername
+    VerificaRecupero, InviaCodiceEmail, VerificaCodiceLogin, ControllaUsername
 }

@@ -19,7 +19,7 @@ type Perizia = {
     codOperatore: string,
     nomeOperatore?: string,
     data: string,
-    completata?: boolean,
+    elaborata?: boolean,
     descrizione: string,
 }
 

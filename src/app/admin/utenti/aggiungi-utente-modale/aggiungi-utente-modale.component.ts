@@ -178,6 +178,8 @@ export class AggiungiUtenteModaleComponent implements AfterViewInit {
   }
 
   ControllaRuolo(){
+    if(typeof this.utente['2FA'] == "string") this.utente['2FA'] = this.utente['2FA'] == "true";
+
     if(this.utente.ruolo == "Admin" && this.utente['2FA'] == false){
       this.notifiche.NuovaNotifica({
         "titolo": "Ruolo non valido",
@@ -199,6 +201,21 @@ export class AggiungiUtenteModaleComponent implements AfterViewInit {
         "descrizione": "Controlla i dati inseriti",
         "tipo": "errore"
       })
+    }
+  }
+
+  ControllaAdmin(){
+    if(typeof this.utente['2FA'] == "string") this.utente['2FA'] = this.utente['2FA'] == "true";
+
+    if(this.utente.ruolo == "Admin" && !this.utente['2FA']){
+      console.log("Errore")
+      this.notifiche.NuovaNotifica({
+        "titolo": "Operazione non valida",
+        "descrizione": "Non puoi toglire il 2FA ad un Admin",
+        "tipo": "errore"
+      })
+
+      setTimeout(() => this.utente['2FA'] = true);
     }
   }
 }
