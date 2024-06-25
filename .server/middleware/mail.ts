@@ -46,7 +46,7 @@ const [nuovaPassword, passwordCambiata, recuperoCredenziali, nuovoUtente, codice
     ReadFileAsync("./mail/passwordCambiata.html"),
     ReadFileAsync("./mail/recuperoCredenziali.html"),
     ReadFileAsync("./mail/nuovoUtente.html"),
-    ReadFileAsync("./mail/codice2FA.html")
+    ReadFileAsync("./mail/codice2Fa.html")
 ]);
 
 const InviaMail = (opzioni : MailOptions) => new Promise<string>(async (resolve, reject) => {
