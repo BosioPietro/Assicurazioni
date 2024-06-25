@@ -123,6 +123,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       case 401:
         this.sinc.errori["password"] = "Password errata"
         break;
+      case 411:
+        return this.notifiche.NuovaNotifica({
+          "tipo" : "errore",
+          "titolo" : "Utente non valido",
+          "descrizione" : "La versione web è riservata agli admin"
+        })
+        break;
       default:
         return this.notifiche.NuovaNotifica({
           "tipo" : "errore",
