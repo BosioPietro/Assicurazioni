@@ -87,6 +87,8 @@ const PrendiPerizie = (app: Express) => {
         const perizie = await driver.PrendiMolti(filtri);
         if(driver.Errore(perizie, res)) return;
 
+        console.log(JSON.stringify(perizie));
+
         RispondiToken(res, DecifraToken(req.headers.authorization!), perizie)
     })
 }
