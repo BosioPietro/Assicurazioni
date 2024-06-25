@@ -4,6 +4,7 @@ import FormData  from "express-form-data";
 const LoggingRichieste = (app : Express) => {
     app.use("/", (req : Request, res : Response, next : NextFunction) => {
         console.log(`>--> ${req.method} ${req.originalUrl}`)
+        if(req.method === "HEAD" && !next) return;
         next();
     })
 }
