@@ -5,7 +5,7 @@ const GestioneErrori = (app : Express) => {
 }
 
 const LoggingErrori = (app : Express) => {
-    app.use("/", (err: Error) => console.log("*** ERRORE SERVER ***", err["message"]))
+    // app.use("/", (err: Error) => console.log("*** ERRORE SERVER ***", err["message"]))
 }
 
 export { GestioneErrori, LoggingErrori }
