@@ -431,7 +431,7 @@ const NuovaPerizia = (app: Express) => {
 
         const driver = new MongoDriver(env["STR_CONN"], env["DB_NAME"], "perizie");
 
-        const aggiunta = await driver.Inserisci(perizia);
+        const aggiunta = await driver.Inserisci({...perizia, elaborata: false});
         if(driver.Errore(aggiunta, res)) return;
 
         RispondiToken(res, token, aggiunta)
